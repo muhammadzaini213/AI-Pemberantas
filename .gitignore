@@ -1,0 +1,39 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.env/
+.env.bak/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# VSCode settings
+.vscode/
+
+# PyCharm settings
+.idea/
+
+# Logs
+*.log
+
+# Data files (optional ignore)
+# Uncomment if you don't want to commit datasets
+# data/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Temporary files
+*.tmp
+*.temp
+~$*
