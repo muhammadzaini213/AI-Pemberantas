@@ -1,7 +1,7 @@
 ## 📁 Struktur Folder Proyek
 
 ```
-AI Pemberantas Prab/
+AI Pemberantas/
 ├── data/                         # Dataset AI
 ├── notebooks/
 │   └── tumbal.ipynb              # Notebook untuk tumbal & eksperimen
