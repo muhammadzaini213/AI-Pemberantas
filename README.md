@@ -3,12 +3,8 @@
 ```
 AI Pemberantas/
 ├── data/                         # Dataset AI
-├── notebooks/
-│   └── tumbal.ipynb              # Notebook untuk tumbal & eksperimen
-├── src/
-│   ├── preprocessing.py          # Script preprocessing data
-│   ├── model.py                  # Script model AI
-│   └── utils.py                  # Fungsi utilitas tambahan
+├── scrapper/                     # Tempat mengambil dataset graphml
+├── src/                          # Program utama
 └── README.md                     # Dokumentasi utama proyek
 ```
 

@@ -1,33 +1,35 @@
 # ================== WINDOW ==================
-APP_NAME = "Balikpapan Graph + Agent TPS/TPA"
+APP_NAME = "Simulasi Truk Sampah Balikpapan"
 WIDTH = 1000
 HEIGHT = 800
 CAM_SPEED = 10
 
 # ================== TEST SETUP ==================
-GRAPH_FILE = "./data/roadData.graphml"
-NUM_AGENTS = 3
-VEHICLE_SPEED = 10 # Sementara masih pake ini
-NUM_TPS = 3
-NUM_TPA = 0
+GRAPH_FILE = "./data/balikpapan_kota_drive.graphml"
+NUM_VEHICLE = 10
+VEHICLE_SPEED = 5 # Sementara masih pake ini
+NUM_TPS = 7
+NUM_TPA = 2
+NUM_GARAGE = 3
 
 # ================== TPS SETUP ==================
 TPS_DATA = [
     {
         # "id": 1,
-        "trash_per_seconds": 30,
-        "extraction_cap": 300,
+        "trash_per_day": 30,
+        "extraction_cap": 300, # Ini nanti kita random per hari, jadi cuma titik tengahnya aja
         "location": object # Graph nodes
     },
     {
         # "id": 2,
-        "trash_per_seconds": 30,
+        "trash_per_day": 30,
         "extraction_cap": 300,
         "location": object # Graph nodes
     }
 ]
 
 # ================== VEHICLE SETUP ==================
+OPERATIONAL_TIME = 5000 # Nanti ikutin jam operasionalnya
 VEHICLE_DATA = [
     {
         # "id": 1,
@@ -50,3 +52,4 @@ LINE_COL = (150,150,150) # Jalanan putih
 AGENT_COL = (0,255,0) # Mobil Hijau
 TPS_COL = (255,220,0) # TPS kuning
 TPA_COL = (0,150,255) # TPA biru
+GARAGE_COL = (139, 69, 19) # Garasi coklat

@@ -1,0 +1,12 @@
+============= WEIGHT =============
+w1 = 1
+w2 = 10
+w3 = 1000
+w4 = 0.5
+
+
+OBJECTIVE FUNCTION =
+    w1 * Jarak Total Semua Truk
+  + w2 * Rata rata Overtime Tiap Truk
+  + w3 * TPS yang belum dilayanin
+  + w4 * Rata rata selisih beban kerja tiap truk

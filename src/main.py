@@ -1,8 +1,8 @@
 import os
 import osmnx as ox
 import pygame
-from agent import Vehicle
-from location import generate_tps_tpa_nodes
+from vehicle import Vehicle
+from location import generate_tps_tpa_garage_nodes
 from viewer import GraphViewer
 from environment import *
 
@@ -23,12 +23,13 @@ viewer.offset_x = viewer.WIDTH/2 - ((viewer.min_x+viewer.max_x)/2 - viewer.min_x
 viewer.offset_y = viewer.HEIGHT/2 - ((viewer.max_y+viewer.min_y)/2 - viewer.min_y)*viewer.scale
 
 # ===== TPS & TPA =====
-TPS_nodes, TPA_node = generate_tps_tpa_nodes(GRAPH, NUM_TPS)
+TPS_nodes, TPA_nodes, GARAGE_nodes = generate_tps_tpa_garage_nodes(GRAPH, NUM_TPS, NUM_TPA, NUM_GARAGE)
 print("TPS nodes:", TPS_nodes)
-print("TPA node:", TPA_node)
+print("TPA nodes:", TPA_nodes)
+print("GARAGE node", GARAGE_nodes)
 
-# ===== AGENTS =====
-agents = [Vehicle(GRAPH, TPS_nodes, TPA_node) for _ in range(NUM_AGENTS)]
+# ===== VEHICLES =====
+vehicles = [Vehicle(GRAPH, TPS_nodes, TPA_nodes) for _ in range(NUM_VEHICLE)] 
 
 # ===== INITIALIZE =====
 pygame.init()
@@ -93,12 +94,13 @@ while running:
     screen.fill((20,20,20))
 
     viewer.draw_graph(screen, GRAPH, NODE_COL, LINE_COL)
-    viewer.draw_nodes_list(screen, TPS_nodes, (255,220,0), 10)
-    viewer.draw_nodes_list(screen, [TPA_node], (0,150,255), 14)
+    viewer.draw_nodes_list(screen, TPS_nodes, TPS_COL, 10)
+    viewer.draw_nodes_list(screen, TPA_nodes, TPA_COL, 14)
+    viewer.draw_nodes_list(screen, GARAGE_nodes, GARAGE_COL, 12)
 
-    for agent in agents:
-        agent.update()
-        x, y = agent.get_pos(pos)
+    for vehicle in vehicles:
+        vehicle.update()
+        x, y = vehicle.get_pos(pos)
         ax, ay = viewer.transform(x, y)
         pygame.draw.circle(screen, (0,255,0), (ax, ay), 6)
 
