@@ -1,7 +1,7 @@
 import osmnx as ox
 
 filename = "./data/roadData.graphml"
-place_name = "Klandasan Ilir, Balikpapan, Kalimantan Timur, Indonesia"
+place_name = "Balikpapan Kota, Balikpapan, Kalimantan Timur, Indonesia"
 
 # Ambil jaringan jalan untuk kendaraan
 G = ox.graph_from_place(

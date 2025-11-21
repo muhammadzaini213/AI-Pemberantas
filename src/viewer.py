@@ -1,9 +1,9 @@
 import pygame
+from environment import WIDTH, HEIGHT
 
 # ======== Viewer / Transform ==========
-
 class GraphViewer:
-    def __init__(self, pos_dict, width=1000, height=800, node_size=3):
+    def __init__(self, pos_dict, width=WIDTH, height=HEIGHT, node_size=3):
         self.pos = pos_dict
         self.WIDTH = width
         self.HEIGHT = height
@@ -21,7 +21,7 @@ class GraphViewer:
         py = (self.max_y - y) * self.scale + self.offset_y
         return int(px), int(py)
 
-    def draw_graph(self, screen, G, node_color=(255,120,120), edge_color=(150,150,150)):
+    def draw_graph(self, screen, G, node_color, edge_color):
         for u, v in G.edges():
             pygame.draw.line(screen, edge_color,
                              self.transform(*self.pos[u]),
