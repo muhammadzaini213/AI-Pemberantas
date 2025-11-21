@@ -96,7 +96,7 @@ Setelah aktif, prompt terminal akan berubah menandakan environment sedang aktif.
 Setelah environment aktif, jalankan:
 
 ```
-pip install numpy pandas scikit-learn matplotlib
+pip install numpy pandas scikit-learn matplotlib pygame osmnx
 ```
 
 ---
