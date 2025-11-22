@@ -1,6 +1,6 @@
 import random
 import networkx as nx
-from environment import VEHICLE_SPEED
+from .environment import VEHICLE_SPEED
 
 class Vehicle:
     def __init__(self, graph, tps_nodes=None, tpa_node=None, speed=VEHICLE_SPEED):

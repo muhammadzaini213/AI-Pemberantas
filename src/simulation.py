@@ -1,11 +1,11 @@
 import pygame
 import os
 import osmnx as ox
-from vehicle import Vehicle
-from location import generate_tps_tpa_garage_nodes
-from viewer import GraphViewer
-from environment import *
-from controls import controls
+from .vehicle import Vehicle
+from .utils.location import generate_tps_tpa_garage_nodes
+from .utils.viewer import GraphViewer
+from .environment import *
+from .utils.controls import controls
 
 # ===== Load graph =====
 if not os.path.exists(GRAPH_FILE):

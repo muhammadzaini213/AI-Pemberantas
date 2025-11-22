@@ -1,5 +1,5 @@
 import pygame
-from environment import CAM_SPEED
+from ..environment import CAM_SPEED
 
 # ===== Controls =====
 def controls(viewer):
