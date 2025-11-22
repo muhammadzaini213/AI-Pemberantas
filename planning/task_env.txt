@@ -1,0 +1,43 @@
+============= PROPERTIES OF TASK ENVIRONMENT =============
+
+
+1. Observability
+Partially Observable
+    Karena:
+    - Status statis seperti peta, TPS, TPA, garasi
+    - Namun kondisi dinamis seperti kemacetan & hambatan jalan hanya diketahui
+    setelah ada truk yang mengalami delay di sana
+    - Sistem mengingat area yang sering delay (kalau sempat buat)
+
+2. Agents
+    Single-Agent
+    - Koordinator adalah agent tunggal yang mengelola semua truk.
+    - Truk hanyalah actuator yang mengikuti instruksi.
+
+3. Uncertainty
+    Stochastic
+    Karena kemungkinan hambatan tiba-tiba:
+    - Kemacetan & Jalan rusak (disederhanakan sebagai edge yang memperlambat kendaraan)
+    - Keterlambatan (overtime)
+
+4. Task Structure
+    Sequential
+    Keputusan awal mempengaruhi rute berikutnya dan beban kerja antar truk.
+
+5. Environment Dynamics
+    Dynamic
+    Lingkungan terus berubah:
+    - TPS makin penuh seiring waktu
+    - Kondisi lalu lintas berubah real-time
+
+6. State Representation
+    Discrete graph movement
+    Node = titik jalan  
+    Edge = jalur  graph representation
+    Saat simulasi, posisi bisa dianggap continuous tapi keputusan tetap discrete (diambil per node)
+
+7.Knowledge Model
+    Known Map, Unknown Dynamic Conditions
+    - Peta, lokasi TPS/TPA diketahui
+    - Delay & kemacetan baru diketahui setelah dialami
+    - Jumlah sampah di TPS tidak diketahui sebelum minimal ada satu truk yang sampai disana

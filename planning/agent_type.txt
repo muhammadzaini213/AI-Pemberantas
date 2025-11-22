@@ -1,0 +1,13 @@
+========== AGENT TYPE ==========
+
+Utility-Based	
+    Mengambil keputusan terbaik berdasarkan objective function, karena kalau goal
+    based agent takutnya mereka pakai asal sampai aja.
+
+
+Model-Based	
+    Menyimpan state internal seperti kondisi TPS, riwayat kemacetan (opsional), kapasitas truk
+
+
+Learning Agent	
+    Meningkatkan akurasi estimasi waktu & distribusi kerja seiring pengalaman (kalau sempat)
