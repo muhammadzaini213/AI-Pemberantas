@@ -6,7 +6,7 @@ lat_manggar = -1.2081484
 lon_manggar = 116.9516328
 
 # Load graph
-G = ox.load_graphml("data/balikpapan_timur_drive.graphml")
+G = ox.load_graphml("data/balikpapan_drive.graphml")
 
 G_proj = ox.project_graph(G)
 

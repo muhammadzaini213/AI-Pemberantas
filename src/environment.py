@@ -6,7 +6,7 @@ CAM_SPEED = 10
 MAX_FPS = 12
 
 # ================== TEST SETUP ==================
-GRAPH_FILE = "./data/simpl_balikpapan_drive.graphml"
+GRAPH_FILE = "./data/balikpapan_timur_drive.graphml"
 NUM_VEHICLE = 10
 VEHICLE_SPEED = 5 # Sementara masih pake ini
 NUM_TPS = 7

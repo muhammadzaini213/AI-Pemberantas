@@ -5,6 +5,7 @@ AI Pemberantas/
 ├── data/                         # Dataset AI
 ├── scrapper/                     # Tempat mengambil dataset graphml
 ├── src/                          # Program utama
+├── window/                       # Window Tkinter untuk editor
 └── README.md                     # Dokumentasi utama proyek
 ```
 
