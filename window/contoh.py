@@ -22,7 +22,7 @@ button = tk.Button(root, text="Greet")
 button.pack(pady=5)
 
 
-# ================ TRIGGER ==============
+# ================ GETTER ==============
 def get_name():
     """
     Mengambil data dari input window
