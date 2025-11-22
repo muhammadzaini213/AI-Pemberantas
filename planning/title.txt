@@ -1,4 +1,3 @@
 Simulasi Agen Koordinator Truk Sampah 
 Menggunakan Pathfinding A*
 dan Objective Function di Kota Balikpapan
-

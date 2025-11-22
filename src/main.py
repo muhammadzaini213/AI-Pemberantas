@@ -36,15 +36,22 @@ pygame.init()
 screen = pygame.display.set_mode((viewer.WIDTH, viewer.HEIGHT))
 pygame.display.set_caption(APP_NAME)
 clock = pygame.time.Clock()
-cam_speed = CAM_SPEED
 
-# ===== CONTRPLS =====
+# ===== CONTROLS =====
 def controls():
+    cam_speed = CAM_SPEED
+    fast_cam_speed = CAM_SPEED * 3
+
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:  viewer.offset_x += cam_speed
     if keys[pygame.K_RIGHT]: viewer.offset_x -= cam_speed
     if keys[pygame.K_UP]:    viewer.offset_y += cam_speed
     if keys[pygame.K_DOWN]:  viewer.offset_y -= cam_speed
+
+    if keys[pygame.K_LEFT] and keys[pygame.K_SPACE]:  viewer.offset_x += fast_cam_speed
+    if keys[pygame.K_RIGHT] and keys[pygame.K_SPACE]: viewer.offset_x -= fast_cam_speed
+    if keys[pygame.K_UP] and keys[pygame.K_SPACE]:    viewer.offset_y += fast_cam_speed
+    if keys[pygame.K_DOWN] and keys[pygame.K_SPACE]:  viewer.offset_y -= fast_cam_speed
 
     center_x = viewer.WIDTH / 2
     center_y = viewer.HEIGHT / 2
@@ -63,6 +70,7 @@ def controls():
         viewer.scale *= 1 + fast_zoom_factor
     if keys[pygame.K_DOWN] and keys[pygame.K_LCTRL]:
         viewer.scale *= 1 - fast_zoom_factor
+
 
     viewer.offset_x = center_x - (center_x - viewer.offset_x) * (viewer.scale / old_scale)
     viewer.offset_y = center_y - (center_y - viewer.offset_y) * (viewer.scale / old_scale)
@@ -94,17 +102,17 @@ while running:
     screen.fill((20,20,20))
 
     viewer.draw_graph(screen, GRAPH, NODE_COL, LINE_COL)
-    viewer.draw_nodes_list(screen, TPS_nodes, TPS_COL, 10)
-    viewer.draw_nodes_list(screen, TPA_nodes, TPA_COL, 14)
-    viewer.draw_nodes_list(screen, GARAGE_nodes, GARAGE_COL, 12)
+    viewer.draw_nodes_list(screen, TPS_nodes, TPS_COL, 2)
+    viewer.draw_nodes_list(screen, TPA_nodes, TPA_COL, 3)
+    viewer.draw_nodes_list(screen, GARAGE_nodes, GARAGE_COL, 4)
 
     for vehicle in vehicles:
         vehicle.update()
         x, y = vehicle.get_pos(pos)
         ax, ay = viewer.transform(x, y)
-        pygame.draw.circle(screen, (0,255,0), (ax, ay), 6)
+        pygame.draw.circle(screen, (0,255,0), (ax, ay), 5)
 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(MAX_FPS)
 
 pygame.quit()
