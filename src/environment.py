@@ -8,7 +8,7 @@ MAX_FPS = 12
 # ================== TEST SETUP ==================
 GRAPH_FILE = "./data/balikpapan_timur_drive.graphml"
 NUM_VEHICLE = 10
-VEHICLE_SPEED = 5 # Sementara masih pake ini
+VEHICLE_SPEED = 500 # Sementara masih pake ini
 NUM_TPS = 7
 NUM_TPA = 2
 NUM_GARAGE = 3

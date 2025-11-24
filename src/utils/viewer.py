@@ -1,5 +1,5 @@
 import pygame
-from environment import WIDTH, HEIGHT
+from ..environment import WIDTH, HEIGHT
 
 class GraphViewer:
     def __init__(self, pos_dict, width=WIDTH, height=HEIGHT, node_size=2):
