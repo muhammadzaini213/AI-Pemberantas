@@ -45,20 +45,25 @@ tk.Label(root, text="Muatan (kg):").grid(row=6, column=0, sticky="w", padx=10, p
 entry_load = tk.Entry(root)
 entry_load.grid(row=6, column=1, padx=10, pady=5)
 
-# 7. Node Tujuan (String ID TPS/TPA)
-tk.Label(root, text="Node Tujuan:").grid(row=7, column=0, sticky="w", padx=10, pady=5)
+# 6. Angkutan Max (Muatan kg)
+tk.Label(root, text="Muatan maksimum (kg):").grid(row=7, column=0, sticky="w", padx=10, pady=5)
+entry_load = tk.Entry(root)
+entry_load.grid(row=7, column=1, padx=10, pady=5)
+
+# 8. Node Tujuan (String ID TPS/TPA)
+tk.Label(root, text="Node Tujuan:").grid(row=8, column=0, sticky="w", padx=10, pady=5)
 entry_target = tk.Entry(root)
-entry_target.grid(row=7, column=1, padx=10, pady=5)
+entry_target.grid(row=8, column=1, padx=10, pady=5)
 
 # --- Output & Tombol ---
 
 # Output Label (Status Bar)
 output_label = tk.Label(root, text="Ready...", fg="blue")
-output_label.grid(row=9, column=0, columnspan=2, pady=15)
+output_label.grid(row=10, column=0, columnspan=2, pady=15)
 
 # Button Save
 button = tk.Button(root, text="Simpan Data Truk", bg="#dddddd")
-button.grid(row=8, column=0, columnspan=2, pady=10, sticky="ew", padx=10)
+button.grid(row=9, column=0, columnspan=2, pady=10, sticky="ew", padx=10)
 
 
 # ================ GETTER ==============
