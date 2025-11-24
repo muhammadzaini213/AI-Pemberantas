@@ -34,8 +34,8 @@ def plot_final_routes(graph, best_routes, TPS_nodes, TPA_nodes):
     nx.draw_networkx_nodes(
         graph, pos,
         nodelist=TPA_nodes,
-        node_size=120,
-        node_color="navy",
+        node_size=220,
+        node_color="black",
         label="TPA / Garage"
     )
 

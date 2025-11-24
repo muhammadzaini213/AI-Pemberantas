@@ -4,10 +4,10 @@ import time
 import networkx as nx
 from collections import defaultdict
 
-w1 = 1      # total distance
-w2 = 100    # avg overtime penalty
-w3 = 5000   # unserved TPS penalty
-w4 = 0.3    # workload imbalance penalty
+w1 = 0.0000001     # total distance
+w2 = 0.1    # avg overtime penalty
+w3 = 0.0001   # unserved TPS penalty
+w4 = 0.00003    # workload imbalance penalty
 
 # ------------------ shortest path cache ------------------
 def make_sp_len_dict(graph):
@@ -66,6 +66,16 @@ def evaluate_solution(graph, routes_per_vehicle, TPS_nodes, demand_per_tps,
     # workload std dev
     mean_load = sum(distances_per_vehicle)/len(distances_per_vehicle)
     std_dev = math.sqrt(sum((d-mean_load)**2 for d in distances_per_vehicle)/len(distances_per_vehicle))
+
+    distance_penalty = (w1*total_distance)
+    overtime_penalty = (w2*avg_overtime)
+    unserved_penalty = (w3*len(unserved))
+    imbalance_penalty = (w4*std_dev)
+
+    print("Distance Penalty:", distance_penalty)
+    print("Overtime Penalty:", overtime_penalty)
+    print("Unserved Penalty:", unserved_penalty)
+    print("Imbalance Penalty:", imbalance_penalty)
 
     cost = (w1*total_distance) + (w2*avg_overtime) + (w3*len(unserved)) + (w4*std_dev)
 
@@ -171,23 +181,39 @@ def simulated_annealing_vrp(graph, TPS_nodes, GARAGE_nodes,
         if T <= T_end:
             break
 
-    # ---------------- expand routes with garage at start & end ----------------
+        # ---------------- expand routes with real shortest paths ----------------
     expanded_best_routes = []
     for vidx, seq in enumerate(best_routes):
         garage_node = evaluate_solution.garage_choice[vidx]
         capacity = evaluate_solution.capacities[vidx]
 
+        # Jika truk idle
         if not seq:
-            # truk idle: tetap garage->garage
             expanded_best_routes.append([garage_node, garage_node])
-        else:
-            trip_route = split_into_trips(seq, demand_per_tps, capacity, garage_node)
-            # enforce start & end garage
-            if trip_route[0] != garage_node:
-                trip_route = [garage_node] + trip_route
-            if trip_route[-1] != garage_node:
-                trip_route.append(garage_node)
-            expanded_best_routes.append(trip_route)
+            continue
+
+        # Pertama: split trip berdasarkan kapasitas
+        trip_route = split_into_trips(seq, demand_per_tps, capacity, garage_node)
+
+        # Kedua: ekspansi path graf agar mengikuti jalan sesungguhnya
+        real_route = []
+        for i in range(len(trip_route) - 1):
+            u, v = trip_route[i], trip_route[i+1]
+            try:
+                sp = nx.dijkstra_path(graph, u, v, weight='length')
+            except Exception:
+                sp = [u, v]  # fallback jika path tidak ditemukan
+            if real_route:
+                sp = sp[1:]  # hindari node duplikat
+            real_route.extend(sp)
+
+        expanded_best_routes.append(real_route)
+
+    print("[SA DONE] BestCost:", best_cost)
+    return expanded_best_routes, best_cost, cost_history
+
+
+            
 
     print("[SA DONE] BestCost:", best_cost)
     return expanded_best_routes, best_cost, cost_history
