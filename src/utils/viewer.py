@@ -31,7 +31,7 @@ class GraphViewer:
                 continue
             if (y1 < -10 and y2 < -10) or (y1 > self.HEIGHT+10 and y2 > self.HEIGHT+10):
                 continue
-            pygame.draw.line(screen, edge_color, (x1, y1), (x2, y2), 1)
+            pygame.draw.line(screen, edge_color, (x1, y1), (x2, y2), 2)
         # nodes
         for n in G.nodes():
             x, y = self.transform(*self.pos[n])

@@ -1,7 +1,7 @@
 ============= PEAS =============
 
 Performance:
--) Minimalkan jarak tempuh total
+-) Minimalkan jarak tempuh total (ini untuk pengganti bensin)
 -) Minimalkan overtime kerja truk
 -) Minimalkan jumlah TPS yang tidak terlayani
 -) Jumlah sampah dikirim ke TPA
@@ -9,7 +9,7 @@ Performance:
 
 Environment:
 -) Data Open Street Map Kota Balikpapan (jalan, TPS, TPA, garasi)
--) Kondisi jalan (kemacetan/jalan rusak)
+-) Kondisi jalan (kemacetan/jalan rusak tidak diketahui)
 -) Sampah bertambah setiap hari dan random (TPS)
 -) Waktu operasional terbatas
 
@@ -21,7 +21,7 @@ Actuators:
 -) Pengiriman data antar truk (agar tidak ada konflik pekerjaan)
 
 Sensors:
--) Lokasi node saat ini
+-) Lokasi node saat ini (per truk)
 -) Sisa kapasitas truk
 -) Sisa waktu operasional
 -) Status TPS (sudah diambil/belum)

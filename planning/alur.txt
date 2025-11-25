@@ -1,0 +1,11 @@
+============= DISPATCH =============
+Semua truk keluar dari Garasi
+
+============= GATHERING =============
+Pengumpulan sampah di berbagai TPS kemudian letakkan di TPA jika penuh sesuai rute
+
+============= RESCHEDULE =============
+Kalau misal ada masalah di rute (jalan rusak/macet/blokade)
+
+============= ENDING =============
+Semua truk kembali ke garasi, diusahakan sebelum overtime

@@ -1,3 +1,13 @@
 Simulasi Agen Koordinator Truk Sampah 
-Menggunakan Pathfinding A*
-dan Objective Function di Kota Balikpapan
+Menggunakan  Multi Depot Vehicle Routing Problem
+dan Dimodifikasi untuk Beradaptasi dalam Kondisi Uncertain (Stochastic) di Kota Balikpapan
+
+
+Latar belakang: Mengoptimalkan rute Truk Sampah agar efektif dan efisien
+
+Tujuan: 
+- Memudahkan routing truk sampah
+- Menghindari jalur jalur rawan macet/keterlambatan
+
+Markov decision process: Reinforcement Learning
+Matheuristic Rollout: Pembagian tugas (routing)

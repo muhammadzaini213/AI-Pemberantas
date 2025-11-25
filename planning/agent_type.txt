@@ -11,3 +11,4 @@ Model-Based
 
 Learning Agent	
     Meningkatkan akurasi estimasi waktu & distribusi kerja seiring pengalaman (kalau sempat)
+

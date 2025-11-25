@@ -1,12 +1,11 @@
 ============= PROPERTIES OF TASK ENVIRONMENT =============
 
-
 1. Observability
 Partially Observable
     Karena:
     - Status statis seperti peta, TPS, TPA, garasi
     - Namun kondisi dinamis seperti kemacetan & hambatan jalan hanya diketahui
-    setelah ada truk yang mengalami delay di sana
+      setelah ada truk yang mengalami delay di sana
     - Sistem mengingat area yang sering delay (kalau sempat buat)
 
 2. Agents
@@ -19,6 +18,7 @@ Partially Observable
     Karena kemungkinan hambatan tiba-tiba:
     - Kemacetan & Jalan rusak (disederhanakan sebagai edge yang memperlambat kendaraan)
     - Keterlambatan (overtime)
+    - Jumlah sampah di TPS
 
 4. Task Structure
     Sequential
@@ -32,7 +32,7 @@ Partially Observable
 
 6. State Representation
     Discrete graph movement
-    Node = titik jalan  
+    Node = titik jalan
     Edge = jalur  graph representation
     Saat simulasi, posisi bisa dianggap continuous tapi keputusan tetap discrete (diambil per node)
 

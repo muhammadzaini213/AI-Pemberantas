@@ -1,4 +1,5 @@
 import osmnx as ox
+import time
 from .sa_vrp_garage_as_tpa import simulated_annealing_vrp
 from .location_generator import generate_nodes
 from .sa_visualization import plot_cost_history, plot_final_routes
@@ -7,7 +8,7 @@ G = ox.load_graphml("./data/simpl_balikpapan_kota_drive.graphml")
 
 
 NUM_TPS = 100 # Jumlah tps
-NUM_VEHICLES = 1 # Jumlah truk sampah
+NUM_VEHICLES = 4 # Jumlah truk sampah
 
 TPS_nodes, TPA_nodes = generate_nodes(
     G, num_tps=NUM_TPS, num_tpa=1
@@ -16,6 +17,9 @@ TPS_nodes, TPA_nodes = generate_nodes(
 num_vehicles = NUM_VEHICLES
 vehicle_capacities = [100] * num_vehicles
 vehicle_speeds = [5] * num_vehicles  
+
+
+start_time = time.time()
 
 best_routes, best_cost, history = simulated_annealing_vrp(
     G, TPS_nodes, TPA_nodes,
@@ -31,6 +35,11 @@ best_routes, best_cost, history = simulated_annealing_vrp(
     seed=42
 )
 
+end_time = time.time()
+
+elapsed = end_time - start_time
+
+
 # Print results
 print("\nBEST COST:", best_cost)
 for i, r in enumerate(best_routes):
@@ -39,3 +48,6 @@ for i, r in enumerate(best_routes):
 # Plot results
 plot_cost_history(history)
 plot_final_routes(G, best_routes, TPS_nodes, TPA_nodes)
+
+print("Waktu Eksekusi:", elapsed, "s")
+
