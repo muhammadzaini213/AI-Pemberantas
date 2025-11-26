@@ -1,7 +1,6 @@
 Simulasi Agen Koordinator Truk Sampah 
-Menggunakan  Multi Depot Vehicle Routing Problem
-dan Dimodifikasi untuk Beradaptasi dalam Kondisi Uncertain (Stochastic) di Kota Balikpapan
-
+Menggunakan Matheuristic Rollout
+untuk Beradaptasi dalam Kondisi Uncertain (Stochastic) di Kota Balikpapan
 
 Latar belakang: Mengoptimalkan rute Truk Sampah agar efektif dan efisien
 
