@@ -1,176 +1,119 @@
-#!/usr/bin/env python3
-"""
-TPS State (rafif)
-Versi standar Tkinter + tombol Save yang jelas.
-Tanpa gambar.
-"""
-
-from pathlib import Path
-import csv
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk  # Import ttk untuk Dropdown
 
-CSV_PATH = Path("./tps_states.csv")
+# ================ UI ================ 
+root = tk.Tk()
+root.title("Car State - Truk Sampah Balikpapan")
+root.geometry("350x450")
 
+# Judul
+header = tk.Label(root, text="CAR STATE EDITOR", font=("Arial", 12, "bold"))
+header.grid(row=0, column=0, columnspan=2, pady=15)
 
-# ----------------------------------------
-#  CSV Utilities
-# ----------------------------------------
+# --- Form Input ---
 
-def ensure_csv_exists():
-    if not CSV_PATH.exists():
-        with open(CSV_PATH, "w", newline="", encoding="utf-8") as f:
-            writer = csv.writer(f)
-            writer.writerow(["Nama TPS", "Jumlah Sampah (kg)", "Dilayanin Hari Ini"])
+# 1. ID Kendaraan
+tk.Label(root, text="ID Kendaraan:").grid(row=1, column=0, sticky="w", padx=10, pady=5)
+entry_id = tk.Entry(root)
+entry_id.grid(row=1, column=1, padx=10, pady=5)
 
+# 2. State (Dropdown)
+tk.Label(root, text="State:").grid(row=2, column=0, sticky="w", padx=10, pady=5)
+# Opsi dropdown sesuai logika truk sampah
+state_options = ["Idle", "Moving", "Loading", "Unloading", "Maintenance"]
+combo_state = ttk.Combobox(root, values=state_options, state="readonly")
+combo_state.current(0) # Default pilih 'Idle'
+combo_state.grid(row=2, column=1, padx=10, pady=5)
 
-def load_rows():
-    ensure_csv_exists()
-    rows = []
-    with open(CSV_PATH, newline="", encoding="utf-8") as f:
-        reader = csv.reader(f)
-        next(reader, None)
-        rows = list(reader)
-    return rows
+# 3. Speed (Input km/j)
+tk.Label(root, text="Speed (km/j):").grid(row=3, column=0, sticky="w", padx=10, pady=5)
+entry_speed = tk.Entry(root)
+entry_speed.grid(row=3, column=1, padx=10, pady=5)
 
+# 4. Total Perjalanan Hari Ini (Pengganti Bensin/Fitness Function)
+tk.Label(root, text="Trip Hari Ini (km):").grid(row=4, column=0, sticky="w", padx=10, pady=5)
+entry_daily = tk.Entry(root)
+entry_daily.grid(row=4, column=1, padx=10, pady=5)
 
-def save_all_rows(rows):
-    with open(CSV_PATH, "w", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow(["Nama TPS", "Jumlah Sampah (kg)", "Dilayanin Hari Ini"])
-        writer.writerows(rows)
+# 5. Total Perjalanan Semua (Odometer)
+tk.Label(root, text="Total Odometer (km):").grid(row=5, column=0, sticky="w", padx=10, pady=5)
+entry_total = tk.Entry(root)
+entry_total.grid(row=5, column=1, padx=10, pady=5)
 
+# 6. Angkutan Sekarang (Muatan kg)
+tk.Label(root, text="Muatan (kg):").grid(row=6, column=0, sticky="w", padx=10, pady=5)
+entry_load = tk.Entry(root)
+entry_load.grid(row=6, column=1, padx=10, pady=5)
 
-def append_row(name, amount, served):
-    with open(CSV_PATH, "a", newline="", encoding="utf-8") as f:
-        writer = csv.writer(f)
-        writer.writerow([name, amount, served])
+# 6. Angkutan Max (Muatan kg)
+tk.Label(root, text="Muatan maksimum (kg):").grid(row=7, column=0, sticky="w", padx=10, pady=5)
+entry_load = tk.Entry(root)
+entry_load.grid(row=7, column=1, padx=10, pady=5)
 
+# 8. Node Tujuan (String ID TPS/TPA)
+tk.Label(root, text="Node Tujuan:").grid(row=8, column=0, sticky="w", padx=10, pady=5)
+entry_target = tk.Entry(root)
+entry_target.grid(row=8, column=1, padx=10, pady=5)
 
-# ----------------------------------------
-#  UI Builder
-# ----------------------------------------
+# --- Output & Tombol ---
 
-def build_ui():
-    root = tk.Tk()
-    root.title("TPS State (rafif)")
-    root.geometry("720x420")
+# Output Label (Status Bar)
+output_label = tk.Label(root, text="Ready...", fg="blue")
+output_label.grid(row=10, column=0, columnspan=2, pady=15)
 
-    main = ttk.Frame(root, padding=10)
-    main.pack(fill="both", expand=True)
-
-    # -----------------------------------------------------------
-    #  Left Panel: Input Form
-    # -----------------------------------------------------------
-    left = ttk.Frame(main)
-    left.pack(side="left", fill="y", padx=(0, 12))
-
-    ttk.Label(left, text="Nama TPS:").grid(row=0, column=0, sticky="w")
-    name_var = tk.StringVar()
-    ttk.Entry(left, textvariable=name_var, width=28).grid(row=1, column=0, pady=(0, 8))
-
-    ttk.Label(left, text="Jumlah sampah per hari (kg):").grid(row=2, column=0, sticky="w")
-    amount_var = tk.StringVar()
-    ttk.Entry(left, textvariable=amount_var, width=28).grid(row=3, column=0, pady=(0, 8))
-
-    served_var = tk.BooleanVar()
-    ttk.Checkbutton(left, text="Dilayanin hari ini", variable=served_var).grid(
-        row=4, column=0, sticky="w", pady=(0, 8)
-    )
-
-    # ------------------------------
-    # Tombol Save (1 data)
-    # ------------------------------
-    def save_single():
-        name = name_var.get().strip()
-        amount = amount_var.get().strip()
-
-        if not name:
-            messagebox.showwarning("Validasi", "Nama TPS harus diisi.")
-            return
-
-        try:
-            amount_val = float(amount) if amount else 0.0
-        except ValueError:
-            messagebox.showwarning("Validasi", "Jumlah sampah harus angka.")
-            return
-
-        append_row(name, amount_val, served_var.get())
-        update_listbox()
-
-        name_var.set("")
-        amount_var.set("")
-        served_var.set(False)
-
-    ttk.Button(left, text="Save", command=save_single).grid(row=5, column=0, pady=(5, 0), sticky="w")
-
-    # -----------------------------------------------------------
-    #  Right Panel: List View
-    # -----------------------------------------------------------
-    right = ttk.Frame(main)
-    right.pack(side="left", fill="both", expand=True)
-
-    ttk.Label(right, text="Daftar TPS yang tersimpan:").pack(anchor="w")
-
-    listbox = tk.Listbox(right, height=10)
-    listbox.pack(fill="both", expand=True, pady=(6, 0))
-
-    # ------------------------------
-    # Update Listbox
-    # ------------------------------
-    def update_listbox():
-        listbox.delete(0, tk.END)
-        for name, amount, served in load_rows():
-            listbox.insert(
-                tk.END,
-                f"Nama: {name} | Sampah: {amount} kg | Dilayanin: {served}"
-            )
-
-    # ------------------------------
-    # Hapus data terpilih
-    # ------------------------------
-    def delete_selected():
-        sel = listbox.curselection()
-        if not sel:
-            return
-
-        rows = load_rows()
-        del rows[sel[0]]
-        save_all_rows(rows)
-        update_listbox()
-
-    # ------------------------------
-    # Save All (overwrite CSV)
-    # ------------------------------
-    def save_all():
-        rows = []
-        for i in range(listbox.size()):
-            item = listbox.get(i)
-            # Parsing ringan supaya tetap bisa save ulang
-            parts = item.split("|")
-            name = parts[0].split(":")[1].strip()
-            amount = parts[1].split(":")[1].replace("kg", "").strip()
-            served = parts[2].split(":")[1].strip()
-            rows.append([name, amount, served])
-
-        save_all_rows(rows)
-        messagebox.showinfo("Info", "Semua data berhasil disimpan ulang.")
-
-    # Tombol aksi
-    btn_row = ttk.Frame(right)
-    btn_row.pack(fill="x", pady=6)
-
-    ttk.Button(btn_row, text="Hapus Terpilih", command=delete_selected).pack(side="left")
-    ttk.Button(btn_row, text="Save All", command=save_all).pack(side="left", padx=(6, 0))
-
-    update_listbox()
-    root.mainloop()
+# Button Save
+button = tk.Button(root, text="Simpan Data Truk", bg="#dddddd")
+button.grid(row=9, column=0, columnspan=2, pady=10, sticky="ew", padx=10)
 
 
-# ----------------------------------------
-#  Entry Point
-# ----------------------------------------
+# ================ GETTER ==============
+def get_car_data():
+    """
+    Mengambil semua data dari form input dan menjadikannya Dictionary.
+    Dictionary ini nanti yang dikirim ke Multiagent System.
+    """
+    data = {
+        "id": entry_id.get(),
+        "state": combo_state.get(),
+        "speed": entry_speed.get(),
+        "daily_dist": entry_daily.get(), # Penting untuk Genetic Algorithm (Fitness)
+        "total_dist": entry_total.get(),
+        "load": entry_load.get(),
+        "target": entry_target.get()
+    }
+    return data
 
-if __name__ == "__main__":
-    ensure_csv_exists()
-    build_ui()
+
+# ================ SETTER ==============
+def set_output(text, is_error=False):
+    """
+    Mengupdate status label di bagian bawah window
+    """
+    color = "red" if is_error else "green"
+    output_label.config(text=text, fg=color)
+
+
+# ================ LOGIC / EVENTS ==============
+def on_save_click():
+    data = get_car_data()
+    
+    # Validasi sederhana (ID tidak boleh kosong)
+    if data["id"].strip() == "":
+        set_output("Error: ID Kendaraan wajib diisi!", is_error=True)
+        return
+
+    # Simulasi penyimpanan data ke sistem Multiagent
+    # Di sini nanti logika Genetic Algorithm membaca 'daily_dist'
+    print(f"--- Data Disimpan ke Sistem ---")
+    print(f"Agent ID: {data['id']}")
+    print(f"Fitness Cost (Jarak): {data['daily_dist']} km")
+    print(f"Target Next: {data['target']}")
+    
+    set_output(f"Sukses! Data {data['id']} berhasil disimpan.")
+
+# Hubungkan tombol dengan fungsi logic
+button.config(command=on_save_click)
+
+
+# ================ RUN APP ==============
+root.mainloop()
