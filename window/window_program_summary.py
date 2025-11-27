@@ -223,7 +223,7 @@ class ProgramSummaryWindow:
 
     def on_speed_change(self, event=None):
         text = self.speed_var.get()
-        speed_value = float(text.replace("x", ""))  # "2x" → 2.0
+        speed_value = float(text.replace("x", ""))
         if hasattr(self, "shared"):
             self.shared.speed = speed_value
 

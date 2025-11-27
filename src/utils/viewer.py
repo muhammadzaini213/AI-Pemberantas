@@ -1,9 +1,10 @@
 import pygame
-from ..environment import WIDTH, HEIGHT
+from ..environment import WIDTH, HEIGHT, TPA_COL, TPS_COL, GARAGE_COL
 
 class GraphViewer:
-    def __init__(self, pos_dict, width=WIDTH, height=HEIGHT, node_size=2):
+    def __init__(self, pos_dict, shared, width=WIDTH, height=HEIGHT, node_size=2):
         self.pos = pos_dict
+        self.shared = shared
         self.WIDTH = width
         self.HEIGHT = height
         self.NODE_SIZE = node_size
@@ -47,14 +48,13 @@ class GraphViewer:
         return screen_pos
 
     def finish_frame(self):
-        # update last transform state
         self.last_scale = self.scale
         self.last_offx = self.offset_x
         self.last_offy = self.offset_y
 
     # Draw edges + nodes + culling
-    def draw_graph(self, screen, G, node_color, edge_color):
-        # edges
+    def draw_graph(self, screen, G, default_color, edge_color):
+        # ==== Draw edges ====
         for u, v in G.edges():
             x1, y1 = self.transform_cached(u)
             x2, y2 = self.transform_cached(v)
@@ -66,21 +66,58 @@ class GraphViewer:
 
             pygame.draw.line(screen, edge_color, (x1, y1), (x2, y2), 2)
 
-        # nodes
+        # ==== Draw nodes ====
         for n in G.nodes():
             x, y = self.transform_cached(n)
-            if -10 <= x <= self.WIDTH+10 and -10 <= y <= self.HEIGHT+10:
-                pygame.draw.circle(screen, node_color, (x, y), self.NODE_SIZE)
 
-    def draw_nodes_list(self, screen, nodes, color, radius):
-        for node in nodes:
-            x, y = self.transform_cached(node)
-            if -radius <= x <= self.WIDTH+radius and -radius <= y <= self.HEIGHT+radius:
-                pygame.draw.circle(screen, color, (x, y), radius)
+            if not (-10 <= x <= self.WIDTH+10 and -10 <= y <= self.HEIGHT+10):
+                continue
+
+            flags = self.shared.node_type.get(n, None)
+
+            if flags:
+                if flags["tps"]:
+                    color = TPS_COL
+                    radius = 3
+                elif flags["tpa"]:
+                    color = TPA_COL
+                    radius = 4
+                elif flags["garage"]:
+                    color = GARAGE_COL
+                    radius = 5
+                else:
+                    color = default_color
+                    radius = self.NODE_SIZE
+            else:
+                color = default_color
+                radius = self.NODE_SIZE
+
+            pygame.draw.circle(screen, color, (x, y), radius)
 
     def draw_dynamic_objects(self, screen, vehicles):
         for vehicle in vehicles:
             x, y = vehicle.get_pos(self.pos)
-            ax, ay = self.transform(x, y)  # dynamic object tidak perlu cache
-            if -6 <= ax <= self.WIDTH+6 and -6 <= ay <= self.HEIGHT+6:
+            ax, ay = self.transform(x, y)
+            if -6 <= ax <= self.WIDTH + 6 and -6 <= ay <= self.HEIGHT + 6:
                 pygame.draw.circle(screen, (0,255,0), (ax, ay), 6)
+
+    def get_node_at_pos(self, mx, my):
+        for n in self.pos:
+            x, y = self.transform_cached(n)
+            r = 6  # radius toleransi klik
+            if abs(mx - x) <= r and abs(my - y) <= r:
+                return n
+        return None
+
+
+    def handle_mouse_click(self, mouse_pos):
+        shared = self.shared
+        if not shared.paused:
+            return
+        mx, my = mouse_pos
+        node = self.get_node_at_pos(mx, my)
+        if node is not None:
+            if node not in shared.node_type:
+                shared.node_type[node] = {"tps": False, "tpa": False, "garage": False}
+            if hasattr(shared, "node_state_window"):
+                shared.node_state_window.set_node(node, shared.node_type[node])

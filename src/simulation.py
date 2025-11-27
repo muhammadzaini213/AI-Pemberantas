@@ -1,5 +1,4 @@
 import pygame
-import os
 import osmnx as ox
 from .vehicle import Vehicle
 from .utils.location import generate_tps_tpa_garage_nodes
@@ -17,7 +16,7 @@ def run_simulation(GRAPH, shared):
            for n, data in GRAPH.nodes(data=True)}
 
     # ===== Viewer =====
-    viewer = GraphViewer(pos)
+    viewer = GraphViewer(pos, shared)
     range_x = viewer.max_x - viewer.min_x
     range_y = viewer.max_y - viewer.min_y
 
@@ -30,6 +29,10 @@ def run_simulation(GRAPH, shared):
         GRAPH, NUM_TPS, NUM_TPA, NUM_GARAGE
     )
 
+    shared.node_type = {
+        n: {"tps": n in TPS_nodes, "tpa": n in TPA_nodes, "garage": n in GARAGE_nodes}
+        for n in GRAPH.nodes()
+    }
     # ===== Vehicles =====
     vehicles = [Vehicle(GRAPH, TPS_nodes, TPA_nodes)
                 for _ in range(NUM_VEHICLE)]
@@ -59,9 +62,6 @@ def run_simulation(GRAPH, shared):
         screen.fill((20,20,20))
 
         viewer.draw_graph(screen, GRAPH, NODE_COL, LINE_COL)
-        viewer.draw_nodes_list(screen, TPS_nodes, TPS_COL, 2)
-        viewer.draw_nodes_list(screen, TPA_nodes, TPA_COL, 3)
-        viewer.draw_nodes_list(screen, GARAGE_nodes, GARAGE_COL, 4)
         viewer.draw_dynamic_objects(screen, vehicles)
 
         for v in vehicles:

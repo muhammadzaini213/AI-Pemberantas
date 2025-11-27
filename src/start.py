@@ -1,6 +1,7 @@
 import os
 import osmnx as ox
 from window.window_program_summary import ProgramSummaryWindow
+from window.window_node_state import NodeStateWindow
 from .environment import *
 import threading
 from .simulation import run_simulation
@@ -18,19 +19,19 @@ def main():
 
     GRAPH = ox.load_graphml(GRAPH_FILE)
 
-    # Buat shared state
     shared = SharedState()
 
-    # Jalankan simulasi di thread
     start_simulation_thread(GRAPH, shared)
 
-    # GUI
     program_summary = ProgramSummaryWindow()
     program_summary.attach_state(shared)
     program_summary.set_fps(MAX_FPS)
     program_summary.set_stat("node", GRAPH.number_of_nodes())
     program_summary.set_stat("edge", GRAPH.number_of_edges())
-    program_summary.run()
 
+    node_state_window = NodeStateWindow(master=program_summary.root)
+    node_state_window.attach_shared(shared)
+    
+    program_summary.run()
 if __name__ == "__main__":
     main()
