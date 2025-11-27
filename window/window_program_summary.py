@@ -5,6 +5,11 @@ from tkinter import ttk
 #                     UI
 # ============================================
 
+def start_ui():
+    # Cegah tombol X agar tidak bisa menutup window
+    root.protocol("WM_DELETE_WINDOW", lambda: None)
+    root.mainloop()
+
 root = tk.Tk()
 root.title("Program Summary")
 root.geometry("450x380")
@@ -214,11 +219,3 @@ def on_refresh_click():
 
 refresh_btn.config(command=on_refresh_click)
 
-
-
-# ============================================
-#                  RUN APP
-# ============================================
-
-if __name__ == "__main__":
-    root.mainloop()

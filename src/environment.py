@@ -3,10 +3,10 @@ APP_NAME = "Simulasi Truk Sampah Balikpapan"
 WIDTH = 1000
 HEIGHT = 800
 CAM_SPEED = 10
-MAX_FPS = 12
+MAX_FPS = 60
 
 # ================== TEST SETUP ==================
-GRAPH_FILE = "./data/balikpapan_timur_drive.graphml"
+GRAPH_FILE = "./data/simpl_balikpapan_drive.graphml"
 NUM_VEHICLE = 10
 VEHICLE_SPEED = 500 # Sementara masih pake ini
 NUM_TPS = 7

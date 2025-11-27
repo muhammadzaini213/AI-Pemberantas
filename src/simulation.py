@@ -6,6 +6,12 @@ from .utils.location import generate_tps_tpa_garage_nodes
 from .utils.viewer import GraphViewer
 from .environment import *
 from .utils.controls import controls
+# import threading
+# from window.window_program_summary import start_ui  # ganti dengan nama file UI Anda
+
+# Jalankan Tkinter di thread terpisah
+# threading.Thread(target=start_ui, daemon=True).start()
+
 
 # ===== Load graph =====
 if not os.path.exists(GRAPH_FILE):
@@ -13,7 +19,9 @@ if not os.path.exists(GRAPH_FILE):
     exit()
 
 GRAPH = ox.load_graphml(GRAPH_FILE)
-pos = {n: (data['x'], data['y']) for n, data in GRAPH.nodes(data=True)}
+SCALE_DIV = 1000.0
+pos = {n: (data['x'] / SCALE_DIV, data['y'] / SCALE_DIV)
+       for n, data in GRAPH.nodes(data=True)}
 
 # ===== Viewer =====
 viewer = GraphViewer(pos)
