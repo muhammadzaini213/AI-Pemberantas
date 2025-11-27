@@ -2,10 +2,18 @@ import pygame
 from ..environment import CAM_SPEED
 
 # ===== Controls =====
-def controls(viewer):
+def controls(viewer, range_x, range_y):
+
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+            viewer.scale = min(viewer.WIDTH / range_x, viewer.HEIGHT / range_y) * 0.95
+            viewer.offset_x = viewer.WIDTH/2 - ((viewer.min_x+viewer.max_x)/2 - viewer.min_x)*viewer.scale
+            viewer.offset_y = viewer.HEIGHT/2 - ((viewer.max_y+viewer.min_y)/2 - viewer.min_y)*viewer.scale
+
     cam_speed = CAM_SPEED
     fast_cam_speed = CAM_SPEED * 3
     keys = pygame.key.get_pressed()
+
 
     if keys[pygame.K_LEFT]:  viewer.offset_x += cam_speed
     if keys[pygame.K_RIGHT]: viewer.offset_x -= cam_speed

@@ -37,7 +37,14 @@ class Vehicle:
         self.set_path(path)
         self.state = "to_tpa"
 
-    def update(self):
+
+    def update(self, dt, shared):
+        if shared.paused:
+            return  # stop semua pergerakan
+
+        # update kecepatan berdasarkan GUI
+        real_speed = self.speed * shared.speed
+
         if not self.path or self.target_node is None:
             neighbors = list(self.G.neighbors(self.current))
             if not neighbors:
@@ -50,7 +57,10 @@ class Vehicle:
 
         edge_data = self.G.get_edge_data(self.current, self.target_node)
         length = edge_data[0]['length']
-        self.progress += self.speed / length
+
+        # gunakan dt agar frame-independent!
+        distance = real_speed * dt
+        self.progress += distance / length
 
         if self.progress >= 1.0:
             idx = self.path.index(self.target_node)
@@ -62,6 +72,7 @@ class Vehicle:
                 self.current = self.target_node
                 self.target_node = None
                 self.path = []
+
 
     def get_pos(self, pos_dict):
         if self.target_node is None:
