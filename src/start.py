@@ -3,6 +3,7 @@ import osmnx as ox
 from window.window_program_summary import ProgramSummaryWindow
 from window.window_node_state import NodeStateWindow
 from window.window_edges_state import EdgeStateWindow
+from window.window_tps_state import TPSStateWindow
 from .environment import *
 import threading
 from .simulation import run_simulation
@@ -36,6 +37,9 @@ def main():
     edge_state_window = EdgeStateWindow(master=program_summary.root)
     edge_state_window.attach_shared(shared)
     
+    tps_state_window = TPSStateWindow(master=program_summary.root)
+    tps_state_window.attach_shared(shared)
+
     program_summary.run()
 if __name__ == "__main__":
     main()

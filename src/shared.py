@@ -8,10 +8,17 @@ class SharedState:
         self.paused = False
         self.node_state_window = None
         self.edge_state_window = None
+        self.tps_state_window = None
+        self.tpa_state_window = None
+        self.garage_state_window = None
 
         # === TIPE NODE (TPS / TPA / GARAGE) ===
         self.node_type = {}   # node_id → { "tps": bool, "tpa": bool, "garage": bool }
         self.edge_type = {}
+        self.tps_data = {}
+        self.tpa_data = {}
+        self.garage_data = {}
+        
 
     def init_node_types(self, G, tps_nodes, tpa_nodes, garage_nodes):
         """

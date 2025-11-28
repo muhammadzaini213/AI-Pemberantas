@@ -29,10 +29,6 @@ def run_simulation(GRAPH, shared):
         GRAPH, NUM_TPS, NUM_TPA, NUM_GARAGE
     )
 
-    shared.node_type = {
-        n: {"tps": n in TPS_nodes, "tpa": n in TPA_nodes, "garage": n in GARAGE_nodes}
-        for n in GRAPH.nodes()
-    }
     # ===== Vehicles =====
     vehicles = [Vehicle(GRAPH, TPS_nodes, TPA_nodes)
                 for _ in range(NUM_VEHICLE)]

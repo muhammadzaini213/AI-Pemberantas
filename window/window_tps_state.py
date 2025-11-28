@@ -1,81 +1,143 @@
-#!/usr/bin/env python3
-"""
-TPS State (rafif)
-Versi minimalis tanpa CSV dan tanpa listbox.
-Hanya form input + tombol Save.
-"""
-
 import tkinter as tk
 from tkinter import ttk, messagebox
 
+class TPSStateWindow:
+    def __init__(self, master=None):
+        # Root atau Toplevel
+        if master is None:
+            self.root = tk.Tk()
+        else:
+            self.root = tk.Toplevel(master)
 
-def build_ui():
-    root = tk.Tk()
-    root.title("TPS State (rafif)")
-    root.geometry("400x260")
+        self.root.title("TPS State")
+        self.root.geometry("400x320")
+        self.shared = None  # akan diattach nanti
 
-    frm = ttk.Frame(root, padding=12)
-    frm.pack(fill="both", expand=True)
+        frm = ttk.Frame(self.root, padding=12)
+        frm.pack(fill="both", expand=True)
 
-    # -------------------------
-    #  Input: Nama TPS
-    # -------------------------
-    ttk.Label(frm, text="Nama TPS:").grid(row=0, column=0, sticky="w")
-    name_var = tk.StringVar()
-    ttk.Entry(frm, textvariable=name_var, width=30).grid(row=1, column=0, pady=(0, 10))
+        # -------------------------
+        # Input: Node ID
+        # -------------------------
+        ttk.Label(frm, text="Node ID:").grid(row=0, column=0, sticky="w")
+        self.node_var = tk.StringVar()
+        ttk.Entry(frm, textvariable=self.node_var, width=30, state="readonly").grid(row=1, column=0, pady=(0, 10))
 
-    # -------------------------
-    #  Input: Jumlah Sampah
-    # -------------------------
-    ttk.Label(frm, text="Jumlah sampah per hari (kg):").grid(row=2, column=0, sticky="w")
-    amount_var = tk.StringVar()
-    ttk.Entry(frm, textvariable=amount_var, width=30).grid(row=3, column=0, pady=(0, 10))
+        # -------------------------
+        # Input: Nama TPS
+        # -------------------------
+        ttk.Label(frm, text="Nama TPS:").grid(row=2, column=0, sticky="w")
+        self.name_var = tk.StringVar()
+        ttk.Entry(frm, textvariable=self.name_var, width=30).grid(row=3, column=0, pady=(0, 10))
 
-    # -------------------------
-    #  Checkbox
-    # -------------------------
-    served_var = tk.BooleanVar()
-    ttk.Checkbutton(frm, text="Dilayanin hari ini", variable=served_var).grid(
-        row=4, column=0, sticky="w", pady=(0, 12)
-    )
+        # -------------------------
+        # Input: Jumlah sampah per hari
+        # -------------------------
+        ttk.Label(frm, text="Jumlah sampah per hari (kg):").grid(row=4, column=0, sticky="w")
+        self.amount_var = tk.StringVar()
+        ttk.Entry(frm, textvariable=self.amount_var, width=30).grid(row=5, column=0, pady=(0, 10))
 
-    # -------------------------
-    #  Tombol Save
-    # -------------------------
-    def on_save():
-        name = name_var.get().strip()
-        amount = amount_var.get().strip()
+        # -------------------------
+        # Input: Jumlah sampah hari ini
+        # -------------------------
+        ttk.Label(frm, text="Jumlah sampah hari ini (kg):").grid(row=6, column=0, sticky="w")
+        self.today_var = tk.StringVar()
+        ttk.Entry(frm, textvariable=self.today_var, width=30).grid(row=7, column=0, pady=(0, 10))
 
-        if not name:
-            messagebox.showwarning("Validasi", "Nama TPS harus diisi.")
-            return
+        # -------------------------
+        # Checkbox: Dilayanin hari ini
+        # -------------------------
+        self.served_var = tk.BooleanVar()
+        ttk.Checkbutton(frm, text="Dilayanin hari ini", variable=self.served_var).grid(
+            row=8, column=0, sticky="w", pady=(0, 12)
+        )
+
+        # -------------------------
+        # Tombol Save
+        # -------------------------
+        self.save_btn = ttk.Button(frm, text="Save", command=self.on_save)
+        self.save_btn.grid(row=9, column=0, sticky="w")
+
+    # =======================
+    # ATTACH SHARED
+    # =======================
+    def attach_shared(self, shared):
+        self.shared = shared
+        shared.tps_state_window = self
+        for node_id, flags in shared.node_type.items():
+            if "tps_data" not in flags:
+                flags["tps_data"] = {
+                    "nama": "",
+                    "sampah_kg": 0,
+                    "sampah_hari_ini": 0,
+                    "dilayanin": False
+                }
+
+
+
+    # =======================
+    # SETTERS
+    # =======================
+    def set_node(self, node_id, data=None):
+        self.node_var.set(str(node_id))
+        
+        # ambil data dari node_type jika tidak diberikan
+        if data is None and self.shared and node_id in self.shared.node_type:
+            data = self.shared.node_type[node_id].get("tps_data", {
+                "nama": "",
+                "sampah_kg": 0,
+                "sampah_hari_ini": 0,
+                "dilayanin": False
+            })
+
+        self.name_var.set(data.get("nama", ""))
+        self.amount_var.set(str(data.get("sampah_kg", 0)))
+        self.today_var.set(str(data.get("sampah_hari_ini", 0)))
+        self.served_var.set(data.get("dilayanin", False))
+
+
+    # =======================
+    # VALIDASI & SAVE
+    # =======================
+    def validate_inputs(self):
+        try:
+            amount_val = float(self.amount_var.get())
+            if amount_val < 0:
+                self.amount_var.set("0")
+        except:
+            self.amount_var.set("0")
 
         try:
-            amount_val = float(amount) if amount else 0.0
-        except ValueError:
-            messagebox.showwarning("Validasi", "Jumlah sampah harus angka.")
+            today_val = float(self.today_var.get())
+            if today_val < 0:
+                self.today_var.set("0")
+        except:
+            self.today_var.set("0")
+
+    def on_save(self):
+        self.validate_inputs()
+        node_id = int(self.node_var.get().strip())
+        if not node_id:
+            messagebox.showwarning("Validasi", "Node belum dipilih.")
             return
 
-        served = served_var.get()
-
-        # Hasil disimpan hanya di memori (dictionary)
         data = {
-            "nama": name,
-            "sampah_kg": amount_val,
-            "dilayanin": served
+            "nama": self.name_var.get().strip(),
+            "sampah_kg": float(self.amount_var.get() or 0),
+            "sampah_hari_ini": float(self.today_var.get() or 0),
+            "dilayanin": self.served_var.get()
         }
 
-        messagebox.showinfo("Saved", f"Data berhasil disimpan:\n\n{data}")
+        if self.shared and node_id in self.shared.node_type:
+            self.shared.node_type[node_id]["tps_data"] = data
 
-        # Reset form
-        name_var.set("")
-        amount_var.set("")
-        served_var.set(False)
-
-    ttk.Button(frm, text="Save", command=on_save).grid(row=5, column=0, sticky="w")
-
-    root.mainloop()
+        messagebox.showinfo("Saved", f"Node {node_id} berhasil disimpan:\n{data}")
+        print(self.shared.node_type[node_id])
 
 
-if __name__ == "__main__":
-    build_ui()
+
+    # =======================
+    # RUN LOOP
+    # =======================
+    def run(self):
+        self.root.mainloop()

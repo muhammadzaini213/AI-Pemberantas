@@ -153,12 +153,26 @@ class GraphViewer:
         # ==== Node click ====
         node = self.get_node_at_pos(mx, my)
         if node is not None:
+            # pastikan node_type ada
             if node not in shared.node_type:
-                shared.node_type[node] = {"tps": False, "tpa": False, "garage": False}
+                shared.node_type[node] = {
+                    "tps": False,
+                    "tpa": False,
+                    "garage": False,
+                    "tps_data": {"nama": "", "sampah_kg":0, "sampah_hari_ini":0, "dilayanin":False}
+                }
+
+            # Ambil data TPS dari node_type
+            tps_data = shared.node_type[node].get("tps_data", None)
+            if hasattr(shared, "tps_state_window") and shared.tps_state_window:
+                shared.tps_state_window.set_node(node, tps_data)
+
+            # NodeStateWindow tetap update flags
             if hasattr(shared, "node_state_window") and shared.node_state_window:
                 shared.node_state_window.set_node(node, shared.node_type[node])
+
+
             return  # node diklik → return
-        
 
         # ==== Edge click ====
         if G is not None:
