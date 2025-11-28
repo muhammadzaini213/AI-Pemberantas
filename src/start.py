@@ -2,6 +2,7 @@ import os
 import osmnx as ox
 from window.window_program_summary import ProgramSummaryWindow
 from window.window_node_state import NodeStateWindow
+from window.window_edges_state import EdgeStateWindow
 from .environment import *
 import threading
 from .simulation import run_simulation
@@ -31,6 +32,9 @@ def main():
 
     node_state_window = NodeStateWindow(master=program_summary.root)
     node_state_window.attach_shared(shared)
+    
+    edge_state_window = EdgeStateWindow(master=program_summary.root)
+    edge_state_window.attach_shared(shared)
     
     program_summary.run()
 if __name__ == "__main__":

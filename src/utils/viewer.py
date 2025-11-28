@@ -109,15 +109,65 @@ class GraphViewer:
                 return n
         return None
 
+    def get_edge_screen_pos(self, u, v):
+        """Ambil posisi layar dari dua node edge"""
+        x1, y1 = self.transform_cached(u)
+        x2, y2 = self.transform_cached(v)
+        return x1, y1, x2, y2
 
-    def handle_mouse_click(self, mouse_pos):
+    def get_edge_at_pos(self, mx, my):
+        """
+        Deteksi apakah klik berada dekat salah satu edge.
+        Return tuple (u,v) jika ada, else None.
+        """
+        TOL = 5  # toleransi klik
+        for u, v in self.pos.keys():  # <-- nanti ganti dengan G.edges() saat draw
+            x1, y1, x2, y2 = self.get_edge_screen_pos(u, v)
+            # hitung jarak titik ke garis (u,v)
+            if self._point_near_line(mx, my, x1, y1, x2, y2, TOL):
+                return (u, v)
+        return None
+
+    def _point_near_line(self, px, py, x1, y1, x2, y2, tol):
+        """Cek apakah titik (px,py) dekat garis (x1,y1)-(x2,y2)"""
+        # jarak titik ke garis
+        if x1 == x2 and y1 == y2:
+            # edge berupa titik (sangat kecil)
+            dist = ((px - x1)**2 + (py - y1)**2)**0.5
+            return dist <= tol
+        else:
+            # proyeksi titik ke garis
+            t = max(0, min(1, ((px-x1)*(x2-x1) + (py-y1)*(y2-y1)) / ((x2-x1)**2 + (y2-y1)**2)))
+            proj_x = x1 + t * (x2 - x1)
+            proj_y = y1 + t * (y2 - y1)
+            dist = ((px - proj_x)**2 + (py - proj_y)**2)**0.5
+            return dist <= tol
+        
+    def handle_mouse_click(self, mouse_pos, G=None):
         shared = self.shared
         if not shared.paused:
             return
+
         mx, my = mouse_pos
+
+        # ==== Node click ====
         node = self.get_node_at_pos(mx, my)
         if node is not None:
             if node not in shared.node_type:
                 shared.node_type[node] = {"tps": False, "tpa": False, "garage": False}
-            if hasattr(shared, "node_state_window"):
+            if hasattr(shared, "node_state_window") and shared.node_state_window:
                 shared.node_state_window.set_node(node, shared.node_type[node])
+            return  # node diklik → return
+        
+
+        # ==== Edge click ====
+        if G is not None:
+            for u, v in G.edges():
+                x1, y1, x2, y2 = self.get_edge_screen_pos(u, v)
+                if self._point_near_line(mx, my, x1, y1, x2, y2, tol=5):
+                    edge_id = f"{u}-{v}"
+                    if edge_id not in shared.edge_type:
+                        shared.edge_type[edge_id] = {"delay": 0, "slowdown": 0}
+                    if hasattr(shared, "edge_state_window") and shared.edge_state_window:
+                        shared.edge_state_window.set_edge(edge_id, shared.edge_type[edge_id])
+                    break

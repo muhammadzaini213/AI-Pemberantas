@@ -9,8 +9,9 @@ class EdgeStateWindow:
             self.root = tk.Toplevel(master)
 
         self.root.title("Edges State Configuration")
-        self.root.geometry("420x280")
+        self.root.geometry("420x380")
         self.root.configure(bg="#ECF0F1")
+        self.shared = None  # akan diattach nanti
 
         # Main frame
         main_frame = tk.Frame(self.root, bg="#E8E8E8", padx=25, pady=25)
@@ -82,6 +83,13 @@ class EdgeStateWindow:
         self.slowdown_spinbox.bind('<FocusOut>', lambda e: self.validate_inputs())
 
     # =======================
+    # ATTACH SHARED
+    # =======================
+    def attach_shared(self, shared):
+        self.shared = shared
+        shared.edge_state_window = self
+
+    # =======================
     # GETTERS
     # =======================
     def get_edge_id(self):
@@ -97,6 +105,15 @@ class EdgeStateWindow:
     # =======================
     # SETTERS
     # =======================
+    def set_edge(self, edge_id, data=None):
+        self.edge_id_var.set(edge_id)
+        
+        if data is None and self.shared is not None:
+            data = self.shared.edge_type.get(edge_id, {"delay": 0, "slowdown": 0})
+        
+        self.set_delay(data.get("delay", 0))
+        self.set_slowdown(data.get("slowdown", 0))
+    
     def set_edge_id(self, value):
         self.edge_id_var.set(value)
 
@@ -131,6 +148,13 @@ class EdgeStateWindow:
         print(f"Edge ID: {settings['edge_id']}")
         print(f"Potensi Keterlambatan: {settings['potensi_keterlambatan']}%")
         print(f"Efek Perlambatan: {settings['efek_perlambatan']} km/j")
+
+        if self.shared is not None:
+            edge_id = settings["edge_id"]
+            self.shared.edge_type[edge_id] = {
+                "delay": settings["potensi_keterlambatan"],
+                "slowdown": settings["efek_perlambatan"]
+            }
 
     # =======================
     # MAIN LOOP

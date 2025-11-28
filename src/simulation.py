@@ -58,7 +58,7 @@ def run_simulation(GRAPH, shared):
             shared.sim_min = total_minutes % 60
             shared.sim_day = 1 + (total_minutes // (24 * 60))
         
-        controls(viewer, range_x, range_y)
+        controls(viewer, range_x, range_y, GRAPH)
         screen.fill((20,20,20))
 
         viewer.draw_graph(screen, GRAPH, NODE_COL, LINE_COL)

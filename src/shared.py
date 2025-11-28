@@ -7,9 +7,11 @@ class SharedState:
         self.speed = 1.0
         self.paused = False
         self.node_state_window = None
+        self.edge_state_window = None
 
         # === TIPE NODE (TPS / TPA / GARAGE) ===
         self.node_type = {}   # node_id → { "tps": bool, "tpa": bool, "garage": bool }
+        self.edge_type = {}
 
     def init_node_types(self, G, tps_nodes, tpa_nodes, garage_nodes):
         """
@@ -23,6 +25,7 @@ class SharedState:
             }
             for n in G.nodes()
         }
+
 
     def on_refresh(self):
         self.validate_time()
