@@ -323,7 +323,6 @@ class Vehicle:
                 self.target_node = None
                 self.path = []
                 
-                # Jika sudah tiba di garage, kembali ke idle
                 if self.state == "to_garage" and self.current == self.garage_node:
                     self.return_to_idle()
 

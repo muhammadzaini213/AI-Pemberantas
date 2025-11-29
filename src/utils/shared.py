@@ -47,7 +47,7 @@ class SharedState:
                 "tps": n in tps_nodes,
                 "tpa": n in tpa_nodes,
                 "garage": n in garage_nodes,
-                "tps_data": {"nama": "", "sampah_kg": 0, "sampah_hari_ini": 0, "dilayanin": False},
+                "tps_data": {"nama": "", "sampah_kg": 0, "sampah_per_hari": 0,},
                 "tpa_data": {"nama": "", "total_sampah": 0},
                 "garage_data": {"nama": "Garage", "total_armada": 0, "armada_bertugas": 0, "armada_standby": 0}
             }
