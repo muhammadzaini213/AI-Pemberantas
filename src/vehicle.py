@@ -51,7 +51,6 @@ class Vehicle:
         best_garage = None
         
         for garage_node in garage_nodes:
-            # Cek di shared.node_type[garage_node].garage_data.total_armada
             if garage_node in self.shared.node_type:
                 garage_data = self.shared.node_type[garage_node].get("garage_data", {})
                 total_armada = garage_data.get("total_armada", 0)
@@ -132,6 +131,123 @@ class Vehicle:
         self._update_garage_stats()
         print(f"[Vehicle {self.id}] Reassigned to garage {new_garage_node}")
 
+    # =====================================================================
+    #                        ACTUATORS (No Brain Logic)
+    # =====================================================================
+    # Fungsi-fungsi utility untuk actuator tanpa AI/logika pengambilan keputusan
+    
+    def actuator_set_path(self, path):
+        """Actuator: Set path dan mulai bergerak"""
+        self.set_path(path)
+
+    def actuator_go_to_location(self, target_node):
+        """Actuator: Pergi ke lokasi tertentu"""
+        if target_node == self.current:
+            return False
+        try:
+            path = nx.shortest_path(self.G, self.current, target_node, weight="length")
+            self.set_path(path)
+            return True
+        except:
+            return False
+
+    def actuator_go_to_tps(self):
+        """Actuator: Pergi ke TPS (random jika ada beberapa)"""
+        if not self.TPS_nodes:
+            return False
+        old_state = self.state
+        goal = random.choice(self.TPS_nodes)
+        try:
+            path = nx.shortest_path(self.G, self.current, goal, weight="length")
+            self.set_path(path)
+            self.state = "to_tps"
+            if old_state == "idle":
+                self._update_state_in_garage_stats(old_state)
+            return True
+        except:
+            return False
+
+    def actuator_go_to_tpa(self):
+        """Actuator: Pergi ke TPA"""
+        if not self.TPA_node:
+            return False
+        old_state = self.state
+        try:
+            path = nx.shortest_path(self.G, self.current, self.TPA_node, weight="length")
+            self.set_path(path)
+            self.state = "to_tpa"
+            if old_state == "idle":
+                self._update_state_in_garage_stats(old_state)
+            return True
+        except:
+            return False
+
+    def actuator_go_to_garage(self):
+        """Actuator: Kembali ke garage"""
+        if not self.garage_node:
+            return False
+        try:
+            path = nx.shortest_path(self.G, self.current, self.garage_node, weight="length")
+            self.set_path(path)
+            self.state = "to_garage"
+            return True
+        except:
+            return False
+
+    def actuator_load_garbage(self, amount):
+        """Actuator: Ambil sampah (increment load)"""
+        can_load = min(amount, self.max_load - self.load)
+        self.load += can_load
+        return can_load
+
+    def actuator_unload_garbage(self):
+        """Actuator: Buang semua sampah"""
+        old_load = self.load
+        self.load = 0
+        return old_load
+
+    def actuator_get_load_percentage(self):
+        """Actuator: Dapatkan persentase load"""
+        return (self.load / self.max_load) * 100 if self.max_load > 0 else 0
+
+    def actuator_is_full(self):
+        """Actuator: Cek apakah penuh"""
+        return self.load >= self.max_load
+
+    def actuator_is_empty(self):
+        """Actuator: Cek apakah kosong"""
+        return self.load <= 0
+
+    def actuator_get_status(self):
+        """Actuator: Dapatkan status lengkap vehicle"""
+        return {
+            "id": self.id,
+            "state": self.state,
+            "current_node": self.current,
+            "target_node": self.target_node,
+            "load": self.load,
+            "max_load": self.max_load,
+            "load_percentage": self.actuator_get_load_percentage(),
+            "is_full": self.actuator_is_full(),
+            "is_empty": self.actuator_is_empty(),
+            "daily_dist": self.daily_dist,
+            "total_dist": self.total_dist,
+            "garage_node": self.garage_node,
+            "route": self.route
+        }
+
+    def actuator_idle(self):
+        """Actuator: Kembali ke idle state"""
+        old_state = self.state
+        self.state = "idle"
+        if old_state != "idle":
+            self._update_state_in_garage_stats(old_state)
+        return True
+
+    # =====================================================================
+    #                        ORIGINAL METHODS
+    # =====================================================================
+
     def set_path(self, path):
         self.path = path
         self.route = path.copy()
@@ -141,34 +257,16 @@ class Vehicle:
             self.progress = 0.0
 
     def go_to_tps(self):
-        if not self.TPS_nodes:
-            return
-        old_state = self.state
-        goal = random.choice(self.TPS_nodes)
-        path = nx.shortest_path(self.G, self.current, goal, weight="length")
-        self.set_path(path)
-        self.state = "to_tps"
-        # Update kategori di garage jika state berubah dari idle
-        if old_state == "idle":
-            self._update_state_in_garage_stats(old_state)
+        """Deprecated: gunakan actuator_go_to_tps() sebagai gantinya"""
+        return self.actuator_go_to_tps()
 
     def go_to_tpa(self):
-        if not self.TPA_node:
-            return
-        old_state = self.state
-        goal = self.TPA_node
-        path = nx.shortest_path(self.G, self.current, goal, weight="length")
-        self.set_path(path)
-        self.state = "to_tpa"
-        if old_state == "idle":
-            self._update_state_in_garage_stats(old_state)
+        """Deprecated: gunakan actuator_go_to_tpa() sebagai gantinya"""
+        return self.actuator_go_to_tpa()
 
     def go_to_garage(self):
-        if not self.garage_node:
-            return
-        path = nx.shortest_path(self.G, self.current, self.garage_node, weight="length")
-        self.set_path(path)
-        self.state = "to_garage"
+        """Deprecated: gunakan actuator_go_to_garage() sebagai gantinya"""
+        return self.actuator_go_to_garage()
 
     def return_to_idle(self):
         """Saat vehicle tiba di garage, kembali ke idle state"""
@@ -196,7 +294,18 @@ class Vehicle:
         edge_data = self.G.get_edge_data(self.current, self.target_node)
         length = edge_data[0]['length']
 
-        distance = real_speed * dt
+        # ===== Apply edge slowdown (macet) =====
+        edge_id = f"{self.current}-{self.target_node}"
+        actual_speed = real_speed  # default normal speed
+        
+        if shared and hasattr(shared, 'edge_type') and edge_id in shared.edge_type:
+            slowdown_value = shared.edge_type[edge_id].get("slowdown", 0)
+            # slowdown > 0 berarti ada macet, ganti kecepatan dengan slowdown value
+            if slowdown_value > 0:
+                actual_speed = slowdown_value  # langsung set ke slowdown value (km/jam)
+            # jika slowdown = 0, gunakan normal speed
+
+        distance = actual_speed * dt
         self.progress += distance / length
         
         # Update distance tracking
