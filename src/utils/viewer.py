@@ -162,15 +162,24 @@ class GraphViewer:
 
         mx, my = mouse_pos
 
+        # ==== Ambil vehicles dari shared jika tidak dipass ====
+        if vehicles is None and hasattr(shared, 'vehicles'):
+            vehicles = shared.vehicles
+
         # ==== Vehicle click (prioritas tertinggi) ====
         if vehicles is not None:
+            print(f"[DEBUG] vehicles list ada, len={len(vehicles)}")
             vehicle = self.get_vehicle_at_pos(mx, my, vehicles)
+            print(f"[DEBUG] get_vehicle_at_pos returned: {vehicle}")
+            
             if vehicle is not None:
-                # Ambil car_id dari vehicle
+                print("cliks")
                 car_id = getattr(vehicle, 'id', None) or getattr(vehicle, 'car_id', None)
+                print(f"[DEBUG] car_id found: {car_id}")
+                print(f"[DEBUG] has car_state_window: {hasattr(shared, 'car_state_window')}")
+                print(f"[DEBUG] car_state_window value: {getattr(shared, 'car_state_window', None)}")
                 
-                if car_id and hasattr(shared, "car_state_window") and shared.car_state_window:
-                    # Ambil data vehicle untuk ditampilkan
+                if car_id is not None and hasattr(shared, "car_state_window") and shared.car_state_window:
                     car_data = {
                         "garage_node": getattr(vehicle, 'garage_node', ""),
                         "state": getattr(vehicle, 'state', "Idle"),
@@ -182,11 +191,15 @@ class GraphViewer:
                         "route": getattr(vehicle, 'route', [])
                     }
                     shared.car_state_window.set_car(car_id, car_data)
-                return  # vehicle diklik → return
+                    print(f"[DEBUG] Car state window SET for {car_id}")
+                else:
+                    print(f"[DEBUG] Condition failed - car_id:{car_id}, has_window:{hasattr(shared, 'car_state_window')}, window_value:{getattr(shared, 'car_state_window', None)}")
+                return
 
         # ==== Node click ====
         node = self.get_node_at_pos(mx, my)
         if node is not None:
+            print(f"[DEBUG] Node diklik: {node}")
             # pastikan node_type ada
             if node not in shared.node_type:
                 shared.node_type[node] = {
@@ -240,6 +253,7 @@ class GraphViewer:
             for u, v in G.edges():
                 x1, y1, x2, y2 = self.get_edge_screen_pos(u, v)
                 if self._point_near_line(mx, my, x1, y1, x2, y2, tol=5):
+                    print(f"[DEBUG] Edge diklik: {u}-{v}")
                     edge_id = f"{u}-{v}"
                     if edge_id not in shared.edge_type:
                         shared.edge_type[edge_id] = {"slowdown": 0}

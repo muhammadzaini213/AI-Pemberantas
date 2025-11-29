@@ -20,6 +20,7 @@ class SharedState:
         # === TIPE NODE (TPS / TPA / GARAGE) ===
         self.node_type = {}   # node_id → { "tps": bool, "tpa": bool, "garage": bool, ... }
         self.edge_type = {}   # edge_id → { "delay": float, "slowdown": float }
+        self.vehicles = {}
         
         # === DYNAMIC PATH FILE DATA (di root project) ===
         self.data_dir = os.path.join("data", "saved")

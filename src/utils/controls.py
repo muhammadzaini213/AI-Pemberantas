@@ -2,11 +2,11 @@ import pygame
 from ..environment import CAM_SPEED
 
 # ===== Controls =====
-def controls(viewer, range_x, range_y, G):
+def controls(viewer, range_x, range_y, G, vehicles):
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # klik kiri
-            viewer.handle_mouse_click(event.pos, G)
+            viewer.handle_mouse_click(event.pos, G, vehicles)
         if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
             viewer.scale = min(viewer.WIDTH / range_x, viewer.HEIGHT / range_y) * 0.95
             viewer.offset_x = viewer.WIDTH/2 - ((viewer.min_x+viewer.max_x)/2 - viewer.min_x)*viewer.scale

@@ -24,7 +24,6 @@ def run_simulation(GRAPH, shared):
     viewer.offset_y = viewer.HEIGHT/2 - ((viewer.max_y+viewer.min_y)/2 - viewer.min_y)*viewer.scale
 
     # ===== INITIALIZE NODE TYPES WITH EMPTY SETS =====
-    # Node types akan diisi dari saved data atau manual via UI
     TPS_nodes = set()
     TPA_nodes = set()
     GARAGE_nodes = set()
@@ -54,9 +53,36 @@ def run_simulation(GRAPH, shared):
     shared.num_garage = len(GARAGE_nodes)
     shared.num_vehicle = NUM_VEHICLE
 
-    # ===== Vehicles =====
-    vehicles = [Vehicle(GRAPH, TPS_nodes, TPA_nodes)
-                for _ in range(NUM_VEHICLE)]
+    # ===== Vehicles - Distribute ke semua garage =====
+    vehicles = []
+    garage_list = list(GARAGE_nodes)
+    
+    if garage_list:
+        # Distribusikan vehicles merata ke semua garage
+        for i in range(NUM_VEHICLE):
+            # Assign vehicle ke garage secara round-robin
+            assigned_garage = garage_list[i % len(garage_list)]
+            
+            # Create vehicle TANPA shared dulu (agar tidak auto-assign ke garage)
+            vehicle = Vehicle(GRAPH, TPS_nodes, TPA_nodes, [], shared=None)
+            
+            # Sekarang set garage dan shared dengan benar
+            vehicle.shared = shared
+            vehicle.garage_node = assigned_garage
+            vehicle.current = assigned_garage
+            vehicle.garage_nodes = list(GARAGE_nodes)
+            
+            # Update stats dengan garage yang benar
+            vehicle._update_garage_stats()
+            
+            vehicles.append(vehicle)
+            print(f"[Simulation] Vehicle {vehicle.id} assigned to garage {assigned_garage}")
+    else:
+        # Fallback jika tidak ada garage
+        vehicles = [Vehicle(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes, shared=shared)
+                    for _ in range(NUM_VEHICLE)]
+    
+    shared.vehicles = vehicles
 
     # ===== Pygame init =====
     pygame.init()
@@ -80,7 +106,7 @@ def run_simulation(GRAPH, shared):
             shared.sim_min = total_minutes % 60
             shared.sim_day = 1 + (total_minutes // (24 * 60))
         
-        controls(viewer, range_x, range_y, GRAPH)
+        controls(viewer, range_x, range_y, GRAPH, vehicles)
         screen.fill((20,20,20))
 
         viewer.draw_graph(screen, GRAPH, NODE_COL, LINE_COL)
