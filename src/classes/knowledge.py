@@ -1,5 +1,4 @@
 import networkx as nx
-from datetime import datetime
 
 class KnowledgeModel:
     
@@ -15,14 +14,16 @@ class KnowledgeModel:
         self.known_tps = {node_id: self._get_tps_static_info(node_id) for node_id in tps_nodes}
         self.known_tpa = {node_id: self._get_tpa_info(node_id) for node_id in tpa_nodes}
         
+
         # ===== Discovered information (dinamis) =====
-        self.discovered_slowdowns = {}  # edge_id -> {slowdown, discovered_at, times_encountered}
-        self.discovered_garbage = {}    # tps_id -> {sampah_kg, last_check_time, history}
+        self.discovered_slowdowns = {}
+        self.discovered_garbage = {}
+
         
         # ===== Vehicle tracking =====
-        self.vehicle_statuses = {}  # vehicle_id -> {status, location, load, state, timestamp}
-        self.vehicle_assignments = {}  # vehicle_id -> current_task
-        self.all_vehicle_ids = set()  # semua vehicles yang pernah ada
+        self.vehicle_statuses = {}
+        self.vehicle_assignments = {}
+        self.all_vehicle_ids = set()
         
 
 
