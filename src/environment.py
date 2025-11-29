@@ -7,11 +7,16 @@ MAX_FPS = 60
 
 # ================== TEST SETUP ==================
 GRAPH_FILE = "./data/simpl_klandasan_ilir_drive.graphml"
-VEHICLE_SPEED = 60 # Sementara masih pake ini
 
-# ===== Shift Settings =====
-SHIFT_START = 6  # 06:00 - Truk mulai beroperasi
-SHIFT_END = 22   # 22:00 - Truk kembali ke garasi
+
+# ================== VEHICLE ==================
+VEHICLE_SPEED = 60 
+VEHICLE_CAP = 200
+
+
+# ================== SHIFT SETTINGS (00:00 WITH INTEGER 0) ==================
+SHIFT_START = 6
+SHIFT_END = 22
 
 # ================== SPRITES ==================
 NODE_COL = (255,120,120) # Node kuning

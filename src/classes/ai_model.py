@@ -1,6 +1,7 @@
 import networkx as nx
 from collections import defaultdict
 from ..environment import SHIFT_START, SHIFT_END
+
 class AIModel:
     """
     AI Controller dengan Matheuristic Rollout untuk dispatch dan scheduling truk sampah.

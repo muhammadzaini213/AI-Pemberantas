@@ -1,10 +1,10 @@
 import random
 import networkx as nx
-from ..environment import VEHICLE_SPEED
+from ..environment import VEHICLE_SPEED, VEHICLE_CAP
 import uuid
 
 class Vehicle:
-    def __init__(self, graph, tps_nodes=None, tpa_node=None, garage_nodes=None, speed=VEHICLE_SPEED, shared=None):
+    def __init__(self, graph, tps_nodes=None, tpa_node=None, garage_nodes=None, shared=None):
         self.id = str(uuid.uuid4())[:8]
         
         self.G = graph
@@ -20,13 +20,13 @@ class Vehicle:
         self.progress = 0.0
         self.target_node = None
         self.state = "idle"
-        self.speed = speed
+        self.speed = VEHICLE_SPEED
         
         # ===== Tracking metrics =====
         self.daily_dist = 0.0
         self.total_dist = 0.0
         self.load = 0
-        self.max_load = 100
+        self.max_load = VEHICLE_CAP
         self.route = []
         
         print(f"[Vehicle] Created ID: {self.id}")
@@ -209,6 +209,18 @@ class Vehicle:
         return True
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     # ============== ACTUATORS + SENSORS LOGIC==============
     def actuator_arrive_at_tps(self):
         if self.current in self.TPS_nodes and self.shared:
@@ -306,7 +318,22 @@ class Vehicle:
         return self.target_node is None or self.progress >= 1.0
 
 
-    # ============== IF IT WORKS IT WORKS ==============
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # ============== IF THIS WORKS IT WORKS ==============
     def set_path(self, path):
         if not path or len(path) == 0:
             print(f"[Vehicle {self.id}] Warning: Empty path provided")
