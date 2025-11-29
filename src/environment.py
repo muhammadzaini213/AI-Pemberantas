@@ -7,7 +7,6 @@ MAX_FPS = 60
 
 # ================== TEST SETUP ==================
 GRAPH_FILE = "./data/simpl_klandasan_ilir_drive.graphml"
-NUM_VEHICLE = 10
 VEHICLE_SPEED = 60 # Sementara masih pake ini
 
 # ===== Shift Settings =====

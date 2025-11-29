@@ -218,8 +218,8 @@ class ProgramSummaryWindow:
             self.set_stat("tps", self.shared.num_tps)
         if hasattr(self.shared, "num_tpa"):
             self.set_stat("tpa", self.shared.num_tpa)
-        if hasattr(self.shared, "num_vehicle"):
-            self.set_stat("truk", self.shared.num_vehicle)
+        if hasattr(self.shared, "get_num_vehicle"):
+            self.set_stat("truk", self.shared.total_vehicles)
 
         # Jadwalkan update berikutnya
         self.root.after(1, self.update_from_shared)

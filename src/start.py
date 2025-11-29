@@ -86,7 +86,6 @@ def main():
         print("\n[Main] Stopping old simulation...")
         stop_simulation_thread()
         
-        # Wait sebentar agar pygame quit dengan proper
         import time
         time.sleep(0.5)
         

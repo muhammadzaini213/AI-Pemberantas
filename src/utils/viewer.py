@@ -236,8 +236,6 @@ class GraphViewer:
                 garage_data = node_info.get("garage_data", {
                     "nama": "Garage",
                     "total_armada": 0,
-                    "armada_bertugas": 0,
-                    "armada_standby": 0
                 })
                 shared.garage_state_window.set_node(node, garage_data)
 

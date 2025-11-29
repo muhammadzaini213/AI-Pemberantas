@@ -51,36 +51,55 @@ def run_simulation(GRAPH, shared):
     shared.num_tps = len(TPS_nodes)
     shared.num_tpa = len(TPA_nodes)
     shared.num_garage = len(GARAGE_nodes)
-    shared.num_vehicle = NUM_VEHICLE
 
-    # ===== Vehicles - Distribute ke semua garage =====
+    # ===== Vehicles - Berdasarkan total_armada per garage =====
     vehicles = []
     garage_list = list(GARAGE_nodes)
     
     if garage_list:
-        # Distribusikan vehicles merata ke semua garage
-        for i in range(NUM_VEHICLE):
-            # Assign vehicle ke garage secara round-robin
-            assigned_garage = garage_list[i % len(garage_list)]
+        # Build vehicle allocation berdasarkan total_armada di setiap garage
+        vehicles_allocation = {}  # garage_id -> [list of vehicles]
+        total_vehicles_created = 0
+        
+        for garage_id in garage_list:
+            if garage_id in shared.node_type:
+                garage_data = shared.node_type[garage_id].get("garage_data", {})
+                armada_count = garage_data.get("total_armada", 0)
+                
+                print(f"[Simulation] Garage {garage_id}: {armada_count} armada")
+                
+                # Create vehicles untuk garage ini
+                for i in range(armada_count):
+                    vehicle = Vehicle(GRAPH, TPS_nodes, TPA_nodes, [], shared=None)
+                    vehicle.shared = shared
+                    vehicle.garage_node = garage_id
+                    vehicle.current = garage_id
+                    vehicle.garage_nodes = list(GARAGE_nodes)
+                    vehicle._update_garage_stats()
+                    
+                    vehicles.append(vehicle)
+                    total_vehicles_created += 1
+        shared.total_vehicles = total_vehicles_created
+        print(f"[Simulation] Total vehicles created: {total_vehicles_created}")
+        
+        if total_vehicles_created == 0:
+            print(f"[Simulation] WARNING: No armada configured in any garage!")
+            print(f"[Simulation] Fallback: Creating {shared.get_total_vehicles()} vehicles with round-robin distribution")
             
-            # Create vehicle TANPA shared dulu (agar tidak auto-assign ke garage)
-            vehicle = Vehicle(GRAPH, TPS_nodes, TPA_nodes, [], shared=None)
-            
-            # Sekarang set garage dan shared dengan benar
-            vehicle.shared = shared
-            vehicle.garage_node = assigned_garage
-            vehicle.current = assigned_garage
-            vehicle.garage_nodes = list(GARAGE_nodes)
-            
-            # Update stats dengan garage yang benar
-            vehicle._update_garage_stats()
-            
-            vehicles.append(vehicle)
-            print(f"[Simulation] Vehicle {vehicle.id} assigned to garage {assigned_garage}")
+            for i in range(shared.get_total_vehicles()):
+                assigned_garage = garage_list[i % len(garage_list)]
+                
+                vehicle = Vehicle(GRAPH, TPS_nodes, TPA_nodes, [], shared=None)
+                vehicle.shared = shared
+                vehicle.garage_node = assigned_garage
+                vehicle.current = assigned_garage
+                vehicle.garage_nodes = list(GARAGE_nodes)
+                vehicle._update_garage_stats()
+                
+                vehicles.append(vehicle)
     else:
-        # Fallback jika tidak ada garage
-        vehicles = [Vehicle(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes, shared=shared)
-                    for _ in range(NUM_VEHICLE)]
+        # Tidak ada garage
+        print("[Simulation] WARNING: No garage nodes found!")
     
     shared.vehicles = vehicles
 

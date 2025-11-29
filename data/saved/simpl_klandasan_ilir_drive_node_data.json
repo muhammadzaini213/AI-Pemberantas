@@ -1,7 +1,7 @@
 {
   "620840837": {
     "tps": false,
-    "tpa": true,
+    "tpa": false,
     "garage": false,
     "tps_data": {
       "nama": "",
@@ -15,15 +15,13 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "620840839": {
     "tps": false,
     "tpa": false,
-    "garage": true,
+    "garage": false,
     "tps_data": {
       "nama": "",
       "sampah_kg": 0,
@@ -36,9 +34,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 15,
-      "armada_bertugas": 0,
-      "armada_standby": 11
+      "total_armada": 0
     }
   },
   "620840841": {
@@ -57,9 +53,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "620840862": {
@@ -78,9 +72,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "620840864": {
@@ -99,9 +91,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "620840868": {
@@ -120,9 +110,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781639": {
@@ -141,9 +129,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781643": {
@@ -162,9 +148,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781648": {
@@ -183,9 +167,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781653": {
@@ -204,9 +186,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781654": {
@@ -225,9 +205,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781658": {
@@ -246,9 +224,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781686": {
@@ -267,9 +243,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781689": {
@@ -288,9 +262,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781694": {
@@ -309,9 +281,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781697": {
@@ -330,9 +300,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781703": {
@@ -351,9 +319,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687781704": {
@@ -372,9 +338,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687783945": {
@@ -393,9 +357,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687783952": {
@@ -414,9 +376,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687783987": {
@@ -435,9 +395,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687783993": {
@@ -456,9 +414,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "687784001": {
@@ -477,15 +433,13 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1200415052": {
     "tps": false,
     "tpa": false,
-    "garage": true,
+    "garage": false,
     "tps_data": {
       "nama": "",
       "sampah_kg": 0,
@@ -498,9 +452,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 5,
-      "armada_bertugas": 0,
-      "armada_standby": 5
+      "total_armada": 0
     }
   },
   "1512569971": {
@@ -519,9 +471,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512569972": {
@@ -540,9 +490,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512569983": {
@@ -561,9 +509,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512569985": {
@@ -582,9 +528,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512569990": {
@@ -603,9 +547,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512569991": {
@@ -624,9 +566,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512570004": {
@@ -645,9 +585,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512570005": {
@@ -666,9 +604,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512570008": {
@@ -687,9 +623,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512570012": {
@@ -708,9 +642,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512570027": {
@@ -729,9 +661,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512570066": {
@@ -750,9 +680,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602828": {
@@ -771,9 +699,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602829": {
@@ -792,9 +718,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602836": {
@@ -813,9 +737,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602838": {
@@ -834,9 +756,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602845": {
@@ -855,9 +775,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602849": {
@@ -876,9 +794,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602854": {
@@ -897,9 +813,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602944": {
@@ -918,9 +832,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602948": {
@@ -939,9 +851,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602949": {
@@ -960,9 +870,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602955": {
@@ -981,9 +889,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602966": {
@@ -1002,9 +908,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "1512602976": {
@@ -1023,9 +927,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "3751083365": {
@@ -1044,9 +946,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "3769876201": {
@@ -1065,9 +965,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "3769966745": {
@@ -1086,9 +984,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "4263603166": {
@@ -1107,9 +1003,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "4263603170": {
@@ -1128,9 +1022,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "4263603182": {
@@ -1149,9 +1041,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "4982835368": {
@@ -1170,9 +1060,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "4982835372": {
@@ -1191,9 +1079,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5334325341": {
@@ -1212,9 +1098,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5334325344": {
@@ -1233,9 +1117,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5334325356": {
@@ -1254,9 +1136,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5334325366": {
@@ -1275,9 +1155,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5334325377": {
@@ -1296,9 +1174,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5441947852": {
@@ -1317,9 +1193,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5441947857": {
@@ -1338,9 +1212,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5441947861": {
@@ -1359,9 +1231,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5441947863": {
@@ -1380,9 +1250,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5441947864": {
@@ -1401,9 +1269,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5441947868": {
@@ -1422,9 +1288,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5442420100": {
@@ -1443,9 +1307,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5447426640": {
@@ -1464,9 +1326,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5447426675": {
@@ -1485,9 +1345,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5455576670": {
@@ -1506,9 +1364,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5523288370": {
@@ -1527,9 +1383,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5523288377": {
@@ -1548,9 +1402,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5524274511": {
@@ -1569,9 +1421,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5524274691": {
@@ -1590,9 +1440,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5524274702": {
@@ -1611,9 +1459,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5524274703": {
@@ -1632,9 +1478,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5539175662": {
@@ -1653,9 +1497,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5539175666": {
@@ -1674,9 +1516,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5804505865": {
@@ -1695,9 +1535,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "5804505894": {
@@ -1716,9 +1554,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6098142238": {
@@ -1737,9 +1573,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6098142244": {
@@ -1758,9 +1592,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6098142245": {
@@ -1779,9 +1611,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6098142247": {
@@ -1800,9 +1630,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6098142269": {
@@ -1821,9 +1649,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6098142274": {
@@ -1842,9 +1668,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6098142838": {
@@ -1863,19 +1687,17 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6144783124": {
-    "tps": true,
+    "tps": false,
     "tpa": false,
     "garage": false,
     "tps_data": {
       "nama": "",
-      "sampah_kg": 50000,
-      "sampah_hari_ini": 50001,
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
       "dilayanin": false
     },
     "tpa_data": {
@@ -1884,9 +1706,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6144784003": {
@@ -1905,9 +1725,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6145011468": {
@@ -1926,9 +1744,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6145011478": {
@@ -1947,9 +1763,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6145011506": {
@@ -1968,9 +1782,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6266256215": {
@@ -1989,9 +1801,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6266256216": {
@@ -2010,9 +1820,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6266256218": {
@@ -2031,9 +1839,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6266256249": {
@@ -2052,9 +1858,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6668075941": {
@@ -2073,9 +1877,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6668075964": {
@@ -2094,9 +1896,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6668147992": {
@@ -2115,9 +1915,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "6856711415": {
@@ -2136,9 +1934,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7168670884": {
@@ -2157,9 +1953,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7205499295": {
@@ -2178,9 +1972,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7287508558": {
@@ -2199,9 +1991,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7287508559": {
@@ -2220,9 +2010,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7324676831": {
@@ -2241,9 +2029,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7349301152": {
@@ -2262,9 +2048,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7547270305": {
@@ -2283,9 +2067,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7564796125": {
@@ -2304,51 +2086,29 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7564796129": {
     "tps": false,
     "tpa": false,
-    "garage": false,
-    "tps_data": {
-      "nama": "",
-      "sampah_kg": 0,
-      "sampah_hari_ini": 0,
-      "dilayanin": false
-    },
-    "tpa_data": {
-      "nama": "",
-      "total_sampah": 0
-    },
+    "garage": true,
+    "tps_data": {},
+    "tpa_data": {},
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 4
     }
   },
   "7568920020": {
     "tps": false,
     "tpa": false,
-    "garage": false,
-    "tps_data": {
-      "nama": "",
-      "sampah_kg": 0,
-      "sampah_hari_ini": 0,
-      "dilayanin": false
-    },
-    "tpa_data": {
-      "nama": "",
-      "total_sampah": 0
-    },
+    "garage": true,
+    "tps_data": {},
+    "tpa_data": {},
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 2
     }
   },
   "7568920021": {
@@ -2367,9 +2127,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7723666543": {
@@ -2388,9 +2146,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7830634410": {
@@ -2409,9 +2165,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "7889295209": {
@@ -2430,9 +2184,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8193118544": {
@@ -2451,9 +2203,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559281184": {
@@ -2472,9 +2222,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559281193": {
@@ -2493,9 +2241,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559306085": {
@@ -2514,9 +2260,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559306086": {
@@ -2535,9 +2279,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559307538": {
@@ -2556,9 +2298,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559307548": {
@@ -2577,9 +2317,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559307554": {
@@ -2598,15 +2336,27 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559307564": {
     "tps": false,
     "tpa": false,
-    "garage": true
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0
+    }
   },
   "8559638991": {
     "tps": false,
@@ -2624,9 +2374,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559638998": {
@@ -2645,9 +2393,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559638999": {
@@ -2666,9 +2412,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559655767": {
@@ -2687,9 +2431,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559732294": {
@@ -2708,9 +2450,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8559732295": {
@@ -2729,9 +2469,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560047231": {
@@ -2750,9 +2488,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560047246": {
@@ -2771,9 +2507,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560112400": {
@@ -2792,9 +2526,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560112404": {
@@ -2813,9 +2545,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560155398": {
@@ -2834,9 +2564,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560217473": {
@@ -2855,9 +2583,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560217487": {
@@ -2876,9 +2602,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560217488": {
@@ -2897,9 +2621,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560217491": {
@@ -2918,9 +2640,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560217495": {
@@ -2939,9 +2659,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560256180": {
@@ -2960,9 +2678,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560256187": {
@@ -2981,9 +2697,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560290050": {
@@ -3002,9 +2716,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560309421": {
@@ -3023,9 +2735,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560309426": {
@@ -3044,9 +2754,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560397311": {
@@ -3065,9 +2773,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560397316": {
@@ -3086,9 +2792,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560426738": {
@@ -3107,9 +2811,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8560426764": {
@@ -3128,9 +2830,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8562453684": {
@@ -3149,9 +2849,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8562453693": {
@@ -3170,9 +2868,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8562463258": {
@@ -3191,9 +2887,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8562463727": {
@@ -3212,9 +2906,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8692586472": {
@@ -3233,9 +2925,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8727724316": {
@@ -3254,9 +2944,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8727734318": {
@@ -3275,9 +2963,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "8855668562": {
@@ -3296,9 +2982,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "9494338757": {
@@ -3317,9 +3001,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "9494338760": {
@@ -3338,9 +3020,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "10091588523": {
@@ -3359,9 +3039,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "11232839130": {
@@ -3380,9 +3058,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "12060498670": {
@@ -3401,9 +3077,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "12060498674": {
@@ -3422,9 +3096,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "13185503586": {
@@ -3443,9 +3115,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "13185503591": {
@@ -3464,9 +3134,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "13285073857": {
@@ -3485,9 +3153,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "13285073858": {
@@ -3506,9 +3172,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   },
   "13285073859": {
@@ -3527,9 +3191,7 @@
     },
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 0,
-      "armada_bertugas": 0,
-      "armada_standby": 0
+      "total_armada": 0
     }
   }
 }

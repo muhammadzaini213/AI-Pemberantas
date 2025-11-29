@@ -20,7 +20,15 @@ class SharedState:
         # === TIPE NODE (TPS / TPA / GARAGE) ===
         self.node_type = {}   # node_id → { "tps": bool, "tpa": bool, "garage": bool, ... }
         self.edge_type = {}   # edge_id → { "delay": float, "slowdown": float }
-        self.vehicles = {}
+        self.vehicles = []
+        self.total_vehicles = 0
+        
+        # === STATS ===
+        self.node_count = 0
+        self.edge_count = 0
+        self.num_tps = 0
+        self.num_tpa = 0
+        self.num_garage = 0
         
         # === DYNAMIC PATH FILE DATA (di root project) ===
         self.data_dir = os.path.join("data", "saved")
@@ -31,7 +39,6 @@ class SharedState:
     def _extract_graph_name(self, graph_file):
         filename = os.path.basename(graph_file)
         name_without_ext = os.path.splitext(filename)[0]
-        
         return name_without_ext
 
     def init_node_types(self, G, tps_nodes, tpa_nodes, garage_nodes):
@@ -49,6 +56,19 @@ class SharedState:
 
         print("[SharedState] Attempting to load saved data...")
         self.load_all_data()
+
+    def get_total_vehicles(self):
+        """Hitung total vehicle dari total_armada di semua garage"""
+        total = 0
+        for node_id, node_data in self.node_type.items():
+            if node_data.get("garage", False):
+                garage_data = node_data.get("garage_data", {})
+                total += garage_data.get("total_armada", 0)
+        return total
+
+    def get_num_vehicle(self):
+        """Alias untuk get_total_vehicles()"""
+        return self.get_total_vehicles()
 
     def on_refresh(self):
         self.validate_time()
@@ -75,14 +95,30 @@ class SharedState:
             os.makedirs(self.data_dir)
             print(f"[SharedState] Created data directory: {self.data_dir}")
 
+    def _serialize_node_for_save(self, node_id, node_data):
+        """Serialize node data untuk save - hanya simpan field penting"""
+        return {
+            "tps": node_data.get("tps", False),
+            "tpa": node_data.get("tpa", False),
+            "garage": node_data.get("garage", False),
+            "tps_data": node_data.get("tps_data", {}),
+            "tpa_data": node_data.get("tpa_data", {}),
+            # HANYA simpan total_armada, armada_bertugas dan armada_standby akan di-kalkulasi oleh simulasi
+            "garage_data": {
+                "nama": node_data.get("garage_data", {}).get("nama", "Garage"),
+                "total_armada": node_data.get("garage_data", {}).get("total_armada", 0)
+            }
+        }
+
     def save_node_data(self):
-        """Save node_type data ke file JSON"""
+        """Save node_type data ke file JSON - hanya total_armada yang disimpan"""
         self.ensure_data_dir()
         
         try:
             # Convert node_type keys dari int ke string untuk JSON compatibility
+            # Hanya simpan field yang relevan
             serializable_data = {
-                str(node_id): data 
+                str(node_id): self._serialize_node_for_save(node_id, data)
                 for node_id, data in self.node_type.items()
             }
             
@@ -90,6 +126,7 @@ class SharedState:
                 json.dump(serializable_data, f, indent=2)
             
             print(f"[SharedState] Node data saved to {self.node_data_file}")
+            print(f"[SharedState] Note: Only TPS/TPA/Garage assignments and total_armada saved. armada_bertugas/armada_standby will be recalculated by simulation.")
             return True
         except Exception as e:
             print(f"[SharedState] Error saving node data: {e}")
@@ -137,14 +174,35 @@ class SharedState:
                 try:
                     node_id = int(node_id_str)
                     if node_id in self.node_type:
-                        # Update data yang ada dengan data yang di-load
-                        self.node_type[node_id].update(data)
+                        # Load TPS/TPA/Garage flags
+                        self.node_type[node_id]["tps"] = data.get("tps", False)
+                        self.node_type[node_id]["tpa"] = data.get("tpa", False)
+                        self.node_type[node_id]["garage"] = data.get("garage", False)
+                        
+                        # Load TPS data
+                        if "tps_data" in data:
+                            self.node_type[node_id]["tps_data"] = data["tps_data"]
+                        
+                        # Load TPA data
+                        if "tpa_data" in data:
+                            self.node_type[node_id]["tpa_data"] = data["tpa_data"]
+                        
+                        # Load Garage data - HANYA total_armada
+                        if "garage_data" in data:
+                            loaded_garage_data = data["garage_data"]
+                            self.node_type[node_id]["garage_data"]["nama"] = loaded_garage_data.get("nama", "Garage")
+                            self.node_type[node_id]["garage_data"]["total_armada"] = loaded_garage_data.get("total_armada", 0)
+                            # armada_bertugas dan armada_standby akan di-set oleh simulasi
+                            self.node_type[node_id]["garage_data"]["armada_bertugas"] = 0
+                            self.node_type[node_id]["garage_data"]["armada_standby"] = 0
+                        
                         loaded_count += 1
                 except ValueError:
                     print(f"[SharedState] Warning: Invalid node_id {node_id_str}")
                     continue
             
             print(f"[SharedState] Node data loaded from {self.node_data_file} ({loaded_count} nodes)")
+            print(f"[SharedState] Note: armada_bertugas and armada_standby reset to 0, will be managed by simulation")
             return True
         except Exception as e:
             print(f"[SharedState] Error loading node data: {e}")
