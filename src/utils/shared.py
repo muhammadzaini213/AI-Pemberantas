@@ -28,24 +28,12 @@ class SharedState:
         self.edge_data_file = os.path.join(self.data_dir, f"{self.graph_base_name}_edge_data.json")
 
     def _extract_graph_name(self, graph_file):
-        """
-        Extract nama graph dari path file.
-        Contoh: "./data/simpl_klandasan_ilir_drive.graphml" → "simpl_klandasan_ilir_drive"
-        """
-        # Ambil nama file saja (tanpa path)
         filename = os.path.basename(graph_file)
-        
-        # Hapus extension .graphml
         name_without_ext = os.path.splitext(filename)[0]
         
         return name_without_ext
 
     def init_node_types(self, G, tps_nodes, tpa_nodes, garage_nodes):
-        """
-        Dipanggil sekali setelah graph di-load dan node khusus telah dihitung.
-        Akan auto-load data yang tersimpan jika ada.
-        """
-        # Initialize default data untuk semua node
         self.node_type = {
             n: {
                 "tps": n in tps_nodes,
@@ -58,7 +46,6 @@ class SharedState:
             for n in G.nodes()
         }
 
-        # Auto-load saved data jika ada
         print("[SharedState] Attempting to load saved data...")
         self.load_all_data()
 
@@ -108,7 +95,6 @@ class SharedState:
             return False
 
     def save_edge_data(self):
-        """Save edge_type data ke file JSON"""
         self.ensure_data_dir()
         
         try:

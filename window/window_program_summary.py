@@ -53,7 +53,7 @@ class ProgramSummaryWindow:
         self.speed_var = tk.StringVar(value="1x")
         speed_box = ttk.Combobox(
             content, textvariable=self.speed_var,
-            values=["0.25x", "0.5x", "1x", "2x", "4x"],
+            values=["0.25x", "0.5x", "1x", "2x", "4x", "8x", "16x", "32x", "64x", "128x", "256x", "512x"],
             width=10, state="readonly"
         )
 

@@ -74,7 +74,7 @@ def run_simulation(GRAPH, shared):
         dt, last_time = getDt(time, last_time)
 
         if not shared.paused:
-            sim_time_acc += dt * shared.speed * 60000 
+            sim_time_acc += dt * shared.speed * (60 ** 1)
             total_minutes = int(sim_time_acc / 60)
             shared.sim_hour = (8 + (total_minutes // 60)) % 24
             shared.sim_min = total_minutes % 60

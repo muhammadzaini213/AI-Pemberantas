@@ -61,7 +61,19 @@ class GraphViewer:
             if (y1 < -10 and y2 < -10) or (y1 > self.HEIGHT+10 and y2 > self.HEIGHT+10):
                 continue
 
-            pygame.draw.line(screen, edge_color, (x1, y1), (x2, y2), 2)
+            # Check if edge has delay
+            edge_id = f"{u}-{v}"
+            edge_data = self.shared.edge_type.get(edge_id, None)
+            
+            # Tentukan warna edge
+            if edge_data and edge_data.get("delay", 0) > 0:
+                color = (255, 0, 0)  # Merah jika ada delay
+                width = 5  # Lebih tebal agar lebih visible
+            else:
+                color = edge_color
+                width = 2
+
+            pygame.draw.line(screen, color, (x1, y1), (x2, y2), width)
 
         # ==== Draw nodes ====
         for n in G.nodes():
