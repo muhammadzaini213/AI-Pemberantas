@@ -22,17 +22,26 @@ def main():
         print("Graph file tidak ditemukan:", GRAPH_FILE)
         return
 
+    print("\n" + "="*50)
+    print("LOADING GRAPH")
+    print("="*50)
     GRAPH = ox.load_graphml(GRAPH_FILE)
+    print(f"✓ Graph loaded: {GRAPH.number_of_nodes()} nodes, {GRAPH.number_of_edges()} edges")
+    print("="*50 + "\n")
 
     shared = SharedState()
 
+    # ============================================================
+    #  START SIMULATION (akan init node_types dan auto-load data)
+    # ============================================================
     start_simulation_thread(GRAPH, shared)
 
+    # ============================================================
+    #  SETUP WINDOWS
+    # ============================================================
     program_summary = ProgramSummaryWindow()
     program_summary.attach_state(shared)
     program_summary.set_fps(MAX_FPS)
-    program_summary.set_stat("node", GRAPH.number_of_nodes())
-    program_summary.set_stat("edge", GRAPH.number_of_edges())
 
     node_state_window = NodeStateWindow(master=program_summary.root)
     node_state_window.attach_shared(shared)

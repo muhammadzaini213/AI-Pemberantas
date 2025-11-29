@@ -129,17 +129,12 @@ class CarStateWindow:
         self.route_text.delete("1.0", "end")
         self.route_text.insert("1.0", route_str)
 
-    def set_output(self, text, is_error=False):
-        color = "red" if is_error else "green"
-        self.output_label.config(text=text, foreground=color)
-
     # =======================
     # VALIDASI & SAVE
     # =======================
     def validate_inputs(self):
         # Validasi ID Kendaraan
         if self.car_id_var.get().strip() == "":
-            self.set_output("Error: ID Kendaraan wajib diisi!", is_error=True)
             return False
 
         # Validasi Speed
@@ -148,7 +143,6 @@ class CarStateWindow:
             if speed_val < 0:
                 self.speed_var.set("0")
         except:
-            self.set_output("Error: Speed harus angka!", is_error=True)
             return False
 
         # Validasi Daily Distance
@@ -157,7 +151,6 @@ class CarStateWindow:
             if daily_val < 0:
                 self.daily_dist_var.set("0")
         except:
-            self.set_output("Error: Trip hari ini harus angka!", is_error=True)
             return False
 
         # Validasi Total Distance
@@ -166,7 +159,6 @@ class CarStateWindow:
             if total_val < 0:
                 self.total_dist_var.set("0")
         except:
-            self.set_output("Error: Total odometer harus angka!", is_error=True)
             return False
 
         # Validasi Load
@@ -175,7 +167,6 @@ class CarStateWindow:
             if load_val < 0:
                 self.load_var.set("0")
         except:
-            self.set_output("Error: Muatan harus angka!", is_error=True)
             return False
 
         # Validasi Max Load
@@ -184,12 +175,10 @@ class CarStateWindow:
             if max_load_val < 0:
                 self.max_load_var.set("0")
         except:
-            self.set_output("Error: Muatan maksimum harus angka!", is_error=True)
             return False
 
         # Validasi Load tidak boleh melebihi Max Load
         if float(self.load_var.get()) > float(self.max_load_var.get()):
-            self.set_output("Error: Muatan tidak boleh melebihi kapasitas maksimum!", is_error=True)
             return False
 
         return True
@@ -218,7 +207,6 @@ class CarStateWindow:
             "route": route_list
         }
 
-        # Output ke console (untuk debugging)
         print(f"--- Data Disimpan ke Sistem ---")
         print(f"Agent ID: {car_id}")
         print(f"Garage Node: {data['garage_node']}")
@@ -227,7 +215,6 @@ class CarStateWindow:
         print(f"Muatan: {data['load']}/{data['max_load']} kg")
         print(f"Route: {data['route']}")
         
-        self.set_output(f"Sukses! Data {car_id} berhasil disimpan.")
         messagebox.showinfo("Saved", f"Kendaraan {car_id} berhasil disimpan:\nRoute: {route_list}")
 
     # =======================

@@ -11,7 +11,7 @@ class Vehicle:
         self.path = []
         self.progress = 0.0
         self.target_node = None
-        self.state = "random"  # ini bisa pakai to_tps atau to_tpa tergantung kebutuhan, sementara random dulu
+        self.state = "random" 
         self.speed = speed
 
     def set_path(self, path):

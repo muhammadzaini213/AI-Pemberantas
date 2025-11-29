@@ -1,12 +1,12 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 
 
 class ProgramSummaryWindow:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Program Summary")
-        self.root.geometry("450x380")
+        self.root.geometry("450x420")
         self.root.configure(bg="#E8E8E8")
 
         content = tk.Frame(self.root, bg="#E8E8E8")
@@ -96,8 +96,17 @@ class ProgramSummaryWindow:
 
             self.stats_entries[key] = var
 
-        refresh_btn = ttk.Button(content, text="Refresh Simulasi", command=self.on_refresh)
-        refresh_btn.grid(row=5, column=0, columnspan=2, pady=10)
+        # ============================================================
+        #                    BUTTON FRAME
+        # ============================================================
+        button_frame = ttk.Frame(content)
+        button_frame.grid(row=5, column=0, columnspan=2, pady=10)
+
+        refresh_btn = ttk.Button(button_frame, text="Refresh Simulasi", command=self.on_refresh)
+        refresh_btn.pack(side="left", padx=5)
+
+        save_btn = ttk.Button(button_frame, text="💾 Hard Save", command=self.on_hard_save)
+        save_btn.pack(side="left", padx=5)
 
         # Bind validation
         hour_spinbox.bind("<FocusOut>", lambda e: self.validate_time())
@@ -220,6 +229,31 @@ class ProgramSummaryWindow:
         print("Speed:", self.get_simulation_speed())
         print("Pause:", self.get_pause_state())
         print("Stats:", self.get_stats_values())
+
+    def on_hard_save(self):
+        """Handler untuk tombol Hard Save"""
+        if not hasattr(self, "shared"):
+            messagebox.showwarning("Warning", "Shared state belum ter-attach!")
+            return
+
+        try:
+            # Panggil save_all_data dari SharedState
+            success = self.shared.save_all_data()
+            
+            if success:
+                messagebox.showinfo(
+                    "Save Successful", 
+                    f"Data berhasil disimpan ke:\n\n"
+                    f"📄 {self.shared.node_data_file}\n"
+                    f"📄 {self.shared.edge_data_file}"
+                )
+            else:
+                messagebox.showerror(
+                    "Save Failed", 
+                    "Gagal menyimpan data!\nCek console untuk detail error."
+                )
+        except Exception as e:
+            messagebox.showerror("Error", f"Error saat menyimpan data:\n{str(e)}")
 
     def on_speed_change(self, event=None):
         text = self.speed_var.get()

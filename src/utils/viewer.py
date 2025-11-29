@@ -106,6 +106,15 @@ class GraphViewer:
                 return n
         return None
 
+    def get_vehicle_at_pos(self, mx, my, vehicles):
+        for vehicle in vehicles:
+            x, y = vehicle.get_pos(self.pos)
+            ax, ay = self.transform(x, y)
+            r = 8  # radius toleransi klik (sedikit lebih besar dari radius draw)
+            if abs(mx - ax) <= r and abs(my - ay) <= r:
+                return vehicle
+        return None
+
     def get_edge_screen_pos(self, u, v):
         """Ambil posisi layar dari dua node edge"""
         x1, y1 = self.transform_cached(u)
@@ -135,12 +144,34 @@ class GraphViewer:
             dist = ((px - proj_x)**2 + (py - proj_y)**2)**0.5
             return dist <= tol
         
-    def handle_mouse_click(self, mouse_pos, G=None):
+    def handle_mouse_click(self, mouse_pos, G=None, vehicles=None):
         shared = self.shared
         if not shared.paused:
             return
 
         mx, my = mouse_pos
+
+        # ==== Vehicle click (prioritas tertinggi) ====
+        if vehicles is not None:
+            vehicle = self.get_vehicle_at_pos(mx, my, vehicles)
+            if vehicle is not None:
+                # Ambil car_id dari vehicle
+                car_id = getattr(vehicle, 'id', None) or getattr(vehicle, 'car_id', None)
+                
+                if car_id and hasattr(shared, "car_state_window") and shared.car_state_window:
+                    # Ambil data vehicle untuk ditampilkan
+                    car_data = {
+                        "garage_node": getattr(vehicle, 'garage_node', ""),
+                        "state": getattr(vehicle, 'state', "Idle"),
+                        "speed": getattr(vehicle, 'speed', 0),
+                        "daily_dist": getattr(vehicle, 'daily_dist', 0),
+                        "total_dist": getattr(vehicle, 'total_dist', 0),
+                        "load": getattr(vehicle, 'load', 0),
+                        "max_load": getattr(vehicle, 'max_load', 1000),
+                        "route": getattr(vehicle, 'route', [])
+                    }
+                    shared.car_state_window.set_car(car_id, car_data)
+                return  # vehicle diklik → return
 
         # ==== Node click ====
         node = self.get_node_at_pos(mx, my)

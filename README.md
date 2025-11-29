@@ -106,13 +106,13 @@ pip install numpy pandas scikit-learn matplotlib pygame osmnx
 ### **Windows**
 
 ```bash
-python -m src.simulation
+python -m src.start
 ```
 
 ### **Linux**
 
 ```bash
-python3.12 -m src.simulation
+python3.12 -m src.start
 ```
 
 ---
