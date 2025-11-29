@@ -3,7 +3,6 @@ Vehicle Module - ACTUATOR
 Truk sebagai pelaksana perintah tanpa logika pengambilan keputusan.
 """
 
-import random
 import networkx as nx
 from .environment import VEHICLE_SPEED
 
