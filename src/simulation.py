@@ -57,6 +57,12 @@ def run_simulation(GRAPH, shared):
     print(f"[Simulation] Loaded TPA nodes: {len(TPA_nodes)}")
     print(f"[Simulation] Loaded Garage nodes: {len(GARAGE_nodes)}")
     
+    # ===== DEBUG: Print TPA details =====
+    if TPA_nodes:
+        print(f"[Simulation] TPA nodes list: {list(TPA_nodes)}")
+    else:
+        print(f"[Simulation] ⚠️ WARNING: NO TPA NODES CONFIGURED!")
+    
     shared.node_count = GRAPH.number_of_nodes()
     shared.edge_count = GRAPH.number_of_edges()
     shared.num_tps = len(TPS_nodes)

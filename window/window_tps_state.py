@@ -130,9 +130,6 @@ class TPSStateWindow:
             messagebox.showerror("Error", "Node tidak ditemukan di shared state.")
             return
 
-        # Get current garbage value (tidak boleh diubah manual)
-        current_garbage = self.shared.node_type[node_id]["tps_data"].get("sampah_kg", 0)
-
         data = {
             "nama": self.name_var.get().strip(),
             "sampah_per_hari": float(self.sampah_per_hari_var.get() or 0),  # Static daily increment
@@ -145,7 +142,6 @@ class TPSStateWindow:
         print(f"Node ID: {node_id}")
         print(f"Nama: {data['nama']}")
         print(f"Sampah per hari (static): {data['sampah_per_hari']} kg")
-        print(f"Sampah saat ini (current): {data['sampah_kg']} kg")
         print(f"Dilayanin: {data['dilayanin']}")
         print("---\n")
 
@@ -154,7 +150,6 @@ class TPSStateWindow:
             f"TPS {node_id} berhasil diupdate:\n"
             f"• Nama: {data['nama']}\n"
             f"• Sampah per hari: {data['sampah_per_hari']} kg\n"
-            f"• Sampah saat ini: {data['sampah_kg']} kg"
         )
 
     # =======================

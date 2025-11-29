@@ -144,16 +144,42 @@ class Vehicle:
     def actuator_go_to_tpa(self):
         """Actuator: Pergi ke TPA"""
         if not self.TPA_node:
+            print(f"[Vehicle {self.id}] ERROR: No TPA_node configured!")
             return False
+        
+        # TPA_node bisa berupa set/list, ambil yang pertama
+        if isinstance(self.TPA_node, (set, list)):
+            if len(self.TPA_node) == 0:
+                print(f"[Vehicle {self.id}] ERROR: TPA_node is empty set/list!")
+                return False
+            tpa_target = list(self.TPA_node)[0]
+        else:
+            tpa_target = self.TPA_node
+        
+        # Check if already at TPA
+        if self.current == tpa_target:
+            print(f"[Vehicle {self.id}] Already at TPA {tpa_target}")
+            self.state = "at_tpa"
+            return True
+        
         old_state = self.state
         try:
-            path = nx.shortest_path(self.G, self.current, self.TPA_node, weight="length")
+            path = nx.shortest_path(self.G, self.current, tpa_target, weight="length")
+            
+            if not path or len(path) < 2:
+                print(f"[Vehicle {self.id}] ERROR: Invalid path to TPA!")
+                return False
+            
             self.set_path(path)
             self.state = "to_tpa"
+            
             if old_state == "idle":
                 self._update_state_in_garage_stats(old_state)
+            
+            print(f"[Vehicle {self.id}] Routing to TPA {tpa_target} (distance: {len(path)} nodes)")
             return True
-        except:
+        except Exception as e:
+            print(f"[Vehicle {self.id}] ERROR: Failed to route to TPA: {e}")
             return False
 
     def actuator_go_to_garage(self):
@@ -255,7 +281,13 @@ class Vehicle:
 
     def actuator_arrive_at_tpa(self):
         """Actuator: Vehicle tiba di TPA"""
-        if self.current == self.TPA_node:
+        # Handle TPA_node sebagai set/list
+        if isinstance(self.TPA_node, (set, list)):
+            is_at_tpa = self.current in self.TPA_node
+        else:
+            is_at_tpa = self.current == self.TPA_node
+        
+        if is_at_tpa:
             self.state = "at_tpa"
             print(f"[Vehicle {self.id}] Arrived at TPA {self.current}")
             return True
@@ -263,16 +295,31 @@ class Vehicle:
 
     def actuator_unload_to_tpa(self):
         """Actuator: Unload sampah ke TPA"""
-        if self.state != "at_tpa" or self.current != self.TPA_node:
+        # Validate state
+        if self.state != "at_tpa":
+            print(f"[Vehicle {self.id}] ERROR: Not at TPA (state: {self.state})")
+            return 0
+        
+        # Validate location
+        if isinstance(self.TPA_node, (set, list)):
+            is_at_tpa = self.current in self.TPA_node
+        else:
+            is_at_tpa = self.current == self.TPA_node
+        
+        if not is_at_tpa:
+            print(f"[Vehicle {self.id}] ERROR: Current node {self.current} is not a TPA!")
             return 0
         
         unloaded = self.actuator_unload_garbage()
         
-        if self.current in self.shared.node_type:
-            tpa_data = self.shared.node_type[self.current].get("tpa_data", {})
-            tpa_data["total_sampah"] = tpa_data.get("total_sampah", 0) + unloaded
+        if unloaded > 0:
+            # Update TPA total
+            if self.current in self.shared.node_type:
+                tpa_data = self.shared.node_type[self.current].get("tpa_data", {})
+                tpa_data["total_sampah"] = tpa_data.get("total_sampah", 0) + unloaded
+            
+            print(f"[Vehicle {self.id}] ✓ Unloaded {unloaded:.0f}kg to TPA {self.current}")
         
-        print(f"[Vehicle {self.id}] Unloaded {unloaded:.2f} kg to TPA {self.current}")
         return unloaded
 
     def actuator_arrive_at_garage(self):
@@ -313,11 +360,26 @@ class Vehicle:
     # =====================================================================
 
     def set_path(self, path):
+        """Set path dengan validasi"""
+        if not path or len(path) == 0:
+            print(f"[Vehicle {self.id}] Warning: Empty path provided")
+            self.path = []
+            self.route = []
+            self.target_node = None
+            self.progress = 0.0
+            return
+        
         self.path = path
         self.route = path.copy()
+        
         if len(path) > 1:
             self.current = path[0]
             self.target_node = path[1]
+            self.progress = 0.0
+        else:
+            # Path has only 1 node (already at destination)
+            self.current = path[0]
+            self.target_node = None
             self.progress = 0.0
 
     def go_to_tps(self):
@@ -353,12 +415,30 @@ class Vehicle:
             if not neighbors:
                 return
             goal = random.choice(neighbors)
-            path = nx.shortest_path(self.G, self.current, goal, weight="length")
-            self.set_path(path)
-            self.state = "random"
+            try:
+                path = nx.shortest_path(self.G, self.current, goal, weight="length")
+                self.set_path(path)
+                self.state = "random"
+            except:
+                pass  # Path not found, stay idle
+            return
+        
+        # ===== CRITICAL: Validate path consistency =====
+        if self.target_node not in self.path:
+            print(f"[Vehicle {self.id}] ERROR: target_node {self.target_node} not in path! Resetting path.")
+            self.path = []
+            self.target_node = None
+            self.progress = 0.0
             return
         
         edge_data = self.G.get_edge_data(self.current, self.target_node)
+        if not edge_data:
+            print(f"[Vehicle {self.id}] ERROR: No edge between {self.current} and {self.target_node}! Resetting path.")
+            self.path = []
+            self.target_node = None
+            self.progress = 0.0
+            return
+        
         length = edge_data[0]['length']
 
         edge_id = f"{self.current}-{self.target_node}"
@@ -367,7 +447,7 @@ class Vehicle:
         if shared and hasattr(shared, 'edge_type') and edge_id in shared.edge_type:
             slowdown_value = shared.edge_type[edge_id].get("slowdown", 0)
             if slowdown_value > 0:
-                actual_speed = slowdown_value
+                actual_speed = slowdown_value * shared.speed
                 
                 if hasattr(shared, 'knowledge_model'):
                     shared.knowledge_model.discover_slowdown(edge_id, slowdown_value)
@@ -379,36 +459,63 @@ class Vehicle:
         self.total_dist += distance
 
         if self.progress >= 1.0:
-            idx = self.path.index(self.target_node)
+            # ===== SAFE INDEX LOOKUP =====
+            try:
+                idx = self.path.index(self.target_node)
+            except ValueError:
+                print(f"[Vehicle {self.id}] ERROR: target_node {self.target_node} disappeared from path! Resetting.")
+                self.current = self.target_node if self.target_node else self.current
+                self.path = []
+                self.target_node = None
+                self.progress = 0.0
+                return
+            
             if idx + 1 < len(self.path):
                 self.current = self.target_node
                 self.target_node = self.path[idx + 1]
                 self.progress = 0.0
             else:
+                # Reached final destination
                 self.current = self.target_node
                 self.target_node = None
                 self.path = []
+                self.progress = 0.0
                 
+                # ===== Handle arrival at destination =====
                 if self.state == "to_garage" and self.current == self.garage_node:
                     self.return_to_idle()
+                
                 elif self.state == "to_tps" and self.current in self.TPS_nodes:
                     old_state = self.state
                     self.state = "at_tps"
                     if old_state != "at_tps":
                         self._update_state_in_garage_stats(old_state)
                     
+                    # Discover garbage
                     if hasattr(shared, 'knowledge_model'):
                         tps_data = shared.node_type[self.current].get("tps_data", {})
                         current_garbage = tps_data.get("sampah_kg", 0)
                         shared.knowledge_model.discover_garbage(self.current, current_garbage)
                     
                     print(f"[Vehicle {self.id}] Arrived at TPS {self.current}")
-                elif self.state == "to_tpa" and self.current == self.TPA_node:
-                    old_state = self.state
-                    self.state = "at_tpa"
-                    if old_state != "at_tpa":
-                        self._update_state_in_garage_stats(old_state)
-                    print(f"[Vehicle {self.id}] Arrived at TPA {self.current}")
+                
+                elif self.state == "to_tpa":
+                    # Check if arrived at TPA (handle TPA_node as set/list)
+                    if isinstance(self.TPA_node, (set, list)):
+                        is_at_tpa = self.current in self.TPA_node
+                    else:
+                        is_at_tpa = self.current == self.TPA_node
+                    
+                    if is_at_tpa:
+                        old_state = self.state
+                        self.state = "at_tpa"
+                        if old_state != "at_tpa":
+                            self._update_state_in_garage_stats(old_state)
+                        print(f"[Vehicle {self.id}] Arrived at TPA {self.current}")
+                
+                else:
+                    # Arrived somewhere else (shouldn't happen in normal operation)
+                    print(f"[Vehicle {self.id}] Arrived at node {self.current} (state: {self.state})")
 
     def get_pos(self, pos_dict):
         if self.target_node is None:

@@ -191,8 +191,19 @@ class AIModel:
     def _dispatch_vehicle_to_tps(self, vehicle, tps_id, task):
         """Dispatch single vehicle to TPS"""
         try:
+            # ===== SAFE PATH CALCULATION =====
+            # Check if vehicle is already moving
+            if vehicle.target_node is not None:
+                print(f"[AIModel]   ⚠️ {vehicle.id} already moving, waiting for arrival...")
+                return False
+            
             # Calculate route
             path = nx.shortest_path(vehicle.G, vehicle.current, tps_id, weight="length")
+            
+            if not path or len(path) < 2:
+                print(f"[AIModel]   ✗ Invalid path for {vehicle.id} to TPS {tps_id}")
+                return False
+            
             distance = self.knowledge.get_route_distance(path)
             
             # Set path and state
@@ -293,8 +304,13 @@ class AIModel:
         
         # Check 1: Already full before loading
         if vehicle.actuator_is_full():
-            print(f"[AIModel] 🚛 {vehicle.id} already full ({vehicle.load:.0f}kg) - routing to TPA")
-            vehicle.actuator_go_to_tpa()
+            # Only route if not already going to TPA
+            if vehicle.state != "to_tpa":
+                print(f"[AIModel] 🚛 {vehicle.id} already full ({vehicle.load:.0f}kg) - routing to TPA")
+                success = vehicle.actuator_go_to_tpa()
+                if not success:
+                    print(f"[AIModel] ✗ Failed to route {vehicle.id} to TPA!")
+            # else: already routing, don't spam
             return
         
         # Action: Load garbage from TPS
@@ -307,7 +323,9 @@ class AIModel:
         # Check 2: Full after loading
         if vehicle.actuator_is_full():
             print(f"[AIModel] 🚛 {vehicle.id} is full ({vehicle.load:.0f}kg) - routing to TPA")
-            vehicle.actuator_go_to_tpa()
+            success = vehicle.actuator_go_to_tpa()
+            if not success:
+                print(f"[AIModel] ✗ Failed to route {vehicle.id} to TPA!")
             return
         
         # Check 3: TPS still has significant garbage
@@ -331,7 +349,9 @@ class AIModel:
         if vehicle.load > 0:
             # Has load - MUST go to TPA first
             print(f"[AIModel] 🚛 {vehicle.id} has load ({vehicle.load:.0f}kg) - going to TPA")
-            vehicle.actuator_go_to_tpa()
+            success = vehicle.actuator_go_to_tpa()
+            if not success:
+                print(f"[AIModel] ✗ Failed to route {vehicle.id} to TPA!")
         else:
             # Empty and no TPS - return to garage
             print(f"[AIModel] 🏠 {vehicle.id} empty and no TPS - returning to garage")
@@ -416,7 +436,17 @@ class AIModel:
     def _goto_tps(self, vehicle, tps_id):
         """Send vehicle to specific TPS"""
         try:
+            # ===== SAFE CHECK: Don't interrupt moving vehicle =====
+            if vehicle.target_node is not None and vehicle.progress > 0.1:
+                # Vehicle is significantly into current path, don't interrupt
+                print(f"[AIModel] ⚠️ {vehicle.id} already en-route, skipping reassignment")
+                return False
+            
             path = nx.shortest_path(vehicle.G, vehicle.current, tps_id, weight="length")
+            
+            if not path or len(path) < 2:
+                return False
+            
             vehicle.set_path(path)
             vehicle.state = "to_tps"
             
@@ -428,7 +458,8 @@ class AIModel:
             }
             self._assign_task(vehicle, task)
             return True
-        except:
+        except Exception as e:
+            print(f"[AIModel] ✗ Failed to route {vehicle.id} to TPS {tps_id}: {e}")
             return False
     
     # =====================================================================
