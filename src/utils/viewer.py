@@ -32,17 +32,14 @@ class GraphViewer:
     def transform_cached(self, node):
         x, y = self.pos[node]
 
-        # bila scale/offset berubah → invalidate cache
         if (self.scale != self.last_scale or
             self.offset_x != self.last_offx or
             self.offset_y != self.last_offy):
             self.cache = {}
 
-        # jika sudah ada cache, pakai
         if node in self.cache:
             return self.cache[node]
 
-        # compute baru
         screen_pos = self.transform(x, y)
         self.cache[node] = screen_pos
         return screen_pos
@@ -116,10 +113,6 @@ class GraphViewer:
         return x1, y1, x2, y2
 
     def get_edge_at_pos(self, mx, my):
-        """
-        Deteksi apakah klik berada dekat salah satu edge.
-        Return tuple (u,v) jika ada, else None.
-        """
         TOL = 5  # toleransi klik
         for u, v in self.pos.keys():  # <-- nanti ganti dengan G.edges() saat draw
             x1, y1, x2, y2 = self.get_edge_screen_pos(u, v)
@@ -129,7 +122,6 @@ class GraphViewer:
         return None
 
     def _point_near_line(self, px, py, x1, y1, x2, y2, tol):
-        """Cek apakah titik (px,py) dekat garis (x1,y1)-(x2,y2)"""
         # jarak titik ke garis
         if x1 == x2 and y1 == y2:
             # edge berupa titik (sangat kecil)
@@ -159,18 +151,45 @@ class GraphViewer:
                     "tps": False,
                     "tpa": False,
                     "garage": False,
-                    "tps_data": {"nama": "", "sampah_kg":0, "sampah_hari_ini":0, "dilayanin":False}
+                    "tps_data": {"nama": "", "sampah_kg":0, "sampah_hari_ini":0, "dilayanin":False},
+                    "tpa_data": {"nama": "TPA", "total_sampah": 0},
+                    "garage_data": {"nama": "Garage", "total_armada": 0, "armada_bertugas": 0, "armada_standby": 0}
                 }
 
-            # Ambil data TPS dari node_type
-            tps_data = shared.node_type[node].get("tps_data", None)
-            if hasattr(shared, "tps_state_window") and shared.tps_state_window:
+            node_info = shared.node_type[node]
+
+            # ===== TPS Node Window =====
+            if node_info.get("tps", False) and hasattr(shared, "tps_state_window") and shared.tps_state_window:
+                tps_data = node_info.get("tps_data", {
+                    "nama": "",
+                    "sampah_kg": 0,
+                    "sampah_hari_ini": 0,
+                    "dilayanin": False
+                })
                 shared.tps_state_window.set_node(node, tps_data)
 
-            # NodeStateWindow tetap update flags
-            if hasattr(shared, "node_state_window") and shared.node_state_window:
-                shared.node_state_window.set_node(node, shared.node_type[node])
+            # ===== TPA Node Window =====
+            elif node_info.get("tpa", False) and hasattr(shared, "tpa_state_window") and shared.tpa_state_window:
+                tpa_data = node_info.get("tpa_data", {
+                    "nama": "TPA",
+                    "total_sampah": 0
+                })
+                shared.tpa_state_window.set_node(node, tpa_data)
 
+            # ===== Garage Node Window =====
+            elif node_info.get("garage", False) and hasattr(shared, "garage_state_window") and shared.garage_state_window:
+                garage_data = node_info.get("garage_data", {
+                    "nama": "Garage",
+                    "total_armada": 0,
+                    "armada_bertugas": 0,
+                    "armada_standby": 0
+                })
+                shared.garage_state_window.set_node(node, garage_data)
+
+            # ===== NodeStateWindow (untuk node biasa) =====
+            else:
+                if hasattr(shared, "node_state_window") and shared.node_state_window:
+                    shared.node_state_window.set_node(node, shared.node_type[node])
 
             return  # node diklik → return
 

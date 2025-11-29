@@ -1,88 +1,132 @@
 import tkinter as tk
+from tkinter import ttk, messagebox
 
-# ================ UI ================ 
-root = tk.Tk()
-root.title("TPA State - Sistem Sampah Balikpapan")
-root.geometry("350x250") # Ukuran lebih kecil karena inputnya sedikit
+class TPAStateWindow:
+    def __init__(self, master=None):
+        # Root atau Toplevel
+        if master is None:
+            self.root = tk.Tk()
+        else:
+            self.root = tk.Toplevel(master)
 
-# Judul
-header = tk.Label(root, text="TPA STATE EDITOR", font=("Arial", 12, "bold"))
-header.grid(row=0, column=0, columnspan=2, pady=15)
+        self.root.title("TPA State - Sistem Sampah Balikpapan")
+        self.root.geometry("400x280")
+        self.shared = None  # akan diattach nanti
 
-# --- Form Input ---
+        frm = ttk.Frame(self.root, padding=12)
+        frm.pack(fill="both", expand=True)
 
-# 1. Nama TPA (Input Text)
-tk.Label(root, text="Nama TPA:").grid(row=1, column=0, sticky="w", padx=15, pady=5)
-entry_nama_tpa = tk.Entry(root, width=25)
-entry_nama_tpa.insert(0, "TPA Manggar") # Default value agar praktis
-entry_nama_tpa.grid(row=1, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: Node ID
+        # -------------------------
+        ttk.Label(frm, text="Node ID:").grid(row=0, column=0, sticky="w")
+        self.node_var = tk.StringVar()
+        ttk.Entry(frm, textvariable=self.node_var, width=30, state="readonly").grid(row=1, column=0, pady=(0, 10))
 
-# 2. Jumlah Sampah Terkumpul (Input Angka)
-tk.Label(root, text="Sampah Terkumpul (kg):").grid(row=2, column=0, sticky="w", padx=15, pady=5)
-entry_total_sampah = tk.Entry(root, width=25)
-entry_total_sampah.insert(0, "0") # Default 0 kg
-entry_total_sampah.grid(row=2, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: Nama TPA
+        # -------------------------
+        ttk.Label(frm, text="Nama TPA:").grid(row=2, column=0, sticky="w")
+        self.name_var = tk.StringVar(value="TPA")
+        ttk.Entry(frm, textvariable=self.name_var, width=30).grid(row=3, column=0, pady=(0, 10))
 
-# --- Output & Tombol ---
+        # -------------------------
+        # Input: Jumlah Sampah Terkumpul
+        # -------------------------
+        ttk.Label(frm, text="Sampah Terkumpul (kg):").grid(row=4, column=0, sticky="w")
+        self.total_var = tk.StringVar(value="0")
+        ttk.Entry(frm, textvariable=self.total_var, width=30).grid(row=5, column=0, pady=(0, 10))
 
-# Output Label (Status Bar)
-output_label = tk.Label(root, text="Ready...", fg="blue")
-output_label.grid(row=4, column=0, columnspan=2, pady=15)
+        # -------------------------
+        # Tombol Save
+        # -------------------------
+        self.save_btn = ttk.Button(frm, text="Update Status TPA", command=self.on_save)
+        self.save_btn.grid(row=6, column=0, sticky="ew")
 
-# Button Save
-button = tk.Button(root, text="Update Status TPA", bg="#dddddd")
-button.grid(row=3, column=0, columnspan=2, pady=10, sticky="ew", padx=15)
+    # =======================
+    # ATTACH SHARED
+    # =======================
+    def attach_shared(self, shared):
+        self.shared = shared
+        shared.tpa_state_window = self
+        for node_id, flags in shared.node_type.items():
+            if "tpa_data" not in flags:
+                flags["tpa_data"] = {
+                    "nama": "TPA",
+                    "total_sampah": 0
+                }
 
+    # =======================
+    # SETTERS
+    # =======================
+    def set_node(self, node_id, data=None):
+        self.node_var.set(str(node_id))
+        
+        # ambil data dari node_type jika tidak diberikan
+        if data is None and self.shared and node_id in self.shared.node_type:
+            data = self.shared.node_type[node_id].get("tpa_data", {
+                "nama": "TPA",
+                "total_sampah": 0
+            })
 
-# ================ GETTER ==============
-def get_tpa_data():
-    """
-    Mengambil data TPA dari form input.
-    Data ini nanti digunakan untuk mengecek kapasitas TPA (jika ada batasan).
-    """
-    data = {
-        "nama": entry_nama_tpa.get(),
-        "total_sampah": entry_total_sampah.get()
-    }
-    return data
+        self.name_var.set(data.get("nama", "TPA"))
+        self.total_var.set(str(data.get("total_sampah", 0)))
 
+    def set_output(self, text, is_error=False):
+        """Mengupdate status label"""
+        color = "red" if is_error else "green"
+        self.output_label.config(text=text, foreground=color)
 
-# ================ SETTER ==============
-def set_output(text, is_error=False):
-    """
-    Mengupdate status label di bagian bawah window
-    """
-    color = "red" if is_error else "green"
-    output_label.config(text=text, fg=color)
+    # =======================
+    # VALIDASI & SAVE
+    # =======================
+    def validate_inputs(self):
+        # Validasi nama TPA
+        if self.name_var.get().strip() == "":
+            self.set_output("Error: Nama TPA wajib diisi!", is_error=True)
+            return False
 
+        # Validasi jumlah sampah
+        try:
+            total_val = float(self.total_var.get())
+            if total_val < 0:
+                self.total_var.set("0")
+        except:
+            self.set_output("Error: Jumlah sampah harus angka!", is_error=True)
+            return False
 
-# ================ LOGIC / EVENTS ==============
-def on_save_click():
-    data = get_tpa_data()
-    
-    # Validasi 1: Nama TPA tidak boleh kosong
-    if data["nama"].strip() == "":
-        set_output("Error: Nama TPA wajib diisi!", is_error=True)
-        return
+        return True
 
-    # Validasi 2: Jumlah sampah harus berupa angka
-    if not data["total_sampah"].isdigit():
-        set_output("Error: Jumlah sampah harus angka!", is_error=True)
-        return
+    def on_save(self):
+        if not self.validate_inputs():
+            return
 
-    # Simulasi Logika:
-    # Di sistem Multiagent nanti, angka ini akan bertambah otomatis
-    # setiap kali Truk melakukan aksi 'DUMP' (buang muatan).
-    
-    print(f"--- Update TPA Manggar ---")
-    print(f"Lokasi: {data['nama']}")
-    print(f"Total Timbunan: {data['total_sampah']} kg")
-    
-    set_output(f"Sukses! Status {data['nama']} diperbarui.")
+        node_id_str = self.node_var.get().strip()
+        if not node_id_str:
+            messagebox.showwarning("Validasi", "Node belum dipilih.")
+            return
 
-# Hubungkan tombol dengan fungsi logic
-button.config(command=on_save_click)
+        node_id = int(node_id_str)
 
+        data = {
+            "nama": self.name_var.get().strip(),
+            "total_sampah": float(self.total_var.get() or 0)
+        }
 
-# ================ RUN APP ==============
-root.mainloop()
+        if self.shared and node_id in self.shared.node_type:
+            self.shared.node_type[node_id]["tpa_data"] = data
+
+        # Output ke console (untuk debugging)
+        print(f"--- Update TPA ---")
+        print(f"Node ID: {node_id}")
+        print(f"Lokasi: {data['nama']}")
+        print(f"Total Timbunan: {data['total_sampah']} kg")
+        
+        self.set_output(f"Sukses! Status {data['nama']} diperbarui.")
+        messagebox.showinfo("Saved", f"Node {node_id} berhasil disimpan:\n{data}")
+
+    # =======================
+    # RUN LOOP
+    # =======================
+    def run(self):
+        self.root.mainloop()

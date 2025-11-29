@@ -1,3 +1,5 @@
+from environment import GRAPH_FILE
+
 class SharedState:
     def __init__(self):
         self.fps = 0
@@ -14,11 +16,7 @@ class SharedState:
 
         # === TIPE NODE (TPS / TPA / GARAGE) ===
         self.node_type = {}   # node_id → { "tps": bool, "tpa": bool, "garage": bool }
-        self.edge_type = {}
-        self.tps_data = {}
-        self.tpa_data = {}
-        self.garage_data = {}
-        
+        self.edge_type = {}        
 
     def init_node_types(self, G, tps_nodes, tpa_nodes, garage_nodes):
         """

@@ -1,13 +1,16 @@
 import os
 import osmnx as ox
+import threading
 from window.window_program_summary import ProgramSummaryWindow
 from window.window_node_state import NodeStateWindow
 from window.window_edges_state import EdgeStateWindow
 from window.window_tps_state import TPSStateWindow
+from window.window_tpa_state import TPAStateWindow
+from window.window_garage_state import GarageStateWindow
+from window.window_car_state import CarStateWindow
 from .environment import *
-import threading
 from .simulation import run_simulation
-from .shared import SharedState
+from .utils.shared import SharedState
 
 def start_simulation_thread(GRAPH, shared):
     t = threading.Thread(target=lambda: run_simulation(GRAPH, shared), daemon=True)
@@ -40,6 +43,16 @@ def main():
     tps_state_window = TPSStateWindow(master=program_summary.root)
     tps_state_window.attach_shared(shared)
 
+    tpa_state_window = TPAStateWindow(master=program_summary.root)
+    tpa_state_window.attach_shared(shared)
+
+    garage_state_window = GarageStateWindow(master=program_summary.root)
+    garage_state_window.attach_shared(shared)
+
+    car_state_window = CarStateWindow(master=program_summary.root)
+    car_state_window.attach_shared(shared)
+
     program_summary.run()
+
 if __name__ == "__main__":
     main()

@@ -1,119 +1,237 @@
 import tkinter as tk
-from tkinter import ttk  # Import ttk untuk Dropdown
+from tkinter import ttk, messagebox
 
-# ================ UI ================ 
-root = tk.Tk()
-root.title("Car State - Truk Sampah Balikpapan")
-root.geometry("350x450")
+class CarStateWindow:
+    def __init__(self, master=None):
+        # Root atau Toplevel
+        if master is None:
+            self.root = tk.Tk()
+        else:
+            self.root = tk.Toplevel(master)
 
-# Judul
-header = tk.Label(root, text="CAR STATE EDITOR", font=("Arial", 12, "bold"))
-header.grid(row=0, column=0, columnspan=2, pady=15)
+        self.root.title("Car State - Truk Sampah Balikpapan")
+        self.root.geometry("400x580")
+        self.shared = None  # akan diattach nanti
 
-# --- Form Input ---
+        frm = ttk.Frame(self.root, padding=12)
+        frm.pack(fill="both", expand=True)
 
-# 1. ID Kendaraan
-tk.Label(root, text="ID Kendaraan:").grid(row=1, column=0, sticky="w", padx=10, pady=5)
-entry_id = tk.Entry(root)
-entry_id.grid(row=1, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: Car ID
+        # -------------------------
+        ttk.Label(frm, text="ID Kendaraan:").grid(row=0, column=0, sticky="w")
+        self.car_id_var = tk.StringVar()
+        ttk.Entry(frm, textvariable=self.car_id_var, width=30, state="readonly").grid(row=1, column=0, pady=(0, 10))
 
-# 2. State (Dropdown)
-tk.Label(root, text="State:").grid(row=2, column=0, sticky="w", padx=10, pady=5)
-# Opsi dropdown sesuai logika truk sampah
-state_options = ["Idle", "Moving", "Loading", "Unloading", "Maintenance"]
-combo_state = ttk.Combobox(root, values=state_options, state="readonly")
-combo_state.current(0) # Default pilih 'Idle'
-combo_state.grid(row=2, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: Garage Node ID
+        # -------------------------
+        ttk.Label(frm, text="Garage Node ID:").grid(row=2, column=0, sticky="w")
+        self.garage_node_var = tk.StringVar()
+        ttk.Entry(frm, textvariable=self.garage_node_var, width=30).grid(row=3, column=0, pady=(0, 10))
 
-# 3. Speed (Input km/j)
-tk.Label(root, text="Speed (km/j):").grid(row=3, column=0, sticky="w", padx=10, pady=5)
-entry_speed = tk.Entry(root)
-entry_speed.grid(row=3, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: State (Dropdown)
+        # -------------------------
+        ttk.Label(frm, text="State:").grid(row=4, column=0, sticky="w")
+        self.state_var = tk.StringVar(value="Idle")
+        state_options = ["Idle", "Moving", "Loading", "Unloading", "Maintenance"]
+        ttk.Combobox(frm, textvariable=self.state_var, values=state_options, state="readonly", width=28).grid(row=5, column=0, pady=(0, 10))
 
-# 4. Total Perjalanan Hari Ini (Pengganti Bensin/Fitness Function)
-tk.Label(root, text="Trip Hari Ini (km):").grid(row=4, column=0, sticky="w", padx=10, pady=5)
-entry_daily = tk.Entry(root)
-entry_daily.grid(row=4, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: Speed
+        # -------------------------
+        ttk.Label(frm, text="Speed (km/j):").grid(row=6, column=0, sticky="w")
+        self.speed_var = tk.StringVar(value="0")
+        ttk.Entry(frm, textvariable=self.speed_var, width=30).grid(row=7, column=0, pady=(0, 10))
 
-# 5. Total Perjalanan Semua (Odometer)
-tk.Label(root, text="Total Odometer (km):").grid(row=5, column=0, sticky="w", padx=10, pady=5)
-entry_total = tk.Entry(root)
-entry_total.grid(row=5, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: Trip Hari Ini
+        # -------------------------
+        ttk.Label(frm, text="Trip Hari Ini (km):").grid(row=8, column=0, sticky="w")
+        self.daily_dist_var = tk.StringVar(value="0")
+        ttk.Entry(frm, textvariable=self.daily_dist_var, width=30).grid(row=9, column=0, pady=(0, 10))
 
-# 6. Angkutan Sekarang (Muatan kg)
-tk.Label(root, text="Muatan (kg):").grid(row=6, column=0, sticky="w", padx=10, pady=5)
-entry_load = tk.Entry(root)
-entry_load.grid(row=6, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: Total Odometer
+        # -------------------------
+        ttk.Label(frm, text="Total Odometer (km):").grid(row=10, column=0, sticky="w")
+        self.total_dist_var = tk.StringVar(value="0")
+        ttk.Entry(frm, textvariable=self.total_dist_var, width=30).grid(row=11, column=0, pady=(0, 10))
 
-# 6. Angkutan Max (Muatan kg)
-tk.Label(root, text="Muatan maksimum (kg):").grid(row=7, column=0, sticky="w", padx=10, pady=5)
-entry_load = tk.Entry(root)
-entry_load.grid(row=7, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: Muatan Sekarang
+        # -------------------------
+        ttk.Label(frm, text="Muatan (kg):").grid(row=12, column=0, sticky="w")
+        self.load_var = tk.StringVar(value="0")
+        ttk.Entry(frm, textvariable=self.load_var, width=30).grid(row=13, column=0, pady=(0, 10))
 
-# 8. Node Tujuan (String ID TPS/TPA)
-tk.Label(root, text="Node Tujuan:").grid(row=8, column=0, sticky="w", padx=10, pady=5)
-entry_target = tk.Entry(root)
-entry_target.grid(row=8, column=1, padx=10, pady=5)
+        # -------------------------
+        # Input: Muatan Maksimum
+        # -------------------------
+        ttk.Label(frm, text="Muatan Maksimum (kg):").grid(row=14, column=0, sticky="w")
+        self.max_load_var = tk.StringVar(value="1000")
+        ttk.Entry(frm, textvariable=self.max_load_var, width=30).grid(row=15, column=0, pady=(0, 10))
 
-# --- Output & Tombol ---
+        # -------------------------
+        # Input: List Node Rute (Text Area)
+        # -------------------------
+        ttk.Label(frm, text="List Node Rute (pisahkan dengan koma):").grid(row=16, column=0, sticky="w")
+        
+        # Frame untuk Text widget dengan scrollbar
+        text_frame = ttk.Frame(frm)
+        text_frame.grid(row=17, column=0, pady=(0, 10), sticky="ew")
+        
+        self.route_text = tk.Text(text_frame, width=30, height=4, wrap="word")
+        scrollbar = ttk.Scrollbar(text_frame, orient="vertical", command=self.route_text.yview)
+        self.route_text.configure(yscrollcommand=scrollbar.set)
+        
+        self.route_text.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
 
-# Output Label (Status Bar)
-output_label = tk.Label(root, text="Ready...", fg="blue")
-output_label.grid(row=10, column=0, columnspan=2, pady=15)
+        # -------------------------
+        # Tombol Save
+        # -------------------------
+        self.save_btn = ttk.Button(frm, text="Simpan Data Truk", command=self.on_save)
+        self.save_btn.grid(row=18, column=0, sticky="ew")
 
-# Button Save
-button = tk.Button(root, text="Simpan Data Truk", bg="#dddddd")
-button.grid(row=9, column=0, columnspan=2, pady=10, sticky="ew", padx=10)
+    # =======================
+    # ATTACH SHARED
+    # =======================
+    def attach_shared(self, shared):
+        self.shared = shared
+        shared.car_state_window = self
 
+    # =======================
+    # SETTERS
+    # =======================
+    def set_car(self, car_id, data=None):
+        self.car_id_var.set(str(car_id))
+        
+        if data is None:
+            data = {}
 
-# ================ GETTER ==============
-def get_car_data():
-    """
-    Mengambil semua data dari form input dan menjadikannya Dictionary.
-    Dictionary ini nanti yang dikirim ke Multiagent System.
-    """
-    data = {
-        "id": entry_id.get(),
-        "state": combo_state.get(),
-        "speed": entry_speed.get(),
-        "daily_dist": entry_daily.get(), # Penting untuk Genetic Algorithm (Fitness)
-        "total_dist": entry_total.get(),
-        "load": entry_load.get(),
-        "target": entry_target.get()
-    }
-    return data
+        self.garage_node_var.set(str(data.get("garage_node", "")))
+        self.state_var.set(data.get("state", "Idle"))
+        self.speed_var.set(str(data.get("speed", 0)))
+        self.daily_dist_var.set(str(data.get("daily_dist", 0)))
+        self.total_dist_var.set(str(data.get("total_dist", 0)))
+        self.load_var.set(str(data.get("load", 0)))
+        self.max_load_var.set(str(data.get("max_load", 1000)))
+        
+        # Handle route list - bisa berupa list atau string
+        route = data.get("route", [])
+        if isinstance(route, list):
+            route_str = ", ".join(map(str, route))
+        else:
+            route_str = str(route)
+        
+        self.route_text.delete("1.0", "end")
+        self.route_text.insert("1.0", route_str)
 
+    def set_output(self, text, is_error=False):
+        color = "red" if is_error else "green"
+        self.output_label.config(text=text, foreground=color)
 
-# ================ SETTER ==============
-def set_output(text, is_error=False):
-    """
-    Mengupdate status label di bagian bawah window
-    """
-    color = "red" if is_error else "green"
-    output_label.config(text=text, fg=color)
+    # =======================
+    # VALIDASI & SAVE
+    # =======================
+    def validate_inputs(self):
+        # Validasi ID Kendaraan
+        if self.car_id_var.get().strip() == "":
+            self.set_output("Error: ID Kendaraan wajib diisi!", is_error=True)
+            return False
 
+        # Validasi Speed
+        try:
+            speed_val = float(self.speed_var.get())
+            if speed_val < 0:
+                self.speed_var.set("0")
+        except:
+            self.set_output("Error: Speed harus angka!", is_error=True)
+            return False
 
-# ================ LOGIC / EVENTS ==============
-def on_save_click():
-    data = get_car_data()
-    
-    # Validasi sederhana (ID tidak boleh kosong)
-    if data["id"].strip() == "":
-        set_output("Error: ID Kendaraan wajib diisi!", is_error=True)
-        return
+        # Validasi Daily Distance
+        try:
+            daily_val = float(self.daily_dist_var.get())
+            if daily_val < 0:
+                self.daily_dist_var.set("0")
+        except:
+            self.set_output("Error: Trip hari ini harus angka!", is_error=True)
+            return False
 
-    # Simulasi penyimpanan data ke sistem Multiagent
-    # Di sini nanti logika Genetic Algorithm membaca 'daily_dist'
-    print(f"--- Data Disimpan ke Sistem ---")
-    print(f"Agent ID: {data['id']}")
-    print(f"Fitness Cost (Jarak): {data['daily_dist']} km")
-    print(f"Target Next: {data['target']}")
-    
-    set_output(f"Sukses! Data {data['id']} berhasil disimpan.")
+        # Validasi Total Distance
+        try:
+            total_val = float(self.total_dist_var.get())
+            if total_val < 0:
+                self.total_dist_var.set("0")
+        except:
+            self.set_output("Error: Total odometer harus angka!", is_error=True)
+            return False
 
-# Hubungkan tombol dengan fungsi logic
-button.config(command=on_save_click)
+        # Validasi Load
+        try:
+            load_val = float(self.load_var.get())
+            if load_val < 0:
+                self.load_var.set("0")
+        except:
+            self.set_output("Error: Muatan harus angka!", is_error=True)
+            return False
 
+        # Validasi Max Load
+        try:
+            max_load_val = float(self.max_load_var.get())
+            if max_load_val < 0:
+                self.max_load_var.set("0")
+        except:
+            self.set_output("Error: Muatan maksimum harus angka!", is_error=True)
+            return False
 
-# ================ RUN APP ==============
-root.mainloop()
+        # Validasi Load tidak boleh melebihi Max Load
+        if float(self.load_var.get()) > float(self.max_load_var.get()):
+            self.set_output("Error: Muatan tidak boleh melebihi kapasitas maksimum!", is_error=True)
+            return False
+
+        return True
+
+    def on_save(self):
+        if not self.validate_inputs():
+            return
+
+        car_id = self.car_id_var.get().strip()
+
+        # Parse route list dari Text widget
+        route_str = self.route_text.get("1.0", "end").strip()
+        route_list = []
+        if route_str:
+            # Split by comma dan bersihkan whitespace
+            route_list = [node.strip() for node in route_str.split(",") if node.strip()]
+
+        data = {
+            "garage_node": self.garage_node_var.get().strip(),
+            "state": self.state_var.get(),
+            "speed": float(self.speed_var.get() or 0),
+            "daily_dist": float(self.daily_dist_var.get() or 0),
+            "total_dist": float(self.total_dist_var.get() or 0),
+            "load": float(self.load_var.get() or 0),
+            "max_load": float(self.max_load_var.get() or 1000),
+            "route": route_list
+        }
+
+        # Output ke console (untuk debugging)
+        print(f"--- Data Disimpan ke Sistem ---")
+        print(f"Agent ID: {car_id}")
+        print(f"Garage Node: {data['garage_node']}")
+        print(f"State: {data['state']}")
+        print(f"Fitness Cost (Jarak): {data['daily_dist']} km")
+        print(f"Muatan: {data['load']}/{data['max_load']} kg")
+        print(f"Route: {data['route']}")
+        
+        self.set_output(f"Sukses! Data {car_id} berhasil disimpan.")
+        messagebox.showinfo("Saved", f"Kendaraan {car_id} berhasil disimpan:\nRoute: {route_list}")
+
+    # =======================
+    # RUN LOOP
+    # =======================
+    def run(self):
+        self.root.mainloop()
