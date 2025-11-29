@@ -8,6 +8,9 @@ class ProgramSummaryWindow:
         self.root.title("Program Summary")
         self.root.geometry("450x420")
         self.root.configure(bg="#E8E8E8")
+        
+        # Callback untuk refresh simulasi
+        self.on_refresh_callback = None
 
         content = tk.Frame(self.root, bg="#E8E8E8")
         content.pack(pady=10, fill="both")
@@ -66,7 +69,6 @@ class ProgramSummaryWindow:
         pause_check.grid(row=3, column=0, columnspan=2, padx=10, pady=5, sticky="w")
         self.pause_var.trace_add("write", self.on_pause_change)
 
-
         stats_frame = ttk.Frame(content)
         stats_frame.grid(row=4, column=0, columnspan=2, padx=10, pady=5, sticky="w")
 
@@ -102,7 +104,7 @@ class ProgramSummaryWindow:
         button_frame = ttk.Frame(content)
         button_frame.grid(row=5, column=0, columnspan=2, pady=10)
 
-        refresh_btn = ttk.Button(button_frame, text="Refresh Simulasi", command=self.on_refresh)
+        refresh_btn = ttk.Button(button_frame, text="🔄 Refresh Simulasi", command=self.on_refresh)
         refresh_btn.pack(side="left", padx=5)
 
         save_btn = ttk.Button(button_frame, text="💾 Hard Save", command=self.on_hard_save)
@@ -180,6 +182,10 @@ class ProgramSummaryWindow:
         self.shared = shared
         self.root.after(200, self.update_from_shared)
 
+    def set_refresh_callback(self, callback):
+        """Set callback function yang dipanggil saat refresh"""
+        self.on_refresh_callback = callback
+
     def update_from_shared(self):
         if not hasattr(self, "shared"): 
             return
@@ -222,13 +228,38 @@ class ProgramSummaryWindow:
     #                        EVENTS
     # ============================================================
     def on_refresh(self):
+        """Trigger refresh simulasi"""
         self.validate_time()
+        
+        # Reset vehicle ID counter
+        import src.vehicle
+        src.vehicle._vehicle_id_counter = 0
+        
+        # Reset shared state
+        if hasattr(self, "shared"):
+            self.shared.node_type = {}
+            self.shared.edge_type = {}
+            self.shared.vehicles = []
+            self.shared.sim_hour = int(self.hour_var.get())
+            self.shared.sim_min = int(self.minute_var.get())
+            self.shared.sim_day = int(self.day_var.get())
+            
+            speed_str = self.speed_var.get()
+            self.shared.speed = float(speed_str.replace("x", ""))
+            
+            self.shared.paused = bool(self.pause_var.get())
+        
         print("=== REFRESH SIMULASI ===")
-        print("FPS:", self.get_fps())
         print("Waktu:", self.get_simulation_time())
         print("Speed:", self.get_simulation_speed())
         print("Pause:", self.get_pause_state())
-        print("Stats:", self.get_stats_values())
+        
+        # Panggil callback refresh jika ada
+        if self.on_refresh_callback:
+            print("[ProgramSummaryWindow] Calling refresh callback...")
+            self.on_refresh_callback()
+        else:
+            messagebox.showwarning("Warning", "Refresh callback belum ter-set!")
 
     def on_hard_save(self):
         """Handler untuk tombol Hard Save"""
@@ -261,11 +292,9 @@ class ProgramSummaryWindow:
         if hasattr(self, "shared"):
             self.shared.speed = speed_value
 
-
     def on_pause_change(self, *args):
         if hasattr(self, "shared"):
             self.shared.paused = bool(self.pause_var.get())
-
 
     # ============================================================
     #                       MAIN LOOP

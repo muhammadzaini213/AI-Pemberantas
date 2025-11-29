@@ -1,6 +1,7 @@
 import os
 import osmnx as ox
 import threading
+import pygame
 from window.window_program_summary import ProgramSummaryWindow
 from window.window_node_state import NodeStateWindow
 from window.window_edges_state import EdgeStateWindow
@@ -12,9 +13,25 @@ from .environment import *
 from .simulation import run_simulation
 from .utils.shared import SharedState
 
+_simulation_thread = None
+_simulation_active = True
+
 def start_simulation_thread(GRAPH, shared):
-    t = threading.Thread(target=lambda: run_simulation(GRAPH, shared), daemon=True)
-    t.start()
+    global _simulation_thread, _simulation_active
+    _simulation_active = True
+    _simulation_thread = threading.Thread(
+        target=lambda: run_simulation(GRAPH, shared), 
+        daemon=True
+    )
+    _simulation_thread.start()
+
+def stop_simulation_thread():
+    global _simulation_active
+    _simulation_active = False
+    try:
+        pygame.quit()
+    except:
+        pass
 
 def main():
 
@@ -60,6 +77,28 @@ def main():
 
     car_state_window = CarStateWindow(master=program_summary.root)
     car_state_window.attach_shared(shared)
+
+    # ============================================================
+    #  SETUP REFRESH CALLBACK
+    # ============================================================
+    def on_refresh_simulation():
+        """Callback saat user klik Refresh Simulasi"""
+        print("\n[Main] Stopping old simulation...")
+        stop_simulation_thread()
+        
+        # Wait sebentar agar pygame quit dengan proper
+        import time
+        time.sleep(0.5)
+        
+        print("[Main] Loading graph...")
+        GRAPH = ox.load_graphml(GRAPH_FILE)
+        
+        print("[Main] Starting new simulation...")
+        start_simulation_thread(GRAPH, shared)
+        
+        print("[Main] Refresh complete!")
+
+    program_summary.set_refresh_callback(on_refresh_simulation)
 
     program_summary.run()
 
