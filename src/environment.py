@@ -13,38 +13,19 @@ NUM_TPS = 7
 NUM_TPA = 2
 NUM_GARAGE = 3
 
-# ================== TPS SETUP ==================
-TPS_DATA = [
-    {
-        # "id": 1,
-        "trash_per_day": 30,
-        "extraction_cap": 300, # Ini nanti kita random per hari, jadi cuma titik tengahnya aja
-        "location": object # Graph nodes
-    },
-    {
-        # "id": 2,
-        "trash_per_day": 30,
-        "extraction_cap": 300,
-        "location": object # Graph nodes
-    }
-]
+# ===== Shift Settings =====
+SHIFT_START = 6  # 06:00 - Truk mulai beroperasi
+SHIFT_END = 22   # 22:00 - Truk kembali ke garasi
 
-# ================== VEHICLE SETUP ==================
-OPERATIONAL_TIME = 5000 # Nanti ikutin jam operasionalnya
-VEHICLE_DATA = [
-    {
-        # "id": 1,
-        "capacity": 200,
-        "speed": 30,
-        "fuel": 100,
-    },
-    {
-        # "id": 2,
-        "capacity": 200,
-        "speed": 30,
-        "fuel": 100,
-    }
-]
+# ===== Simulation Settings =====
+WASTE_RATE_MIN = 5.0   # ton/hour minimum
+WASTE_RATE_MAX = 15.0  # ton/hour maximum
+MAX_TPS_CAPACITY = 200.0  # ton maximum per TPS
+
+# ===== AI Controller Settings =====
+AI_DECISION_INTERVAL = 2.0  # seconds - AI makes decisions every 2 seconds
+AI_PRIORITY_THRESHOLD = 0.3  # Minimum priority to assign task
+AI_FULL_THRESHOLD = 0.9  # 90% capacity = full
 
 # ================== SPRITES ==================
 NODE_COL = (255,120,120) # Node kuning

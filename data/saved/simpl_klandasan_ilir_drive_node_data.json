@@ -1,7 +1,3551 @@
 {
+  "620840837": {
+    "tps": false,
+    "tpa": true,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "620840839": {
+    "tps": false,
+    "tpa": false,
+    "garage": true,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 10,
+      "armada_bertugas": 0,
+      "armada_standby": 6
+    }
+  },
+  "620840841": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "620840862": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "620840864": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "620840868": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781639": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781643": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781648": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781653": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781654": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781658": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781686": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781689": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781694": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781697": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781703": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687781704": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687783945": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687783952": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687783987": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687783993": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "687784001": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1200415052": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512569971": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512569972": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512569983": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512569985": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512569990": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512569991": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512570004": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512570005": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512570008": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512570012": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512570027": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512570066": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602828": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602829": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602836": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602838": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602845": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602849": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602854": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602944": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602948": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602949": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602955": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602966": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "1512602976": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "3751083365": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "3769876201": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "3769966745": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "4263603166": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "4263603170": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "4263603182": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "4982835368": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "4982835372": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5334325341": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5334325344": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5334325356": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5334325366": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5334325377": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5441947852": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5441947857": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5441947861": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5441947863": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5441947864": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5441947868": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5442420100": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5447426640": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5447426675": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5455576670": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5523288370": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5523288377": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5524274511": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5524274691": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5524274702": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5524274703": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5539175662": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5539175666": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5804505865": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "5804505894": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6098142238": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6098142244": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6098142245": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6098142247": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6098142269": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6098142274": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6098142838": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
   "6144783124": {
     "tps": true,
     "tpa": false,
-    "garage": false
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 1,
+      "sampah_hari_ini": 50001,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6144784003": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6145011468": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6145011478": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6145011506": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6266256215": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6266256216": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6266256218": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6266256249": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6668075941": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6668075964": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6668147992": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "6856711415": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7168670884": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7205499295": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7287508558": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7287508559": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7324676831": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7349301152": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7547270305": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7564796125": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7564796129": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7568920020": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7568920021": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7723666543": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7830634410": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "7889295209": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8193118544": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559281184": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559281193": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559306085": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559306086": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559307538": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559307548": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559307554": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559307564": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559638991": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559638998": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559638999": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559655767": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559732294": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8559732295": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560047231": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560047246": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560112400": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560112404": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560155398": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560217473": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560217487": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560217488": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560217491": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560217495": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560256180": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560256187": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560290050": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560309421": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560309426": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560397311": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560397316": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560426738": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8560426764": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8562453684": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8562453693": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8562463258": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8562463727": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8692586472": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8727724316": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8727734318": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "8855668562": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "9494338757": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "9494338760": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "10091588523": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "11232839130": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "12060498670": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "12060498674": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "13185503586": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "13185503591": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "13285073857": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "13285073858": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
+  },
+  "13285073859": {
+    "tps": false,
+    "tpa": false,
+    "garage": false,
+    "tps_data": {
+      "nama": "",
+      "sampah_kg": 0,
+      "sampah_hari_ini": 0,
+      "dilayanin": false
+    },
+    "tpa_data": {
+      "nama": "",
+      "total_sampah": 0
+    },
+    "garage_data": {
+      "nama": "Garage",
+      "total_armada": 0,
+      "armada_bertugas": 0,
+      "armada_standby": 0
+    }
   }
 }
