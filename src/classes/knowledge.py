@@ -45,7 +45,7 @@ class KnowledgeModel:
             return {
                 "node_id": tps_id,
                 "nama": tps_data.get("nama", ""),
-                "sampah_per_hari": tps_data.get("sampah_per_hari", 0),  # Known
+                "sampah_per_hari": tps_data.get("sampah_per_hari", 0),
                 "position": tps_id,
                 "dilayanin": tps_data.get("dilayanin", False)
             }
