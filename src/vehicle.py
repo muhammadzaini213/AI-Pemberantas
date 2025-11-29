@@ -5,7 +5,7 @@ import uuid
 
 class Vehicle:
     def __init__(self, graph, tps_nodes=None, tpa_node=None, garage_nodes=None, speed=VEHICLE_SPEED, shared=None):
-        # Use UUID untuk ID yang truly unique (tidak peduli restart)
+        # Use UUID untuk ID yang truly unique
         self.id = str(uuid.uuid4())[:8]
         
         self.G = graph
@@ -14,82 +14,51 @@ class Vehicle:
         self.garage_nodes = garage_nodes or []
         self.shared = shared
         
-        # ===== Assign vehicle ke garage awal =====
-        if garage_nodes and shared:
-            self.garage_node = self._assign_to_garage(garage_nodes)
-        else:
-            self.garage_node = random.choice(list(graph.nodes())) if garage_nodes else None
+        # ===== Garage akan di-set dari luar (di run_simulation) =====
+        self.garage_node = None  # Will be set externally
         
-        # Mulai dari garage
-        self.current = self.garage_node if self.garage_node else random.choice(list(graph.nodes()))
+        # ===== Start position (akan di-set sama dengan garage_node dari luar) =====
+        self.current = None  # Will be set externally
         
         # ===== Vehicle tracking data =====
         self.path = []
         self.progress = 0.0
         self.target_node = None
-        self.state = "idle"  # idle, to_tps, at_tps, to_tpa, at_tpa, to_garage, random
+        self.state = "idle"
         self.speed = speed
         
         # ===== Tracking metrics =====
         self.daily_dist = 0.0
         self.total_dist = 0.0
         self.load = 0
-        self.max_load = 1000
+        self.max_load = 100
         self.route = []
         
-        # Update garage stats di shared.node_type
-        self._update_garage_stats()
+        # NOTE: Jangan panggil _update_garage_stats() di __init__!
+        # Akan dipanggil dari run_simulation() setelah garage_node di-set
         
-        print(f"[Vehicle] Created ID: {self.id}, garage_node: {self.garage_node}")
-
-    def _assign_to_garage(self, garage_nodes):
-        """Assign vehicle ke garage dengan armada paling sedikit"""
-        if not garage_nodes or not self.shared:
-            return random.choice(garage_nodes) if garage_nodes else None
-        
-        min_armada = float('inf')
-        best_garage = None
-        
-        for garage_node in garage_nodes:
-            if garage_node in self.shared.node_type:
-                garage_data = self.shared.node_type[garage_node].get("garage_data", {})
-                total_armada = garage_data.get("total_armada", 0)
-                if total_armada < min_armada:
-                    min_armada = total_armada
-                    best_garage = garage_node
-        
-        return best_garage if best_garage else random.choice(garage_nodes)
-
-    def _decrement_garage_stats(self, garage_node):
-        """Kurangi stats dari garage tertentu"""
-        if not garage_node or not self.shared:
-            return
-        
-        if garage_node in self.shared.node_type:
-            garage_data = self.shared.node_type[garage_node].get("garage_data", {})
-            garage_data["total_armada"] = max(0, garage_data.get("total_armada", 0) - 1)
-            
-            if self.state == "idle":
-                garage_data["armada_standby"] = max(0, garage_data.get("armada_standby", 0) - 1)
-            else:
-                garage_data["armada_bertugas"] = max(0, garage_data.get("armada_bertugas", 0) - 1)
+        print(f"[Vehicle] Created ID: {self.id}")
 
     def _update_garage_stats(self):
-        """Update garage stats di shared.node_type[garage_node].garage_data"""
+        """Update garage stats di shared.node_type[garage_node].garage_data
+        
+        PENTING: Method ini HANYA update armada_standby/armada_bertugas,
+        TIDAK increment total_armada (sudah di-set dari loaded data)
+        """
         if not self.garage_node or not self.shared:
             return
         
         if self.garage_node in self.shared.node_type:
             garage_data = self.shared.node_type[self.garage_node].get("garage_data", {})
             
-            # Increment total_armada
-            garage_data["total_armada"] = garage_data.get("total_armada", 0) + 1
-            
-            # Kategori: armada_standby atau armada_bertugas
+            # ✅ HANYA update kategori armada_standby/armada_bertugas
+            # JANGAN increment total_armada! (sudah di-set dari saved data)
             if self.state == "idle":
                 garage_data["armada_standby"] = garage_data.get("armada_standby", 0) + 1
             else:
                 garage_data["armada_bertugas"] = garage_data.get("armada_bertugas", 0) + 1
+            
+            print(f"[Vehicle {self.id}] Updated garage {self.garage_node} stats: standby={garage_data.get('armada_standby', 0)}, bertugas={garage_data.get('armada_bertugas', 0)}")
 
     def _update_state_in_garage_stats(self, old_state):
         """Update kategorisasi armada saat state berubah (idle ↔ bertugas)"""
@@ -111,20 +80,26 @@ class Vehicle:
             else:
                 garage_data["armada_bertugas"] = garage_data.get("armada_bertugas", 0) + 1
 
+    def _decrement_garage_stats(self, garage_node):
+        """Kurangi stats dari garage tertentu"""
+        if not garage_node or not self.shared:
+            return
+        
+        if garage_node in self.shared.node_type:
+            garage_data = self.shared.node_type[garage_node].get("garage_data", {})
+            
+            if self.state == "idle":
+                garage_data["armada_standby"] = max(0, garage_data.get("armada_standby", 0) - 1)
+            else:
+                garage_data["armada_bertugas"] = max(0, garage_data.get("armada_bertugas", 0) - 1)
+
     def update_garage_assignment(self, new_garage_node):
         """Update garage assignment (saat user pindah vehicle ke garage lain via UI)"""
         if not self.shared or not self.garage_node:
             return
         
         # Kurangi stats dari garage lama
-        if self.garage_node in self.shared.node_type:
-            old_garage_data = self.shared.node_type[self.garage_node].get("garage_data", {})
-            old_garage_data["total_armada"] = max(0, old_garage_data.get("total_armada", 0) - 1)
-            
-            if self.state == "idle":
-                old_garage_data["armada_standby"] = max(0, old_garage_data.get("armada_standby", 0) - 1)
-            else:
-                old_garage_data["armada_bertugas"] = max(0, old_garage_data.get("armada_bertugas", 0) - 1)
+        self._decrement_garage_stats(self.garage_node)
         
         # Assign ke garage baru
         self.garage_node = new_garage_node
@@ -134,7 +109,6 @@ class Vehicle:
     # =====================================================================
     #                        ACTUATORS (No Brain Logic)
     # =====================================================================
-    # Fungsi-fungsi utility untuk actuator tanpa AI/logika pengambilan keputusan
     
     def actuator_set_path(self, path):
         """Actuator: Set path dan mulai bergerak"""
@@ -156,7 +130,7 @@ class Vehicle:
         if not self.TPS_nodes:
             return False
         old_state = self.state
-        goal = random.choice(self.TPS_nodes)
+        goal = random.choice(list(self.TPS_nodes))
         try:
             path = nx.shortest_path(self.G, self.current, goal, weight="length")
             self.set_path(path)
@@ -247,15 +221,13 @@ class Vehicle:
     # =====================================================================
     #                   DISCOVERY & AGENT INTERACTION
     # =====================================================================
-    # Methods untuk agent berinteraksi dengan vehicle dan discover information
-
+    
     def actuator_arrive_at_tps(self):
         """Actuator: Vehicle tiba di TPS - discover sampah"""
         if self.current in self.TPS_nodes and self.shared:
             tps_data = self.shared.node_type[self.current].get("tps_data", {})
             current_garbage = tps_data.get("sampah_kg", 0)
             
-            # Discover sampah di knowledge model
             if hasattr(self.shared, 'knowledge_model'):
                 self.shared.knowledge_model.discover_garbage(self.current, current_garbage)
             
@@ -272,14 +244,10 @@ class Vehicle:
         tps_data = self.shared.node_type[self.current].get("tps_data", {})
         available = tps_data.get("sampah_kg", 0)
         
-        # Jika amount tidak ditentukan, ambil semua atau sampai penuh
         if amount is None:
             amount = available
         
-        # Load amount yang bisa diambil
         loaded = self.actuator_load_garbage(amount)
-        
-        # Kurangi sampah di TPS
         tps_data["sampah_kg"] = max(0, available - loaded)
         
         print(f"[Vehicle {self.id}] Loaded {loaded:.2f} kg from TPS {self.current} (remaining: {tps_data['sampah_kg']:.2f} kg)")
@@ -300,7 +268,6 @@ class Vehicle:
         
         unloaded = self.actuator_unload_garbage()
         
-        # Update TPA total
         if self.current in self.shared.node_type:
             tpa_data = self.shared.node_type[self.current].get("tpa_data", {})
             tpa_data["total_sampah"] = tpa_data.get("total_sampah", 0) + unloaded
@@ -323,11 +290,9 @@ class Vehicle:
         
         edge_id = f"{self.current}-{self.target_node}"
         
-        # Cek jika ada slowdown di edge ini
         if hasattr(self.shared, 'edge_type') and edge_id in self.shared.edge_type:
             slowdown = self.shared.edge_type[edge_id].get("slowdown", 0)
             
-            # Discover ke knowledge model
             if slowdown > 0 and hasattr(self.shared, 'knowledge_model'):
                 self.shared.knowledge_model.discover_slowdown(edge_id, slowdown)
             
@@ -381,6 +346,9 @@ class Vehicle:
         real_speed = self.speed * shared.speed
 
         if not self.path or self.target_node is None:
+            if self.state in ["idle", "at_tps", "at_tpa"]:
+                return
+            
             neighbors = list(self.G.neighbors(self.current))
             if not neighbors:
                 return
@@ -389,28 +357,24 @@ class Vehicle:
             self.set_path(path)
             self.state = "random"
             return
-
+        
         edge_data = self.G.get_edge_data(self.current, self.target_node)
         length = edge_data[0]['length']
 
-        # ===== Apply edge slowdown (macet) =====
         edge_id = f"{self.current}-{self.target_node}"
-        actual_speed = real_speed  # default normal speed
+        actual_speed = real_speed
         
         if shared and hasattr(shared, 'edge_type') and edge_id in shared.edge_type:
             slowdown_value = shared.edge_type[edge_id].get("slowdown", 0)
-            # slowdown > 0 berarti ada macet, ganti kecepatan dengan slowdown value
             if slowdown_value > 0:
                 actual_speed = slowdown_value
                 
-                # ✨ AUTO-DISCOVER SLOWDOWN
                 if hasattr(shared, 'knowledge_model'):
                     shared.knowledge_model.discover_slowdown(edge_id, slowdown_value)
-
+        
         distance = actual_speed * dt
         self.progress += distance / length
         
-        # Update distance tracking
         self.daily_dist += distance
         self.total_dist += distance
 
@@ -425,9 +389,26 @@ class Vehicle:
                 self.target_node = None
                 self.path = []
                 
-                # Jika sudah tiba di garage, kembali ke idle
                 if self.state == "to_garage" and self.current == self.garage_node:
                     self.return_to_idle()
+                elif self.state == "to_tps" and self.current in self.TPS_nodes:
+                    old_state = self.state
+                    self.state = "at_tps"
+                    if old_state != "at_tps":
+                        self._update_state_in_garage_stats(old_state)
+                    
+                    if hasattr(shared, 'knowledge_model'):
+                        tps_data = shared.node_type[self.current].get("tps_data", {})
+                        current_garbage = tps_data.get("sampah_kg", 0)
+                        shared.knowledge_model.discover_garbage(self.current, current_garbage)
+                    
+                    print(f"[Vehicle {self.id}] Arrived at TPS {self.current}")
+                elif self.state == "to_tpa" and self.current == self.TPA_node:
+                    old_state = self.state
+                    self.state = "at_tpa"
+                    if old_state != "at_tpa":
+                        self._update_state_in_garage_stats(old_state)
+                    print(f"[Vehicle {self.id}] Arrived at TPA {self.current}")
 
     def get_pos(self, pos_dict):
         if self.target_node is None:

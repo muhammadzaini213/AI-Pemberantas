@@ -10,6 +10,9 @@ class SharedState:
         self.sim_day = 1
         self.speed = 1.0
         self.paused = False
+        self.simulation_running = False  # Flag untuk kontrol thread
+        
+        # Window references
         self.node_state_window = None
         self.edge_state_window = None
         self.tps_state_window = None
@@ -18,8 +21,8 @@ class SharedState:
         self.car_state_window = None
 
         # === TIPE NODE (TPS / TPA / GARAGE) ===
-        self.node_type = {}   # node_id → { "tps": bool, "tpa": bool, "garage": bool, ... }
-        self.edge_type = {}   # edge_id → { "delay": float, "slowdown": float }
+        self.node_type = {}
+        self.edge_type = {}
         self.vehicles = []
         self.total_vehicles = 0
         
@@ -30,7 +33,7 @@ class SharedState:
         self.num_tpa = 0
         self.num_garage = 0
         
-        # === DYNAMIC PATH FILE DATA (di root project) ===
+        # === DYNAMIC PATH FILE DATA ===
         self.data_dir = os.path.join("data", "saved")
         self.graph_base_name = self._extract_graph_name(GRAPH_FILE)
         self.node_data_file = os.path.join(self.data_dir, f"{self.graph_base_name}_node_data.json")
@@ -85,6 +88,32 @@ class SharedState:
 
         self.paused = self.get_pause_state()
 
+    def reset_vehicles(self):
+        """Reset semua vehicles dan armada stats di garage"""
+        print(f"[SharedState] Resetting {len(self.vehicles)} vehicles...")
+        
+        # Backup info sebelum reset
+        vehicle_count_before = len(self.vehicles)
+        
+        # Reset armada stats di semua garage
+        for node_id, node_data in self.node_type.items():
+            if node_data.get("garage", False):
+                garage_data = node_data.get("garage_data", {})
+                garage_data["armada_bertugas"] = 0
+                garage_data["armada_standby"] = 0
+        
+        # Kosongkan list vehicles
+        self.vehicles.clear()
+        self.total_vehicles = 0
+        
+        print(f"[SharedState] Vehicles reset: {vehicle_count_before} → {len(self.vehicles)}")
+        
+        # Validasi
+        if len(self.vehicles) != 0:
+            print("[ERROR] Vehicles list not empty after reset!")
+        
+        return vehicle_count_before
+
     # ====================================
     # SAVE & LOAD DATA
     # ====================================
@@ -103,7 +132,7 @@ class SharedState:
             "garage": node_data.get("garage", False),
             "tps_data": node_data.get("tps_data", {}),
             "tpa_data": node_data.get("tpa_data", {}),
-            # HANYA simpan total_armada, armada_bertugas dan armada_standby akan di-kalkulasi oleh simulasi
+            # HANYA simpan total_armada
             "garage_data": {
                 "nama": node_data.get("garage_data", {}).get("nama", "Garage"),
                 "total_armada": node_data.get("garage_data", {}).get("total_armada", 0)
@@ -111,12 +140,10 @@ class SharedState:
         }
 
     def save_node_data(self):
-        """Save node_type data ke file JSON - hanya total_armada yang disimpan"""
+        """Save node_type data ke file JSON"""
         self.ensure_data_dir()
         
         try:
-            # Convert node_type keys dari int ke string untuk JSON compatibility
-            # Hanya simpan field yang relevan
             serializable_data = {
                 str(node_id): self._serialize_node_for_save(node_id, data)
                 for node_id, data in self.node_type.items()
@@ -126,7 +153,6 @@ class SharedState:
                 json.dump(serializable_data, f, indent=2)
             
             print(f"[SharedState] Node data saved to {self.node_data_file}")
-            print(f"[SharedState] Note: Only TPS/TPA/Garage assignments and total_armada saved. armada_bertugas/armada_standby will be recalculated by simulation.")
             return True
         except Exception as e:
             print(f"[SharedState] Error saving node data: {e}")
@@ -168,7 +194,6 @@ class SharedState:
             with open(self.node_data_file, 'r') as f:
                 loaded_data = json.load(f)
             
-            # Convert keys kembali dari string ke int
             loaded_count = 0
             for node_id_str, data in loaded_data.items():
                 try:
@@ -202,7 +227,6 @@ class SharedState:
                     continue
             
             print(f"[SharedState] Node data loaded from {self.node_data_file} ({loaded_count} nodes)")
-            print(f"[SharedState] Note: armada_bertugas and armada_standby reset to 0, will be managed by simulation")
             return True
         except Exception as e:
             print(f"[SharedState] Error loading node data: {e}")

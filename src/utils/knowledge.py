@@ -22,8 +22,8 @@ class KnowledgeModel:
         self.known_tpa = {node_id: self._get_tpa_info(node_id) for node_id in tpa_nodes}
         
         # ===== Discovered information (dinamis) =====
-        self.discovered_slowdowns = {}  # edge_id -> slowdown_value (discovered saat truk mengalami)
-        self.discovered_garbage = {}    # tps_id -> {last_check_time, sampah_kg} (discovered saat loading)
+        self.discovered_slowdowns = {}  # edge_id -> {slowdown, discovered_at, times_encountered}
+        self.discovered_garbage = {}    # tps_id -> {sampah_kg, last_check_time, history}
         
         # ===== Vehicle tracking =====
         self.vehicle_statuses = {}  # vehicle_id -> {status, location, load, state, timestamp}
@@ -124,10 +124,21 @@ class KnowledgeModel:
                 self.discovered_slowdowns[edge_id]["slowdown"] = slowdown_value
                 self.discovered_slowdowns[edge_id]["updated_at"] = f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"
                 print(f"[KnowledgeModel] ⚠️ UPDATED slowdown at {edge_id}: {old_value} → {slowdown_value} km/jam")
-                
+    
     def get_slowdown(self, edge_id):
-        """Dapatkan slowdown jika sudah discovered, else None"""
-        return self.discovered_slowdowns.get(edge_id, None)
+        """Dapatkan slowdown value (bukan dict!) jika sudah discovered, else None"""
+        if edge_id in self.discovered_slowdowns:
+            # CRITICAL: Return value only, not dict!
+            return self.discovered_slowdowns[edge_id]["slowdown"]
+        return None
+    
+    def get_all_slowdowns(self):
+        """Dapatkan semua slowdown yang discovered beserta statistiknya"""
+        return self.discovered_slowdowns
+    
+    def get_slowdown_count(self):
+        """Dapatkan jumlah edge yang macet"""
+        return len(self.discovered_slowdowns)
     
     def discover_garbage(self, tps_id, sampah_kg, sim_time=None):
         """Agent menemukan jumlah sampah saat truk loading di TPS"""
@@ -150,8 +161,9 @@ class KnowledgeModel:
             print(f"[KnowledgeModel] UPDATED garbage at TPS {tps_id}: {sampah_kg:.2f} kg (was {old_amount:.2f} at {current_time})")
     
     def get_discovered_garbage(self, tps_id):
-        """Dapatkan garbage jika sudah discovered, else None"""
+        """Dapatkan garbage value (bukan dict!) jika sudah discovered, else None"""
         if tps_id in self.discovered_garbage:
+            # CRITICAL: Return value only, not dict!
             return self.discovered_garbage[tps_id]["sampah_kg"]
         return None
     
@@ -229,7 +241,6 @@ class KnowledgeModel:
                     best_tps = tps_id
         
         return best_tps
-    
 
     def get_vehicles_by_state(self, state):
         """Dapatkan vehicles dengan state tertentu"""
@@ -240,11 +251,17 @@ class KnowledgeModel:
 
     def get_knowledge_summary(self):
         """Dapatkan summary knowledge model"""
+        total_encounters = sum(
+            data["times_encountered"] 
+            for data in self.discovered_slowdowns.values()
+        )
+        
         return {
             "known_garages": len(self.known_garages),
             "known_tps": len(self.known_tps),
             "known_tpa": len(self.known_tpa),
             "discovered_slowdowns": len(self.discovered_slowdowns),
+            "total_slowdown_encounters": total_encounters,
             "discovered_garbage": len(self.discovered_garbage),
             "active_vehicles": len(self.all_vehicle_ids),
             "vehicles_with_task": len(self.vehicle_assignments),
