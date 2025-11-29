@@ -3,7 +3,6 @@ from tkinter import ttk, messagebox
 
 class TPAStateWindow:
     def __init__(self, master=None):
-        # Root atau Toplevel
         if master is None:
             self.root = tk.Tk()
         else:
@@ -11,41 +10,27 @@ class TPAStateWindow:
 
         self.root.title("TPA State - Sistem Sampah Balikpapan")
         self.root.geometry("400x280")
-        self.shared = None  # akan diattach nanti
+        self.shared = None
 
         frm = ttk.Frame(self.root, padding=12)
         frm.pack(fill="both", expand=True)
 
-        # -------------------------
-        # Input: Node ID
-        # -------------------------
         ttk.Label(frm, text="Node ID:").grid(row=0, column=0, sticky="w")
         self.node_var = tk.StringVar()
         ttk.Entry(frm, textvariable=self.node_var, width=30, state="readonly").grid(row=1, column=0, pady=(0, 10))
 
-        # -------------------------
-        # Input: Nama TPA
-        # -------------------------
         ttk.Label(frm, text="Nama TPA:").grid(row=2, column=0, sticky="w")
         self.name_var = tk.StringVar(value="TPA")
         ttk.Entry(frm, textvariable=self.name_var, width=30).grid(row=3, column=0, pady=(0, 10))
 
-        # -------------------------
-        # Input: Jumlah Sampah Terkumpul
-        # -------------------------
         ttk.Label(frm, text="Sampah Terkumpul (kg):").grid(row=4, column=0, sticky="w")
         self.total_var = tk.StringVar(value="0")
-        ttk.Entry(frm, textvariable=self.total_var, width=30).grid(row=5, column=0, pady=(0, 10))
+        ttk.Entry(frm, textvariable=self.total_var, width=30, state="readonly").grid(row=5, column=0, pady=(0, 10))
 
-        # -------------------------
-        # Tombol Save
-        # -------------------------
         self.save_btn = ttk.Button(frm, text="Update Status TPA", command=self.on_save)
         self.save_btn.grid(row=6, column=0, sticky="ew")
 
-    # =======================
-    # ATTACH SHARED
-    # =======================
+    # ============== SHARED ==============
     def attach_shared(self, shared):
         self.shared = shared
         shared.tpa_state_window = self
@@ -56,13 +41,10 @@ class TPAStateWindow:
                     "total_sampah": 0
                 }
 
-    # =======================
-    # SETTERS
-    # =======================
+    # ============== SETTERS ==============
     def set_node(self, node_id, data=None):
         self.node_var.set(str(node_id))
         
-        # ambil data dari node_type jika tidak diberikan
         if data is None and self.shared and node_id in self.shared.node_type:
             data = self.shared.node_type[node_id].get("tpa_data", {
                 "nama": "TPA",
@@ -73,20 +55,15 @@ class TPAStateWindow:
         self.total_var.set(str(data.get("total_sampah", 0)))
 
     def set_output(self, text, is_error=False):
-        """Mengupdate status label"""
         color = "red" if is_error else "green"
         self.output_label.config(text=text, foreground=color)
 
-    # =======================
-    # VALIDASI & SAVE
-    # =======================
+    # ============== LOGIC ==============
     def validate_inputs(self):
-        # Validasi nama TPA
         if self.name_var.get().strip() == "":
             self.set_output("Error: Nama TPA wajib diisi!", is_error=True)
             return False
 
-        # Validasi jumlah sampah
         try:
             total_val = float(self.total_var.get())
             if total_val < 0:
@@ -116,7 +93,6 @@ class TPAStateWindow:
         if self.shared and node_id in self.shared.node_type:
             self.shared.node_type[node_id]["tpa_data"] = data
 
-        # Output ke console (untuk debugging)
         print(f"--- Update TPA ---")
         print(f"Node ID: {node_id}")
         print(f"Lokasi: {data['nama']}")
@@ -125,8 +101,5 @@ class TPAStateWindow:
         self.set_output(f"Sukses! Status {data['nama']} diperbarui.")
         messagebox.showinfo("Saved", f"Node {node_id} berhasil disimpan:\n{data}")
 
-    # =======================
-    # RUN LOOP
-    # =======================
     def run(self):
         self.root.mainloop()

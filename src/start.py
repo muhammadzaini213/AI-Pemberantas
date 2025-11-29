@@ -18,6 +18,7 @@ _simulation_thread = None
 _simulation_active = False
 _simulation_lock = threading.Lock()
 
+# ============== THREAD ==============
 def start_simulation_thread(GRAPH, shared):
     global _simulation_thread, _simulation_active
     
@@ -41,10 +42,8 @@ def stop_simulation_thread():
     with _simulation_lock:
         print(f"[Main] Stopping simulation thread...")
         
-        # Set flags to False
         _simulation_active = False
         
-        # Wait for thread to finish
         if _simulation_thread and _simulation_thread.is_alive():
             print(f"[Main] Waiting for thread {_simulation_thread.ident} to stop...")
             _simulation_thread.join(timeout=2.0)
@@ -54,7 +53,6 @@ def stop_simulation_thread():
             else:
                 print(f"[Main] Thread stopped successfully")
         
-        # Close pygame
         try:
             pygame.quit()
         except:
@@ -75,14 +73,10 @@ def main():
     shared = SharedState()
     shared.simulation_running = False
 
-    # ============================================================
-    #  START SIMULATION
-    # ============================================================
     start_simulation_thread(GRAPH, shared)
 
-    # ============================================================
-    #  SETUP WINDOWS
-    # ============================================================
+
+    # ============== SETUP ==============
     program_summary = ProgramSummaryWindow()
     program_summary.attach_state(shared)
     program_summary.set_fps(MAX_FPS)
@@ -105,23 +99,18 @@ def main():
     car_state_window = CarStateWindow(master=program_summary.root)
     car_state_window.attach_shared(shared)
 
-    # ============================================================
-    #  SETUP REFRESH CALLBACK
-    # ============================================================
+    # ============== REFRESH ==============
     def on_refresh_simulation():
-        """Callback saat user klik Refresh Simulasi"""
         print("\n" + "="*60)
         print("REFRESH SIMULATION")
         print("="*60)
         
-        # Step 1: Stop old simulation
         print("[1/5] Stopping old simulation...")
         print(f"      Vehicles before stop: {len(shared.vehicles)}")
         stop_simulation_thread()
         shared.simulation_running = False
-        time.sleep(1.5)  # Tunggu thread benar-benar stop
+        time.sleep(1.5) 
         
-        # Step 2: Reset vehicles
         print("[2/5] Resetting vehicles...")
         print(f"      Vehicles before reset: {len(shared.vehicles)}")
         shared.reset_vehicles()
@@ -130,12 +119,10 @@ def main():
         if len(shared.vehicles) != 0:
             print(f"[ERROR] Vehicles not cleared! Still have {len(shared.vehicles)} vehicles!")
         
-        # Step 3: Reload graph
         print("[3/5] Reloading graph...")
         GRAPH = ox.load_graphml(GRAPH_FILE)
         print(f"      Graph: {GRAPH.number_of_nodes()} nodes")
         
-        # Step 4: Clear pygame completely
         print("[4/5] Clearing pygame...")
         try:
             pygame.quit()
@@ -143,11 +130,9 @@ def main():
         except Exception as e:
             print(f"      pygame.quit() error: {e}")
         
-        # Step 5: Start new simulation
         print("[5/5] Starting new simulation...")
         start_simulation_thread(GRAPH, shared)
         
-        # Wait and verify
         time.sleep(1.0)
         print(f"\n[VERIFY] Vehicles after refresh: {len(shared.vehicles)}")
         print("="*60 + "\n")

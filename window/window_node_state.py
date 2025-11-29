@@ -14,17 +14,11 @@ class NodeStateWindow:
         content = ttk.Frame(self.root, padding=12)
         content.pack(fill="both", expand=True)
 
-        # -----------------------
-        # ID Node (tidak bisa diedit manual, diisi otomatis dari klik)
-        # -----------------------
         ttk.Label(content, text="ID Node:").grid(row=0, column=0, sticky="w")
         self.id_var = tk.StringVar()
         entry = ttk.Entry(content, textvariable=self.id_var, width=20, state="readonly")
         entry.grid(row=1, column=0, pady=(0, 12))
 
-        # -----------------------
-        # TPS / TPA / Garage Checkboxes
-        # -----------------------
         self.tps_var = tk.BooleanVar()
         self.tpa_var = tk.BooleanVar()
         self.gar_var = tk.BooleanVar()
@@ -51,20 +45,24 @@ class NodeStateWindow:
         ttk.Checkbutton(content, text="Garasi?", variable=self.gar_var, command=toggle_garage)\
             .grid(row=4, column=0, sticky="w", pady=(0, 12))
 
-        # -----------------------
-        # Tombol Save
-        # -----------------------
+
         ttk.Button(content, text="Save", command=self.on_save).grid(row=5, column=0, sticky="w")
 
-    # =======================
-    # EVENTS
-    # =======================
+    # ============== SHARED ==============
+    def attach_shared(self, shared):
+        self.shared = shared
+        shared.node_state_window = self
+
+
+    # ============== SETTERS ==============
     def set_node(self, node_id, flags):
         self.id_var.set(str(node_id))
         self.tps_var.set(flags.get("tps", False))
         self.tpa_var.set(flags.get("tpa", False))
         self.gar_var.set(flags.get("garage", False))
 
+
+    # ============== LOGIC ==============
     def on_save(self):
         if not hasattr(self, "shared") or self.id_var.get() == "":
             messagebox.showwarning("Warning", "Node belum dipilih")
@@ -79,12 +77,7 @@ class NodeStateWindow:
 
         messagebox.showinfo("Saved", f"Node {node_id} updated")
 
-    def attach_shared(self, shared):
-        self.shared = shared
-        shared.node_state_window = self
 
-    # =======================
-    # MAIN LOOP
-    # =======================
+
     def run(self):
         self.root.mainloop()

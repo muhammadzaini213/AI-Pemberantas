@@ -13,27 +13,22 @@ class EdgeStateWindow:
         self.root.configure(bg="#ECF0F1")
         self.shared = None  # akan diattach nanti
 
-        # Main frame
         main_frame = tk.Frame(self.root, bg="#E8E8E8", padx=25, pady=25)
         main_frame.pack(fill="both", expand=True)
 
-        # Title
         title_label = tk.Label(main_frame, text="Edges State Settings",
                                font=("Arial", 13, "bold"),
                                bg="#F5F5F5", fg="#2C3E50")
         title_label.pack(anchor="w", pady=(0, 20))
 
-        # Content frame
         self.content_frame = tk.Frame(main_frame, bg="#FFFFFF", relief="flat", bd=1)
         self.content_frame.pack(fill="both", expand=True)
 
-        # Edge ID
         tk.Label(self.content_frame, text="Edges ID:", font=("Arial", 10),
                  bg="#FFFFFF", anchor="w", width=20).grid(row=0, column=0, padx=20, pady=15, sticky="w")
         self.edge_id_var = tk.StringVar()
         tk.Entry(self.content_frame, textvariable=self.edge_id_var, width=15).grid(row=0, column=1, padx=20, pady=15, sticky="w")
 
-        # Helper function for spinbox rows
         def create_input_row(parent, label_text, default_value, unit, from_val, to_val, row):
             tk.Label(parent, text=label_text, font=("Arial", 10),
                      bg="#FFFFFF", anchor="w", width=20).grid(row=row, column=0, padx=20, pady=15, sticky="w")
@@ -63,11 +58,9 @@ class EdgeStateWindow:
             self.content_frame, "Efek perlambatan:", "0", "km/j", 0, 200, 2
         )
 
-        # Separator
         ttk.Separator(self.content_frame, orient="horizontal") \
             .grid(row=3, column=0, columnspan=2, sticky="we", padx=20, pady=10)
 
-        # Buttons
         button_frame = tk.Frame(self.content_frame, bg="#FFFFFF")
         button_frame.grid(row=4, column=0, columnspan=2, pady=15)
 
@@ -76,16 +69,13 @@ class EdgeStateWindow:
 
         self.slowdown_spinbox.bind('<FocusOut>', lambda e: self.validate_inputs())
 
-    # =======================
-    # ATTACH SHARED
-    # =======================
+
+    # ============== SHARED ==============
     def attach_shared(self, shared):
         self.shared = shared
         shared.edge_state_window = self
 
-    # =======================
-    # GETTERS
-    # =======================
+    # ============== GETTERS ==============
     def get_edge_id(self):
         return self.edge_id_var.get().strip()
 
@@ -95,9 +85,7 @@ class EdgeStateWindow:
             "efek_perlambatan": int(self.slowdown_var.get() or 0)
         }
 
-    # =======================
-    # SETTERS
-    # =======================
+    # ============== SETTERS ==============
     def set_edge(self, edge_id, data=None):
         self.edge_id_var.set(edge_id)
         
@@ -112,9 +100,7 @@ class EdgeStateWindow:
     def set_slowdown(self, value):
         self.slowdown_var.set(str(value))
 
-    # =======================
-    # VALIDATION & EVENTS
-    # =======================
+    # ============== LOGIC ==============
     def validate_inputs(self):
         try:
             slowdown = int(self.slowdown_var.get())

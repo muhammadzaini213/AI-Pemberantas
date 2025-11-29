@@ -9,13 +9,11 @@ class ProgramSummaryWindow:
         self.root.geometry("450x420")
         self.root.configure(bg="#E8E8E8")
         
-        # Callback untuk refresh simulasi
         self.on_refresh_callback = None
 
         content = tk.Frame(self.root, bg="#E8E8E8")
         content.pack(pady=10, fill="both")
 
-        # Package helper
         def row(label, widget, r):
             tk.Label(content, text=label, bg="#E8E8E8", anchor="w").grid(
                 row=r, column=0, padx=10, pady=5, sticky="w"
@@ -23,7 +21,7 @@ class ProgramSummaryWindow:
             widget.grid(row=r, column=1, padx=10, pady=5, sticky="w")
 
         self.fps_var = tk.StringVar(value="0")
-        fps_entry = ttk.Entry(content, width=12, textvariable=self.fps_var)
+        fps_entry = ttk.Entry(content, width=12, textvariable=self.fps_var, state="readonly")
         row("FPS:", fps_entry, 0)
 
         time_frame = ttk.Frame(content)
@@ -34,15 +32,15 @@ class ProgramSummaryWindow:
 
         hour_spinbox = ttk.Spinbox(
             time_frame, from_=0, to=23, width=3,
-            textvariable=self.hour_var, format="%02.0f", wrap=True
+            textvariable=self.hour_var, format="%02.0f", wrap=True, state="readonly"
         )
         minute_spinbox = ttk.Spinbox(
             time_frame, from_=0, to=59, width=3,
-            textvariable=self.minute_var, format="%02.0f", wrap=True
+            textvariable=self.minute_var, format="%02.0f", wrap=True, state="readonly"
         )
         day_spinbox = ttk.Spinbox(
             time_frame, from_=1, to=365, width=5,
-            textvariable=self.day_var
+            textvariable=self.day_var, state="readonly"
         )
 
         hour_spinbox.pack(side="left")
@@ -92,15 +90,13 @@ class ProgramSummaryWindow:
             var = tk.StringVar(value=default_value)
             entry = ttk.Entry(
                 stats_frame, width=8, textvariable=var,
-                validate="key", validatecommand=vcmd
+                validate="key", validatecommand=vcmd, state="readonly"
             )
             entry.grid(row=i, column=1, sticky="w")
 
             self.stats_entries[key] = var
 
-        # ============================================================
-        #                    BUTTON FRAME
-        # ============================================================
+
         button_frame = ttk.Frame(content)
         button_frame.grid(row=5, column=0, columnspan=2, pady=10)
 
@@ -110,10 +106,10 @@ class ProgramSummaryWindow:
         save_btn = ttk.Button(button_frame, text="💾 Hard Save", command=self.on_hard_save)
         save_btn.pack(side="left", padx=5)
 
-        # Bind validation
         hour_spinbox.bind("<FocusOut>", lambda e: self.validate_time())
         minute_spinbox.bind("<FocusOut>", lambda e: self.validate_time())
         day_spinbox.bind("<FocusOut>", lambda e: self.validate_time())
+
 
     # ============== GETTERS ==============
     def get_fps(self):
@@ -153,9 +149,8 @@ class ProgramSummaryWindow:
         if key in self.stats_entries:
             self.stats_entries[key].set(str(value))
 
-    # ============================================================
-    #                      VALIDATION
-    # ============================================================
+
+    # ============== LOGIC ==============
     def validate_time(self):
         try:
             h = int(self.hour_var.get())
@@ -183,7 +178,6 @@ class ProgramSummaryWindow:
         self.root.after(200, self.update_from_shared)
 
     def set_refresh_callback(self, callback):
-        """Set callback function yang dipanggil saat refresh"""
         self.on_refresh_callback = callback
 
     def update_from_shared(self):
@@ -221,21 +215,15 @@ class ProgramSummaryWindow:
         if hasattr(self.shared, "get_num_vehicle"):
             self.set_stat("truk", self.shared.total_vehicles)
 
-        # Jadwalkan update berikutnya
         self.root.after(1, self.update_from_shared)
 
-    # ============================================================
-    #                        EVENTS
-    # ============================================================
+
     def on_refresh(self):
-        """Trigger refresh simulasi"""
         self.validate_time()
         
-        # Reset vehicle ID counter
         import src.vehicle
         src.vehicle._vehicle_id_counter = 0
         
-        # Reset shared state
         if hasattr(self, "shared"):
             self.shared.node_type = {}
             self.shared.edge_type = {}
@@ -262,7 +250,6 @@ class ProgramSummaryWindow:
             messagebox.showwarning("Warning", "Refresh callback belum ter-set!")
 
     def on_hard_save(self):
-        """Handler untuk tombol Hard Save"""
         if not hasattr(self, "shared"):
             messagebox.showwarning("Warning", "Shared state belum ter-attach!")
             return
