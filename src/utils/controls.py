@@ -2,20 +2,28 @@ import pygame
 from ..environment import CAM_SPEED
 
 # ===== Controls =====
-def controls(viewer, range_x, range_y, G, vehicles):
+def controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running):
 
     for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:  # klik kiri
-            viewer.handle_mouse_click(event.pos, G, vehicles)
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+        if event.type == pygame.QUIT:
+            running = False
+            shared.simulation_running = False
+            break
+        
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if shared.paused:  # Only handle clicks when paused
+                viewer.handle_mouse_click(event.pos, GRAPH, vehicles)
+        
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
             viewer.scale = min(viewer.WIDTH / range_x, viewer.HEIGHT / range_y) * 0.95
             viewer.offset_x = viewer.WIDTH/2 - ((viewer.min_x+viewer.max_x)/2 - viewer.min_x)*viewer.scale
             viewer.offset_y = viewer.HEIGHT/2 - ((viewer.max_y+viewer.min_y)/2 - viewer.min_y)*viewer.scale
-
+        
+    
+    # ===== CAMERA CONTROLS (continuous key press) =====
     cam_speed = CAM_SPEED
     fast_cam_speed = CAM_SPEED * 3
     keys = pygame.key.get_pressed()
-
 
     if keys[pygame.K_LEFT]:  viewer.offset_x += cam_speed
     if keys[pygame.K_RIGHT]: viewer.offset_x -= cam_speed
@@ -27,7 +35,6 @@ def controls(viewer, range_x, range_y, G, vehicles):
     if keys[pygame.K_UP] and keys[pygame.K_SPACE]:    viewer.offset_y += fast_cam_speed
     if keys[pygame.K_DOWN] and keys[pygame.K_SPACE]:  viewer.offset_y -= fast_cam_speed
 
-    # zoom
     old_scale = viewer.scale
     zoom_factor = 0.05
     fast_zoom_factor = 0.15

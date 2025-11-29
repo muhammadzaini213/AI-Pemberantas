@@ -1,6 +1,6 @@
 import random
 import networkx as nx
-from .environment import VEHICLE_SPEED
+from ..environment import VEHICLE_SPEED
 import uuid
 
 class Vehicle:

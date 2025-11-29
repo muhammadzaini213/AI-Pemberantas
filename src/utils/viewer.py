@@ -12,7 +12,6 @@ class GraphViewer:
         self.offset_x = 0
         self.offset_y = 0
 
-        # range
         self.min_x = min(p[0] for p in pos_dict.values())
         self.max_x = max(p[0] for p in pos_dict.values())
         self.min_y = min(p[1] for p in pos_dict.values())
@@ -49,7 +48,6 @@ class GraphViewer:
         self.last_offx = self.offset_x
         self.last_offy = self.offset_y
 
-    # Draw edges + nodes + culling
     def draw_graph(self, screen, G, default_color, edge_color):
         # ==== Draw edges ====
         for u, v in G.edges():
@@ -64,7 +62,6 @@ class GraphViewer:
             edge_id = f"{u}-{v}"
             edge_data = self.shared.edge_type.get(edge_id, None)
             
-            # Tentukan warna edge
             if edge_data and edge_data.get("slowdown", 0) > 0:
                 color = (255, 0, 0)  # Merah jika ada delay
                 width = 5  # Lebih tebal agar lebih visible
@@ -127,28 +124,23 @@ class GraphViewer:
         return None
 
     def get_edge_screen_pos(self, u, v):
-        """Ambil posisi layar dari dua node edge"""
         x1, y1 = self.transform_cached(u)
         x2, y2 = self.transform_cached(v)
         return x1, y1, x2, y2
 
     def get_edge_at_pos(self, mx, my):
         TOL = 5  # toleransi klik
-        for u, v in self.pos.keys():  # <-- nanti ganti dengan G.edges() saat draw
+        for u, v in self.pos.keys():
             x1, y1, x2, y2 = self.get_edge_screen_pos(u, v)
-            # hitung jarak titik ke garis (u,v)
             if self._point_near_line(mx, my, x1, y1, x2, y2, TOL):
                 return (u, v)
         return None
 
     def _point_near_line(self, px, py, x1, y1, x2, y2, tol):
-        # jarak titik ke garis
         if x1 == x2 and y1 == y2:
-            # edge berupa titik (sangat kecil)
             dist = ((px - x1)**2 + (py - y1)**2)**0.5
             return dist <= tol
         else:
-            # proyeksi titik ke garis
             t = max(0, min(1, ((px-x1)*(x2-x1) + (py-y1)*(y2-y1)) / ((x2-x1)**2 + (y2-y1)**2)))
             proj_x = x1 + t * (x2 - x1)
             proj_y = y1 + t * (y2 - y1)
@@ -199,7 +191,6 @@ class GraphViewer:
         node = self.get_node_at_pos(mx, my)
         if node is not None:
             print(f"[DEBUG] Node diklik: {node}")
-            # pastikan node_type ada
             if node not in shared.node_type:
                 shared.node_type[node] = {
                     "tps": False,
@@ -243,7 +234,7 @@ class GraphViewer:
                 if hasattr(shared, "node_state_window") and shared.node_state_window:
                     shared.node_state_window.set_node(node, shared.node_type[node])
 
-            return  # node diklik → return
+            return
 
         # ==== Edge click ====
         if G is not None:

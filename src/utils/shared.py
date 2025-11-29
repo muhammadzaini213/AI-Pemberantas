@@ -10,9 +10,8 @@ class SharedState:
         self.sim_day = 1
         self.speed = 1.0
         self.paused = False
-        self.simulation_running = False  # Flag untuk kontrol thread
+        self.simulation_running = False
         
-        # Window references
         self.node_state_window = None
         self.edge_state_window = None
         self.tps_state_window = None
@@ -61,7 +60,6 @@ class SharedState:
         self.load_all_data()
 
     def get_total_vehicles(self):
-        """Hitung total vehicle dari total_armada di semua garage"""
         total = 0
         for node_id, node_data in self.node_type.items():
             if node_data.get("garage", False):
@@ -70,7 +68,6 @@ class SharedState:
         return total
 
     def get_num_vehicle(self):
-        """Alias untuk get_total_vehicles()"""
         return self.get_total_vehicles()
 
     def on_refresh(self):
@@ -89,43 +86,33 @@ class SharedState:
         self.paused = self.get_pause_state()
 
     def reset_vehicles(self):
-        """Reset semua vehicles dan armada stats di garage"""
         print(f"[SharedState] Resetting {len(self.vehicles)} vehicles...")
         
-        # Backup info sebelum reset
         vehicle_count_before = len(self.vehicles)
         
-        # Reset armada stats di semua garage
         for node_id, node_data in self.node_type.items():
             if node_data.get("garage", False):
                 garage_data = node_data.get("garage_data", {})
                 garage_data["armada_bertugas"] = 0
                 garage_data["armada_standby"] = 0
         
-        # Kosongkan list vehicles
         self.vehicles.clear()
         self.total_vehicles = 0
         
         print(f"[SharedState] Vehicles reset: {vehicle_count_before} → {len(self.vehicles)}")
         
-        # Validasi
         if len(self.vehicles) != 0:
             print("[ERROR] Vehicles list not empty after reset!")
         
         return vehicle_count_before
 
-    # ====================================
-    # SAVE & LOAD DATA
-    # ====================================
-    
+    # ============== SAVE LOAD ==============    
     def ensure_data_dir(self):
-        """Pastikan folder data/saved exist"""
         if not os.path.exists(self.data_dir):
             os.makedirs(self.data_dir)
             print(f"[SharedState] Created data directory: {self.data_dir}")
 
     def _serialize_node_for_save(self, node_id, node_data):
-        """Serialize node data untuk save - hanya simpan field penting"""
         return {
             "tps": node_data.get("tps", False),
             "tpa": node_data.get("tpa", False),
@@ -140,7 +127,6 @@ class SharedState:
         }
 
     def save_node_data(self):
-        """Save node_type data ke file JSON"""
         self.ensure_data_dir()
         
         try:
@@ -172,7 +158,6 @@ class SharedState:
             return False
 
     def save_all_data(self):
-        """Save semua data (node + edge)"""
         node_success = self.save_node_data()
         edge_success = self.save_edge_data()
         
@@ -184,7 +169,6 @@ class SharedState:
             return False
 
     def load_node_data(self):
-        """Load node_type data dari file JSON"""
         if not os.path.exists(self.node_data_file):
             print(f"[SharedState] Node data file not found: {self.node_data_file}")
             print(f"[SharedState] Starting with fresh node data")
@@ -199,25 +183,20 @@ class SharedState:
                 try:
                     node_id = int(node_id_str)
                     if node_id in self.node_type:
-                        # Load TPS/TPA/Garage flags
                         self.node_type[node_id]["tps"] = data.get("tps", False)
                         self.node_type[node_id]["tpa"] = data.get("tpa", False)
                         self.node_type[node_id]["garage"] = data.get("garage", False)
                         
-                        # Load TPS data
                         if "tps_data" in data:
                             self.node_type[node_id]["tps_data"] = data["tps_data"]
                         
-                        # Load TPA data
                         if "tpa_data" in data:
                             self.node_type[node_id]["tpa_data"] = data["tpa_data"]
                         
-                        # Load Garage data - HANYA total_armada
                         if "garage_data" in data:
                             loaded_garage_data = data["garage_data"]
                             self.node_type[node_id]["garage_data"]["nama"] = loaded_garage_data.get("nama", "Garage")
                             self.node_type[node_id]["garage_data"]["total_armada"] = loaded_garage_data.get("total_armada", 0)
-                            # armada_bertugas dan armada_standby akan di-set oleh simulasi
                             self.node_type[node_id]["garage_data"]["armada_bertugas"] = 0
                             self.node_type[node_id]["garage_data"]["armada_standby"] = 0
                         
@@ -233,7 +212,6 @@ class SharedState:
             return False
 
     def load_edge_data(self):
-        """Load edge_type data dari file JSON"""
         if not os.path.exists(self.edge_data_file):
             print(f"[SharedState] Edge data file not found: {self.edge_data_file}")
             print(f"[SharedState] Starting with fresh edge data")
@@ -250,7 +228,6 @@ class SharedState:
             return False
 
     def load_all_data(self):
-        """Load semua data (node + edge)"""
         node_success = self.load_node_data()
         edge_success = self.load_edge_data()
         
@@ -265,5 +242,4 @@ class SharedState:
             return False
 
     def auto_save(self):
-        """Auto-save yang bisa dipanggil secara periodik"""
         return self.save_all_data()

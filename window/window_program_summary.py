@@ -221,7 +221,7 @@ class ProgramSummaryWindow:
     def on_refresh(self):
         self.validate_time()
         
-        import src.vehicle
+        import src.classes.vehicle
         src.vehicle._vehicle_id_counter = 0
         
         if hasattr(self, "shared"):
