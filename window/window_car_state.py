@@ -184,41 +184,101 @@ class CarStateWindow:
         return True
 
     def on_save(self):
-        if not self.validate_inputs():
-            return
+            if not self.validate_inputs():
+                messagebox.showerror("Error", "Data tidak valid! Periksa kembali input Anda.")
+                return
 
-        car_id = self.car_id_var.get().strip()
+            car_id = self.car_id_var.get().strip()
 
-        # Parse route list dari Text widget
-        route_str = self.route_text.get("1.0", "end").strip()
-        route_list = []
-        if route_str:
-            # Split by comma dan bersihkan whitespace
-            route_list = [node.strip() for node in route_str.split(",") if node.strip()]
+            # Parse route list dari Text widget
+            route_str = self.route_text.get("1.0", "end").strip()
+            route_list = []
+            if route_str:
+                # Split by comma dan bersihkan whitespace
+                route_list = [node.strip() for node in route_str.split(",") if node.strip()]
 
-        data = {
-            "garage_node": self.garage_node_var.get().strip(),
-            "state": self.state_var.get(),
-            "speed": float(self.speed_var.get() or 0),
-            "daily_dist": float(self.daily_dist_var.get() or 0),
-            "total_dist": float(self.total_dist_var.get() or 0),
-            "load": float(self.load_var.get() or 0),
-            "max_load": float(self.max_load_var.get() or 1000),
-            "route": route_list
-        }
+            data = {
+                "garage_node": self.garage_node_var.get().strip(),
+                "state": self.state_var.get(),
+                "speed": float(self.speed_var.get() or 0),
+                "daily_dist": float(self.daily_dist_var.get() or 0),
+                "total_dist": float(self.total_dist_var.get() or 0),
+                "load": float(self.load_var.get() or 0),
+                "max_load": float(self.max_load_var.get() or 1000),
+                "route": route_list
+            }
 
-        print(f"--- Data Disimpan ke Sistem ---")
-        print(f"Agent ID: {car_id}")
-        print(f"Garage Node: {data['garage_node']}")
-        print(f"State: {data['state']}")
-        print(f"Fitness Cost (Jarak): {data['daily_dist']} km")
-        print(f"Muatan: {data['load']}/{data['max_load']} kg")
-        print(f"Route: {data['route']}")
+            # ===== APPLY CHANGES TO ACTUAL VEHICLE =====
+            if self.shared and hasattr(self.shared, 'vehicles'):
+                vehicle_found = False
+                for vehicle in self.shared.vehicles:
+                    if vehicle.id == car_id:
+                        vehicle_found = True
+                        
+                        # Update state
+                        old_state = vehicle.state
+                        
+                        # Map UI state ke internal state
+                        state_mapping = {
+                            "Idle": "idle",
+                            "Moving": "random",
+                            "Loading": "at_tps",
+                            "Unloading": "at_tpa",
+                            "Stuck": "idle",
+                            "Standby": "idle"
+                        }
+                        vehicle.state = state_mapping.get(data["state"], "idle")
+                        
+                        # Update garage assignment jika berubah
+                        new_garage = data["garage_node"]
+                        if new_garage and new_garage != vehicle.garage_node:
+                            vehicle.update_garage_assignment(new_garage)
+                        
+                        # Update distances
+                        vehicle.daily_dist = data["daily_dist"]
+                        vehicle.total_dist = data["total_dist"]
+                        
+                        # Update load
+                        vehicle.load = data["load"]
+                        vehicle.max_load = data["max_load"]
+                        
+                        # Update speed (jika perlu)
+                        if data["speed"] > 0:
+                            vehicle.speed = data["speed"]
+                        
+                        # Update route jika ada
+                        if route_list:
+                            vehicle.route = route_list
+                            # Jika ingin set path, gunakan ini:
+                            # vehicle.set_path(route_list)
+                        
+                        # Update garage stats
+                        if old_state != vehicle.state:
+                            vehicle._update_state_in_garage_stats(old_state)
+                        
+                        print(f"\n--- Vehicle {car_id} UPDATED ---")
+                        print(f"State: {old_state} -> {vehicle.state}")
+                        print(f"Garage: {vehicle.garage_node}")
+                        print(f"Load: {vehicle.load}/{vehicle.max_load} kg")
+                        print(f"Daily Distance: {vehicle.daily_dist} km")
+                        print(f"Total Distance: {vehicle.total_dist} km")
+                        print(f"Route: {vehicle.route}")
+                        
+                        messagebox.showinfo("Berhasil", 
+                            f"Kendaraan {car_id} berhasil diupdate!\n\n"
+                            f"State: {vehicle.state}\n"
+                            f"Load: {vehicle.load}/{vehicle.max_load} kg\n"
+                            f"Route nodes: {len(route_list)}")
+                        break
+                
+                if not vehicle_found:
+                    messagebox.showerror("Error", f"Kendaraan dengan ID {car_id} tidak ditemukan!")
+            else:
+                messagebox.showerror("Error", "Shared data tidak tersedia!")
+
+        # =======================
+        # RUN LOOP
+        # =======================
         
-        messagebox.showinfo("Saved", f"Kendaraan {car_id} berhasil disimpan:\nRoute: {route_list}")
-
-    # =======================
-    # RUN LOOP
-    # =======================
     def run(self):
         self.root.mainloop()

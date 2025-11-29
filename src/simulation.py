@@ -5,6 +5,7 @@ from .utils.viewer import GraphViewer
 from .environment import *
 from .utils.timesync import sync, getDt
 from .utils.controls import controls
+from .utils.knowledge import KnowledgeModel
 import time
 import random
 
@@ -139,6 +140,10 @@ def run_simulation(GRAPH, shared):
     # ===== Tracking variables =====
     last_garbage_generation_day = shared.sim_day
 
+    # ===== Initialize KnowledgeModel =====
+    knowledge_model = KnowledgeModel(GRAPH, shared, TPS_nodes, TPA_nodes, GARAGE_nodes)
+    shared.knowledge_model = knowledge_model
+    
     # ===== Main loop =====
     running = True
     shared.paused = True
@@ -147,6 +152,9 @@ def run_simulation(GRAPH, shared):
         shared.fps = int(clock.get_fps())
 
         dt, last_time = getDt(time, last_time)
+        
+        print(f"[Simulation] KnowledgeModel initialized")
+        print(f"[Simulation] Agent knowledge: {knowledge_model.get_knowledge_summary()}")
 
         if not shared.paused:
             sim_time_acc += dt * shared.speed * (60 ** 1)
@@ -187,5 +195,9 @@ def run_simulation(GRAPH, shared):
         for v in vehicles:
             v.update(dt, shared)
 
+        # ===== Update KnowledgeModel dengan vehicle status =====
+        for v in vehicles:
+            knowledge_model.update_vehicle_status(v.id, v.actuator_get_status())
+        
         pygame.display.flip()
         clock.tick(MAX_FPS)

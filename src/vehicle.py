@@ -245,6 +245,105 @@ class Vehicle:
         return True
 
     # =====================================================================
+    #                   DISCOVERY & AGENT INTERACTION
+    # =====================================================================
+    # Methods untuk agent berinteraksi dengan vehicle dan discover information
+
+    def actuator_arrive_at_tps(self):
+        """Actuator: Vehicle tiba di TPS - discover sampah"""
+        if self.current in self.TPS_nodes and self.shared:
+            tps_data = self.shared.node_type[self.current].get("tps_data", {})
+            current_garbage = tps_data.get("sampah_kg", 0)
+            
+            # Discover sampah di knowledge model
+            if hasattr(self.shared, 'knowledge_model'):
+                self.shared.knowledge_model.discover_garbage(self.current, current_garbage)
+            
+            self.state = "at_tps"
+            print(f"[Vehicle {self.id}] Arrived at TPS {self.current}, found {current_garbage:.2f} kg")
+            return True
+        return False
+
+    def actuator_load_from_tps(self, amount=None):
+        """Actuator: Load sampah dari TPS saat tiba disana"""
+        if self.state != "at_tps" or self.current not in self.TPS_nodes:
+            return 0
+        
+        tps_data = self.shared.node_type[self.current].get("tps_data", {})
+        available = tps_data.get("sampah_kg", 0)
+        
+        # Jika amount tidak ditentukan, ambil semua atau sampai penuh
+        if amount is None:
+            amount = available
+        
+        # Load amount yang bisa diambil
+        loaded = self.actuator_load_garbage(amount)
+        
+        # Kurangi sampah di TPS
+        tps_data["sampah_kg"] = max(0, available - loaded)
+        
+        print(f"[Vehicle {self.id}] Loaded {loaded:.2f} kg from TPS {self.current} (remaining: {tps_data['sampah_kg']:.2f} kg)")
+        return loaded
+
+    def actuator_arrive_at_tpa(self):
+        """Actuator: Vehicle tiba di TPA"""
+        if self.current == self.TPA_node:
+            self.state = "at_tpa"
+            print(f"[Vehicle {self.id}] Arrived at TPA {self.current}")
+            return True
+        return False
+
+    def actuator_unload_to_tpa(self):
+        """Actuator: Unload sampah ke TPA"""
+        if self.state != "at_tpa" or self.current != self.TPA_node:
+            return 0
+        
+        unloaded = self.actuator_unload_garbage()
+        
+        # Update TPA total
+        if self.current in self.shared.node_type:
+            tpa_data = self.shared.node_type[self.current].get("tpa_data", {})
+            tpa_data["total_sampah"] = tpa_data.get("total_sampah", 0) + unloaded
+        
+        print(f"[Vehicle {self.id}] Unloaded {unloaded:.2f} kg to TPA {self.current}")
+        return unloaded
+
+    def actuator_arrive_at_garage(self):
+        """Actuator: Vehicle tiba di garage"""
+        if self.current == self.garage_node:
+            self.state = "idle"
+            print(f"[Vehicle {self.id}] Arrived at garage {self.garage_node}")
+            return True
+        return False
+
+    def actuator_discover_slowdown(self):
+        """Actuator: Discover macet di edge saat vehicle melintasi"""
+        if not self.target_node or not self.shared:
+            return None
+        
+        edge_id = f"{self.current}-{self.target_node}"
+        
+        # Cek jika ada slowdown di edge ini
+        if hasattr(self.shared, 'edge_type') and edge_id in self.shared.edge_type:
+            slowdown = self.shared.edge_type[edge_id].get("slowdown", 0)
+            
+            # Discover ke knowledge model
+            if slowdown > 0 and hasattr(self.shared, 'knowledge_model'):
+                self.shared.knowledge_model.discover_slowdown(edge_id, slowdown)
+            
+            return slowdown
+        
+        return None
+
+    def actuator_get_current_location(self):
+        """Actuator: Dapatkan lokasi saat ini"""
+        return self.current
+
+    def actuator_at_target(self):
+        """Actuator: Cek apakah sudah tiba di target"""
+        return self.target_node is None or self.progress >= 1.0
+
+    # =====================================================================
     #                        ORIGINAL METHODS
     # =====================================================================
 
@@ -302,8 +401,11 @@ class Vehicle:
             slowdown_value = shared.edge_type[edge_id].get("slowdown", 0)
             # slowdown > 0 berarti ada macet, ganti kecepatan dengan slowdown value
             if slowdown_value > 0:
-                actual_speed = slowdown_value  # langsung set ke slowdown value (km/jam)
-            # jika slowdown = 0, gunakan normal speed
+                actual_speed = slowdown_value
+                
+                # ✨ AUTO-DISCOVER SLOWDOWN
+                if hasattr(shared, 'knowledge_model'):
+                    shared.knowledge_model.discover_slowdown(edge_id, slowdown_value)
 
         distance = actual_speed * dt
         self.progress += distance / length
@@ -323,6 +425,7 @@ class Vehicle:
                 self.target_node = None
                 self.path = []
                 
+                # Jika sudah tiba di garage, kembali ke idle
                 if self.state == "to_garage" and self.current == self.garage_node:
                     self.return_to_idle()
 

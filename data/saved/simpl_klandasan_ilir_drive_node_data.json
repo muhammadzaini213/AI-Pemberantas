@@ -2071,19 +2071,11 @@
     }
   },
   "7564796125": {
-    "tps": false,
+    "tps": true,
     "tpa": false,
     "garage": false,
-    "tps_data": {
-      "nama": "",
-      "sampah_kg": 0,
-      "sampah_per_hari": 0,
-      "dilayanin": false
-    },
-    "tpa_data": {
-      "nama": "",
-      "total_sampah": 0
-    },
+    "tps_data": {},
+    "tpa_data": {},
     "garage_data": {
       "nama": "Garage",
       "total_armada": 0
@@ -2097,7 +2089,7 @@
     "tpa_data": {},
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 40
+      "total_armada": 320
     }
   },
   "7568920020": {
@@ -2108,7 +2100,7 @@
     "tpa_data": {},
     "garage_data": {
       "nama": "Garage",
-      "total_armada": 40
+      "total_armada": 320
     }
   },
   "7568920021": {
@@ -2421,7 +2413,7 @@
     "garage": false,
     "tps_data": {
       "nama": "Tps 1",
-      "sampah_kg": 0,
+      "sampah_kg": 113.50719441737822,
       "sampah_per_hari": 100.0,
       "dilayanin": false
     },
