@@ -92,10 +92,6 @@ class GarageStateWindow:
         self.armada_bertugas_var.set(str(data.get("armada_bertugas", 0)))
         self.armada_standby_var.set(str(data.get("armada_standby", 0)))
 
-    def set_output(self, text, is_error=False):
-        """Mengupdate status label"""
-        color = "red" if is_error else "green"
-        self.output_label.config(text=text, foreground=color)
 
     # =======================
     # VALIDASI & SAVE
@@ -103,7 +99,6 @@ class GarageStateWindow:
     def validate_inputs(self):
         # Validasi nama Garage
         if self.name_var.get().strip() == "":
-            self.set_output("Error: Nama Garage wajib diisi!", is_error=True)
             return False
 
         # Validasi jumlah armada total
@@ -112,7 +107,6 @@ class GarageStateWindow:
             if total_val < 0:
                 self.total_armada_var.set("0")
         except:
-            self.set_output("Error: Jumlah armada total harus angka!", is_error=True)
             return False
 
         # Validasi armada bertugas
@@ -121,7 +115,6 @@ class GarageStateWindow:
             if bertugas_val < 0:
                 self.armada_bertugas_var.set("0")
         except:
-            self.set_output("Error: Armada bertugas harus angka!", is_error=True)
             return False
 
         # Validasi armada standby
@@ -130,7 +123,6 @@ class GarageStateWindow:
             if standby_val < 0:
                 self.armada_standby_var.set("0")
         except:
-            self.set_output("Error: Armada standby harus angka!", is_error=True)
             return False
 
         # Validasi logika: bertugas + standby harus = total
@@ -139,7 +131,6 @@ class GarageStateWindow:
         standby = int(self.armada_standby_var.get())
         
         if bertugas + standby != total:
-            self.set_output("Error: Bertugas + Standby harus sama dengan Total!", is_error=True)
             return False
 
         return True
@@ -173,7 +164,6 @@ class GarageStateWindow:
         print(f"Armada Bertugas: {data['armada_bertugas']}")
         print(f"Armada Standby: {data['armada_standby']}")
         
-        self.set_output(f"Sukses! Status {data['nama']} diperbarui.")
         messagebox.showinfo("Saved", f"Node {node_id} berhasil disimpan:\n{data}")
 
     # =======================

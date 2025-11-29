@@ -59,10 +59,6 @@ class EdgeStateWindow:
 
             return var, spinbox
 
-        # Input fields
-        self.delay_var, self.delay_spinbox = create_input_row(
-            self.content_frame, "Potensi keterlambatan:", "0", "%", 0, 100, 1
-        )
         self.slowdown_var, self.slowdown_spinbox = create_input_row(
             self.content_frame, "Efek perlambatan:", "0", "km/j", 0, 200, 2
         )
@@ -78,8 +74,6 @@ class EdgeStateWindow:
         self.apply_btn = ttk.Button(button_frame, text="Apply Settings", command=self.apply_settings, width=15)
         self.apply_btn.pack()
 
-        # Bind validation
-        self.delay_spinbox.bind('<FocusOut>', lambda e: self.validate_inputs())
         self.slowdown_spinbox.bind('<FocusOut>', lambda e: self.validate_inputs())
 
     # =======================
@@ -98,7 +92,6 @@ class EdgeStateWindow:
     def get_edges_state(self):
         return {
             "edge_id": self.get_edge_id(),
-            "potensi_keterlambatan": int(self.delay_var.get() or 0),
             "efek_perlambatan": int(self.slowdown_var.get() or 0)
         }
 
@@ -109,16 +102,12 @@ class EdgeStateWindow:
         self.edge_id_var.set(edge_id)
         
         if data is None and self.shared is not None:
-            data = self.shared.edge_type.get(edge_id, {"delay": 0, "slowdown": 0})
+            data = self.shared.edge_type.get(edge_id, {"slowdown": 0})
         
-        self.set_delay(data.get("delay", 0))
         self.set_slowdown(data.get("slowdown", 0))
     
     def set_edge_id(self, value):
         self.edge_id_var.set(value)
-
-    def set_delay(self, value):
-        self.delay_var.set(str(value))
 
     def set_slowdown(self, value):
         self.slowdown_var.set(str(value))
@@ -127,13 +116,6 @@ class EdgeStateWindow:
     # VALIDATION & EVENTS
     # =======================
     def validate_inputs(self):
-        try:
-            delay = int(self.delay_var.get())
-            if delay < 0 or delay > 100:
-                self.delay_var.set("0")
-        except:
-            self.delay_var.set("0")
-
         try:
             slowdown = int(self.slowdown_var.get())
             if slowdown < 0 or slowdown > 200:
@@ -146,13 +128,11 @@ class EdgeStateWindow:
         settings = self.get_edges_state()
         print("=== Settings Applied ===")
         print(f"Edge ID: {settings['edge_id']}")
-        print(f"Potensi Keterlambatan: {settings['potensi_keterlambatan']}%")
         print(f"Efek Perlambatan: {settings['efek_perlambatan']} km/j")
 
         if self.shared is not None:
             edge_id = settings["edge_id"]
             self.shared.edge_type[edge_id] = {
-                "delay": settings["potensi_keterlambatan"],
                 "slowdown": settings["efek_perlambatan"]
             }
 
