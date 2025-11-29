@@ -25,7 +25,7 @@ class CarStateWindow:
 
         ttk.Label(frm, text="State:").grid(row=4, column=0, sticky="w")
         self.state_var = tk.StringVar(value="Idle")
-        state_options = ["Idle", "Moving", "Loading", "Unloading", "Stuck", "Standby"]
+        state_options = ["idle", "at_tps", "at_tpa", "to_tps", "to_tpa", "to_garage"]
         ttk.Combobox(frm, textvariable=self.state_var, values=state_options, state="readonly", width=28).grid(row=5, column=0, pady=(0, 10))
 
         ttk.Label(frm, text="Speed (km/j):").grid(row=6, column=0, sticky="w")

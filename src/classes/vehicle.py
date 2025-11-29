@@ -5,7 +5,6 @@ import uuid
 
 class Vehicle:
     def __init__(self, graph, tps_nodes=None, tpa_node=None, garage_nodes=None, speed=VEHICLE_SPEED, shared=None):
-        # Use UUID untuk ID yang truly unique
         self.id = str(uuid.uuid4())[:8]
         
         self.G = graph
@@ -13,12 +12,8 @@ class Vehicle:
         self.TPA_node = tpa_node
         self.garage_nodes = garage_nodes or []
         self.shared = shared
-        
-        # ===== Garage akan di-set dari luar (di run_simulation) =====
-        self.garage_node = None  # Will be set externally
-        
-        # ===== Start position (akan di-set sama dengan garage_node dari luar) =====
-        self.current = None  # Will be set externally
+        self.garage_node = None 
+        self.current = None
         
         # ===== Vehicle tracking data =====
         self.path = []
@@ -34,25 +29,15 @@ class Vehicle:
         self.max_load = 100
         self.route = []
         
-        # NOTE: Jangan panggil _update_garage_stats() di __init__!
-        # Akan dipanggil dari run_simulation() setelah garage_node di-set
-        
         print(f"[Vehicle] Created ID: {self.id}")
 
     def _update_garage_stats(self):
-        """Update garage stats di shared.node_type[garage_node].garage_data
-        
-        PENTING: Method ini HANYA update armada_standby/armada_bertugas,
-        TIDAK increment total_armada (sudah di-set dari loaded data)
-        """
         if not self.garage_node or not self.shared:
             return
         
         if self.garage_node in self.shared.node_type:
             garage_data = self.shared.node_type[self.garage_node].get("garage_data", {})
             
-            # ✅ HANYA update kategori armada_standby/armada_bertugas
-            # JANGAN increment total_armada! (sudah di-set dari saved data)
             if self.state == "idle":
                 garage_data["armada_standby"] = garage_data.get("armada_standby", 0) + 1
             else:
@@ -61,27 +46,23 @@ class Vehicle:
             print(f"[Vehicle {self.id}] Updated garage {self.garage_node} stats: standby={garage_data.get('armada_standby', 0)}, bertugas={garage_data.get('armada_bertugas', 0)}")
 
     def _update_state_in_garage_stats(self, old_state):
-        """Update kategorisasi armada saat state berubah (idle ↔ bertugas)"""
         if not self.garage_node or not self.shared:
             return
         
         if self.garage_node in self.shared.node_type:
             garage_data = self.shared.node_type[self.garage_node].get("garage_data", {})
             
-            # Kurangi dari kategori lama
             if old_state == "idle":
                 garage_data["armada_standby"] = max(0, garage_data.get("armada_standby", 0) - 1)
             else:
                 garage_data["armada_bertugas"] = max(0, garage_data.get("armada_bertugas", 0) - 1)
             
-            # Tambah ke kategori baru
             if self.state == "idle":
                 garage_data["armada_standby"] = garage_data.get("armada_standby", 0) + 1
             else:
                 garage_data["armada_bertugas"] = garage_data.get("armada_bertugas", 0) + 1
 
     def _decrement_garage_stats(self, garage_node):
-        """Kurangi stats dari garage tertentu"""
         if not garage_node or not self.shared:
             return
         
@@ -94,28 +75,23 @@ class Vehicle:
                 garage_data["armada_bertugas"] = max(0, garage_data.get("armada_bertugas", 0) - 1)
 
     def update_garage_assignment(self, new_garage_node):
-        """Update garage assignment (saat user pindah vehicle ke garage lain via UI)"""
         if not self.shared or not self.garage_node:
             return
         
-        # Kurangi stats dari garage lama
         self._decrement_garage_stats(self.garage_node)
         
-        # Assign ke garage baru
         self.garage_node = new_garage_node
         self._update_garage_stats()
         print(f"[Vehicle {self.id}] Reassigned to garage {new_garage_node}")
 
-    # =====================================================================
-    #                        ACTUATORS (No Brain Logic)
-    # =====================================================================
-    
+
+
+
+    # ============== ACTUATOR (NO BRAIN LOGIC) ==============    
     def actuator_set_path(self, path):
-        """Actuator: Set path dan mulai bergerak"""
         self.set_path(path)
 
     def actuator_go_to_location(self, target_node):
-        """Actuator: Pergi ke lokasi tertentu"""
         if target_node == self.current:
             return False
         try:
@@ -126,7 +102,6 @@ class Vehicle:
             return False
 
     def actuator_go_to_tps(self):
-        """Actuator: Pergi ke TPS (random jika ada beberapa)"""
         if not self.TPS_nodes:
             return False
         old_state = self.state
@@ -142,12 +117,10 @@ class Vehicle:
             return False
 
     def actuator_go_to_tpa(self):
-        """Actuator: Pergi ke TPA"""
         if not self.TPA_node:
             print(f"[Vehicle {self.id}] ERROR: No TPA_node configured!")
             return False
         
-        # TPA_node bisa berupa set/list, ambil yang pertama
         if isinstance(self.TPA_node, (set, list)):
             if len(self.TPA_node) == 0:
                 print(f"[Vehicle {self.id}] ERROR: TPA_node is empty set/list!")
@@ -156,7 +129,6 @@ class Vehicle:
         else:
             tpa_target = self.TPA_node
         
-        # Check if already at TPA
         if self.current == tpa_target:
             print(f"[Vehicle {self.id}] Already at TPA {tpa_target}")
             self.state = "at_tpa"
@@ -183,7 +155,6 @@ class Vehicle:
             return False
 
     def actuator_go_to_garage(self):
-        """Actuator: Kembali ke garage"""
         if not self.garage_node:
             return False
         try:
@@ -195,31 +166,25 @@ class Vehicle:
             return False
 
     def actuator_load_garbage(self, amount):
-        """Actuator: Ambil sampah (increment load)"""
         can_load = min(amount, self.max_load - self.load)
         self.load += can_load
         return can_load
 
     def actuator_unload_garbage(self):
-        """Actuator: Buang semua sampah"""
         old_load = self.load
         self.load = 0
         return old_load
 
     def actuator_get_load_percentage(self):
-        """Actuator: Dapatkan persentase load"""
         return (self.load / self.max_load) * 100 if self.max_load > 0 else 0
 
     def actuator_is_full(self):
-        """Actuator: Cek apakah penuh"""
         return self.load >= self.max_load
 
     def actuator_is_empty(self):
-        """Actuator: Cek apakah kosong"""
         return self.load <= 0
 
     def actuator_get_status(self):
-        """Actuator: Dapatkan status lengkap vehicle"""
         return {
             "id": self.id,
             "state": self.state,
@@ -237,19 +202,15 @@ class Vehicle:
         }
 
     def actuator_idle(self):
-        """Actuator: Kembali ke idle state"""
         old_state = self.state
         self.state = "idle"
         if old_state != "idle":
             self._update_state_in_garage_stats(old_state)
         return True
 
-    # =====================================================================
-    #                   DISCOVERY & AGENT INTERACTION
-    # =====================================================================
-    
+
+    # ============== ACTUATORS + SENSORS LOGIC==============
     def actuator_arrive_at_tps(self):
-        """Actuator: Vehicle tiba di TPS - discover sampah"""
         if self.current in self.TPS_nodes and self.shared:
             tps_data = self.shared.node_type[self.current].get("tps_data", {})
             current_garbage = tps_data.get("sampah_kg", 0)
@@ -263,7 +224,6 @@ class Vehicle:
         return False
 
     def actuator_load_from_tps(self, amount=None):
-        """Actuator: Load sampah dari TPS saat tiba disana"""
         if self.state != "at_tps" or self.current not in self.TPS_nodes:
             return 0
         
@@ -280,8 +240,6 @@ class Vehicle:
         return loaded
 
     def actuator_arrive_at_tpa(self):
-        """Actuator: Vehicle tiba di TPA"""
-        # Handle TPA_node sebagai set/list
         if isinstance(self.TPA_node, (set, list)):
             is_at_tpa = self.current in self.TPA_node
         else:
@@ -294,13 +252,10 @@ class Vehicle:
         return False
 
     def actuator_unload_to_tpa(self):
-        """Actuator: Unload sampah ke TPA"""
-        # Validate state
         if self.state != "at_tpa":
             print(f"[Vehicle {self.id}] ERROR: Not at TPA (state: {self.state})")
             return 0
         
-        # Validate location
         if isinstance(self.TPA_node, (set, list)):
             is_at_tpa = self.current in self.TPA_node
         else:
@@ -313,7 +268,6 @@ class Vehicle:
         unloaded = self.actuator_unload_garbage()
         
         if unloaded > 0:
-            # Update TPA total
             if self.current in self.shared.node_type:
                 tpa_data = self.shared.node_type[self.current].get("tpa_data", {})
                 tpa_data["total_sampah"] = tpa_data.get("total_sampah", 0) + unloaded
@@ -323,7 +277,6 @@ class Vehicle:
         return unloaded
 
     def actuator_arrive_at_garage(self):
-        """Actuator: Vehicle tiba di garage"""
         if self.current == self.garage_node:
             self.state = "idle"
             print(f"[Vehicle {self.id}] Arrived at garage {self.garage_node}")
@@ -331,7 +284,6 @@ class Vehicle:
         return False
 
     def actuator_discover_slowdown(self):
-        """Actuator: Discover macet di edge saat vehicle melintasi"""
         if not self.target_node or not self.shared:
             return None
         
@@ -348,19 +300,14 @@ class Vehicle:
         return None
 
     def actuator_get_current_location(self):
-        """Actuator: Dapatkan lokasi saat ini"""
         return self.current
 
     def actuator_at_target(self):
-        """Actuator: Cek apakah sudah tiba di target"""
         return self.target_node is None or self.progress >= 1.0
 
-    # =====================================================================
-    #                        ORIGINAL METHODS
-    # =====================================================================
 
+    # ============== IF IT WORKS IT WORKS ==============
     def set_path(self, path):
-        """Set path dengan validasi"""
         if not path or len(path) == 0:
             print(f"[Vehicle {self.id}] Warning: Empty path provided")
             self.path = []
@@ -377,25 +324,11 @@ class Vehicle:
             self.target_node = path[1]
             self.progress = 0.0
         else:
-            # Path has only 1 node (already at destination)
             self.current = path[0]
             self.target_node = None
             self.progress = 0.0
 
-    def go_to_tps(self):
-        """Deprecated: gunakan actuator_go_to_tps() sebagai gantinya"""
-        return self.actuator_go_to_tps()
-
-    def go_to_tpa(self):
-        """Deprecated: gunakan actuator_go_to_tpa() sebagai gantinya"""
-        return self.actuator_go_to_tpa()
-
-    def go_to_garage(self):
-        """Deprecated: gunakan actuator_go_to_garage() sebagai gantinya"""
-        return self.actuator_go_to_garage()
-
     def return_to_idle(self):
-        """Saat vehicle tiba di garage, kembali ke idle state"""
         old_state = self.state
         self.state = "idle"
         self._update_state_in_garage_stats(old_state)
@@ -420,10 +353,9 @@ class Vehicle:
                 self.set_path(path)
                 self.state = "random"
             except:
-                pass  # Path not found, stay idle
+                pass
             return
         
-        # ===== CRITICAL: Validate path consistency =====
         if self.target_node not in self.path:
             print(f"[Vehicle {self.id}] ERROR: target_node {self.target_node} not in path! Resetting path.")
             self.path = []
@@ -459,7 +391,6 @@ class Vehicle:
         self.total_dist += distance
 
         if self.progress >= 1.0:
-            # ===== SAFE INDEX LOOKUP =====
             try:
                 idx = self.path.index(self.target_node)
             except ValueError:
@@ -475,7 +406,6 @@ class Vehicle:
                 self.target_node = self.path[idx + 1]
                 self.progress = 0.0
             else:
-                # Reached final destination
                 self.current = self.target_node
                 self.target_node = None
                 self.path = []
@@ -491,7 +421,6 @@ class Vehicle:
                     if old_state != "at_tps":
                         self._update_state_in_garage_stats(old_state)
                     
-                    # Discover garbage
                     if hasattr(shared, 'knowledge_model'):
                         tps_data = shared.node_type[self.current].get("tps_data", {})
                         current_garbage = tps_data.get("sampah_kg", 0)
@@ -500,7 +429,6 @@ class Vehicle:
                     print(f"[Vehicle {self.id}] Arrived at TPS {self.current}")
                 
                 elif self.state == "to_tpa":
-                    # Check if arrived at TPA (handle TPA_node as set/list)
                     if isinstance(self.TPA_node, (set, list)):
                         is_at_tpa = self.current in self.TPA_node
                     else:
@@ -514,7 +442,6 @@ class Vehicle:
                         print(f"[Vehicle {self.id}] Arrived at TPA {self.current}")
                 
                 else:
-                    # Arrived somewhere else (shouldn't happen in normal operation)
                     print(f"[Vehicle {self.id}] Arrived at node {self.current} (state: {self.state})")
 
     def get_pos(self, pos_dict):

@@ -1,6 +1,6 @@
 import networkx as nx
 from collections import defaultdict
-
+from ..environment import SHIFT_START, SHIFT_END
 class AIModel:
     """
     AI Controller dengan Matheuristic Rollout untuk dispatch dan scheduling truk sampah.
@@ -17,8 +17,8 @@ class AIModel:
         self.shared = shared
         
         # ===== Shift Configuration =====
-        self.SHIFT_START = 6  # 06:00
-        self.SHIFT_END = 22   # 22:00
+        self.SHIFT_START = SHIFT_START
+        self.SHIFT_END = SHIFT_END
         self.OVERTIME_BUFFER = 1  # 1 hour buffer sebelum overtime
         
         # ===== AI Decision Settings =====
