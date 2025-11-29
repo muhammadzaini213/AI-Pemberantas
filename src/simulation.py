@@ -17,7 +17,6 @@ def run_simulation(GRAPH, shared):
     print(f"{'='*60}")
     print(f"[Simulation] Existing vehicles: {len(shared.vehicles)}")
     
-    # Clear vehicles list
     shared.vehicles.clear()
     shared.total_vehicles = 0
     
@@ -43,7 +42,6 @@ def run_simulation(GRAPH, shared):
     TPA_nodes = set()
     GARAGE_nodes = set()
 
-    # Initialize node_types (semua node default = bukan TPS/TPA/Garage)
     shared.init_node_types(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes)
     
     # ===== EXTRACT ACTUAL TPS/TPA/GARAGE FROM LOADED DATA =====
@@ -59,7 +57,6 @@ def run_simulation(GRAPH, shared):
     print(f"[Simulation] Loaded TPA nodes: {len(TPA_nodes)}")
     print(f"[Simulation] Loaded Garage nodes: {len(GARAGE_nodes)}")
     
-    # Update shared stats
     shared.node_count = GRAPH.number_of_nodes()
     shared.edge_count = GRAPH.number_of_edges()
     shared.num_tps = len(TPS_nodes)
@@ -68,7 +65,6 @@ def run_simulation(GRAPH, shared):
 
     # ===== Initialize garbage di setiap TPS =====
     def generate_tps_garbage():
-        """Generate sampah hari pertama di setiap TPS dengan variasi ±30%"""
         for tps_id in TPS_nodes:
             if tps_id in shared.node_type:
                 tps_data = shared.node_type[tps_id].get("tps_data", {})
@@ -90,23 +86,20 @@ def run_simulation(GRAPH, shared):
     print(f"[Simulation] CREATING VEHICLES")
     print(f"{'='*60}")
     
-    # PENTING: Gunakan list lokal dulu, baru assign ke shared di akhir
     vehicles = []
     garage_list = list(GARAGE_nodes)
     
     if garage_list:
         total_vehicles_created = 0
         
-        # Reset garage stats sebelum create vehicles
         print(f"[Simulation] Resetting garage stats...")
         for garage_id in garage_list:
             if garage_id in shared.node_type:
                 garage_data = shared.node_type[garage_id].get("garage_data", {})
                 garage_data["armada_bertugas"] = 0
                 garage_data["armada_standby"] = 0
-                print(f"[Simulation]   Garage {garage_id}: total_armada={garage_data.get('total_armada', 0)} (reset bertugas/standby)")
+                print(f"[Simulation]   Garage {garage_id}: total_armada={garage_data.get('total_armada', 0)}")
         
-        # Create vehicles berdasarkan total_armada di setiap garage
         print(f"\n[Simulation] Creating vehicles for each garage...")
         for garage_id in garage_list:
             if garage_id in shared.node_type:
@@ -117,21 +110,14 @@ def run_simulation(GRAPH, shared):
                     print(f"\n[Simulation] Garage {garage_id}: Creating {armada_count} vehicles...")
                     
                     for i in range(armada_count):
-                        # Create vehicle (garage_node akan di-set setelah ini)
                         vehicle = Vehicle(GRAPH, TPS_nodes, TPA_nodes, garage_list, shared=shared)
-                        
-                        # Set garage dan current position SETELAH create
                         vehicle.garage_node = garage_id
                         vehicle.current = garage_id
-                        
-                        # SEKARANG baru update stats (hanya increment standby/bertugas, bukan total_armada)
                         vehicle._update_garage_stats()
                         
-                        # Append ke LOCAL list (bukan shared.vehicles!)
                         vehicles.append(vehicle)
                         total_vehicles_created += 1
                         
-                        # Debug: print setiap 10 vehicles
                         if total_vehicles_created % 10 == 0:
                             print(f"[Simulation]   Progress: {total_vehicles_created} vehicles created...")
                     
@@ -141,35 +127,30 @@ def run_simulation(GRAPH, shared):
         print(f"[Simulation] ✓ Total vehicles created: {total_vehicles_created}")
         print(f"{'='*60}")
         
-        # Fallback jika tidak ada armada
         if total_vehicles_created == 0:
             print(f"\n[WARNING] No armada configured in any garage!")
-            print(f"[WARNING] Skipping vehicle creation...")
         
         shared.total_vehicles = total_vehicles_created
     else:
         print("[WARNING] No garage nodes found!")
     
-    # ===== ASSIGN KE SHARED (SEKALI SAJA!) =====
+    # ===== ASSIGN KE SHARED =====
     print(f"\n[Simulation] Assigning vehicles to shared state...")
-    print(f"[Simulation]   Local vehicles list: {len(vehicles)}")
-    print(f"[Simulation]   Shared vehicles (before): {len(shared.vehicles)}")
+    print(f"[Simulation]   Local: {len(vehicles)}, Shared (before): {len(shared.vehicles)}")
     
     shared.vehicles = vehicles
     
-    print(f"[Simulation]   Shared vehicles (after): {len(shared.vehicles)}")
+    print(f"[Simulation]   Shared (after): {len(shared.vehicles)}")
     
-    # Validasi
     if len(shared.vehicles) != len(vehicles):
         print(f"[ERROR] Mismatch! Local: {len(vehicles)}, Shared: {len(shared.vehicles)}")
     else:
         print(f"[Simulation] ✓ Vehicle assignment successful!")
     
-    # Check for duplicates
     vehicle_ids = [v.id for v in shared.vehicles]
     unique_ids = set(vehicle_ids)
     if len(vehicle_ids) != len(unique_ids):
-        print(f"[WARNING] Duplicate vehicle IDs detected!")
+        print(f"[WARNING] Duplicate vehicle IDs!")
         print(f"[WARNING]   Total: {len(vehicle_ids)}, Unique: {len(unique_ids)}")
     
     print(f"{'='*60}\n")
@@ -203,20 +184,67 @@ def run_simulation(GRAPH, shared):
     print(f"\n[Simulation] Entering main loop...")
     print(f"[Simulation] simulation_running flag: {shared.simulation_running}")
     
-    # ===== CRITICAL: CEK FLAG DALAM LOOP! =====
+    # ===== MAIN LOOP WITH CENTRALIZED EVENT HANDLING =====
     while running and shared.simulation_running:
-        # Handle pygame events
+        # ===== CENTRALIZED EVENT HANDLING =====
+        # Handle ALL events di satu tempat untuk menghindari event queue kosong
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 shared.simulation_running = False
                 break
+            
+            # Handle mouse click untuk node/vehicle/edge selection
+            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                if shared.paused:  # Only handle clicks when paused
+                    viewer.handle_mouse_click(event.pos, GRAPH, vehicles)
+            
+            # Handle reset view (R key)
+            elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                viewer.scale = min(viewer.WIDTH / range_x, viewer.HEIGHT / range_y) * 0.95
+                viewer.offset_x = viewer.WIDTH/2 - ((viewer.min_x+viewer.max_x)/2 - viewer.min_x)*viewer.scale
+                viewer.offset_y = viewer.HEIGHT/2 - ((viewer.max_y+viewer.min_y)/2 - viewer.min_y)*viewer.scale
         
-        # ===== CEK FLAG SETIAP ITERASI =====
+        # ===== CEK FLAG =====
         if not shared.simulation_running:
             print("[Simulation] simulation_running = False, breaking loop...")
             break
         
+        # ===== CAMERA CONTROLS (continuous key press) =====
+        # Handle camera movement dengan continuous key press
+        cam_speed = CAM_SPEED
+        fast_cam_speed = CAM_SPEED * 3
+        keys = pygame.key.get_pressed()
+
+        # Pan camera
+        if keys[pygame.K_LEFT]:  viewer.offset_x += cam_speed
+        if keys[pygame.K_RIGHT]: viewer.offset_x -= cam_speed
+        if keys[pygame.K_UP]:    viewer.offset_y += cam_speed
+        if keys[pygame.K_DOWN]:  viewer.offset_y -= cam_speed
+
+        # Fast pan
+        if keys[pygame.K_LEFT] and keys[pygame.K_SPACE]:  viewer.offset_x += fast_cam_speed
+        if keys[pygame.K_RIGHT] and keys[pygame.K_SPACE]: viewer.offset_x -= fast_cam_speed
+        if keys[pygame.K_UP] and keys[pygame.K_SPACE]:    viewer.offset_y += fast_cam_speed
+        if keys[pygame.K_DOWN] and keys[pygame.K_SPACE]:  viewer.offset_y -= fast_cam_speed
+
+        # Zoom
+        old_scale = viewer.scale
+        zoom_factor = 0.05
+        fast_zoom_factor = 0.15
+
+        if keys[pygame.K_UP] and keys[pygame.K_LSHIFT]: viewer.scale *= 1 + zoom_factor
+        if keys[pygame.K_DOWN] and keys[pygame.K_LSHIFT]: viewer.scale *= 1 - zoom_factor
+        if keys[pygame.K_UP] and keys[pygame.K_LCTRL]: viewer.scale *= 1 + fast_zoom_factor
+        if keys[pygame.K_DOWN] and keys[pygame.K_LCTRL]: viewer.scale *= 1 - fast_zoom_factor
+
+        # Center zoom
+        center_x = viewer.WIDTH / 2
+        center_y = viewer.HEIGHT / 2
+        viewer.offset_x = center_x - (center_x - viewer.offset_x) * (viewer.scale / old_scale)
+        viewer.offset_y = center_y - (center_y - viewer.offset_y) * (viewer.scale / old_scale)
+        
+        # ===== SIMULATION UPDATE =====
         sim_time_acc = sync(shared, sim_time_acc)
         shared.fps = int(clock.get_fps())
 
@@ -233,41 +261,38 @@ def run_simulation(GRAPH, shared):
             if shared.sim_day > last_garbage_generation_day:
                 print(f"\n[Simulation] Day {shared.sim_day}: Generating daily garbage...")
                 
-                # Reset AI daily statistics
                 ai_model.reset_daily()
                 
-                # Generate garbage baru dan tambahkan ke yang sudah ada
                 for tps_id in TPS_nodes:
                     if tps_id in shared.node_type:
                         tps_data = shared.node_type[tps_id].get("tps_data", {})
                         sampah_per_hari = tps_data.get("sampah_per_hari", 0)
                         
                         if sampah_per_hari > 0:
-                            # Generate dengan variasi random ±30%
                             variance = sampah_per_hari * 0.30
                             random_variance = random.uniform(-variance, variance)
                             daily_garbage = sampah_per_hari + random_variance
                             daily_garbage = max(0, daily_garbage)
                             
-                            # TAMBAHKAN ke sampah yang sudah ada (belum diambil)
                             tps_data["sampah_kg"] += daily_garbage
-                            print(f"[Simulation] TPS {tps_id}: +{daily_garbage:.2f} kg (total now: {tps_data['sampah_kg']:.2f} kg)")
+                            print(f"[Simulation] TPS {tps_id}: +{daily_garbage:.2f} kg (total: {tps_data['sampah_kg']:.2f} kg)")
                 
                 last_garbage_generation_day = shared.sim_day
             
             # ===== Update AI Model =====
             ai_model.update(dt, vehicles)
         
-        controls(viewer, range_x, range_y, GRAPH, vehicles)
+        # ===== RENDERING =====
         screen.fill((20,20,20))
 
         viewer.draw_graph(screen, GRAPH, NODE_COL, LINE_COL)
         viewer.draw_dynamic_objects(screen, vehicles)
 
+        # ===== Update vehicles =====
         for v in vehicles:
             v.update(dt, shared)
 
-        # ===== Update KnowledgeModel dengan vehicle status =====
+        # ===== Update KnowledgeModel =====
         for v in vehicles:
             knowledge_model.update_vehicle_status(v.id, v.actuator_get_status())
         

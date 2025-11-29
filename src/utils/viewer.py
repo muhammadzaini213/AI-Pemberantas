@@ -194,7 +194,6 @@ class GraphViewer:
                     print(f"[DEBUG] Car state window SET for {car_id}")
                 else:
                     print(f"[DEBUG] Condition failed - car_id:{car_id}, has_window:{hasattr(shared, 'car_state_window')}, window_value:{getattr(shared, 'car_state_window', None)}")
-                return
 
         # ==== Node click ====
         node = self.get_node_at_pos(mx, my)
