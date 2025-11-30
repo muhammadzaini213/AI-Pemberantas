@@ -221,8 +221,8 @@ class ProgramSummaryWindow:
     def on_refresh(self):
         self.validate_time()
         
-        import src.classes.vehicle
-        src.vehicle._vehicle_id_counter = 0
+        import src.classes.vehicle as vehicle
+        vehicle._vehicle_id_counter = 0
         
         if hasattr(self, "shared"):
             self.shared.node_type = {}
@@ -242,7 +242,6 @@ class ProgramSummaryWindow:
         print("Speed:", self.get_simulation_speed())
         print("Pause:", self.get_pause_state())
         
-        # Panggil callback refresh jika ada
         if self.on_refresh_callback:
             print("[ProgramSummaryWindow] Calling refresh callback...")
             self.on_refresh_callback()

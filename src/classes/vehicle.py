@@ -20,9 +20,9 @@ class Vehicle:
         self.progress = 0.0
         self.target_node = None
         self.state = "idle"
-        self.speed = VEHICLE_SPEED
+        self.speed = VEHICLE_SPEED  # Speed in meters/second or km/hour
         
-        # ===== Tracking metrics =====
+        # ===== Tracking metrics (in meters) =====
         self.daily_dist = 0.0
         self.total_dist = 0.0
         self.load = 0
@@ -148,7 +148,11 @@ class Vehicle:
             if old_state == "idle":
                 self._update_state_in_garage_stats(old_state)
             
-            print(f"[Vehicle {self.id}] Routing to TPA {tpa_target} (distance: {len(path)} nodes)")
+            path_distance = sum(
+            self.G[path[i]][path[i+1]][0]['length'] 
+            for i in range(len(path)-1)
+            )
+            print(f"[Vehicle] {self.id} Routing to TPA {tpa_target} (distance: {path_distance:.0f}m / {path_distance/1000:.2f}km)")  # ✅ meter & km
             return True
         except Exception as e:
             print(f"[Vehicle {self.id}] ERROR: Failed to route to TPA: {e}")
@@ -195,8 +199,8 @@ class Vehicle:
             "load_percentage": self.actuator_get_load_percentage(),
             "is_full": self.actuator_is_full(),
             "is_empty": self.actuator_is_empty(),
-            "daily_dist": self.daily_dist,
-            "total_dist": self.total_dist,
+            "daily_dist": self.daily_dist / 10_000_000,
+            "total_dist": self.total_dist / 10_000_000,
             "garage_node": self.garage_node,
             "route": self.route
         }
@@ -207,19 +211,6 @@ class Vehicle:
         if old_state != "idle":
             self._update_state_in_garage_stats(old_state)
         return True
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     # ============== ACTUATORS + SENSORS LOGIC==============
     def actuator_arrive_at_tps(self):
@@ -317,22 +308,6 @@ class Vehicle:
     def actuator_at_target(self):
         return self.target_node is None or self.progress >= 1.0
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     # ============== IF THIS WORKS IT WORKS ==============
     def set_path(self, path):
         if not path or len(path) == 0:
@@ -374,10 +349,7 @@ class Vehicle:
             neighbors = list(self.G.neighbors(self.current))
             if not neighbors:
                 return
-            goal = random.choice(neighbors)
             try:
-                path = nx.shortest_path(self.G, self.current, goal, weight="length")
-                self.set_path(path)
                 self.state = "random"
             except:
                 pass
@@ -401,7 +373,7 @@ class Vehicle:
         length = edge_data[0]['length']
 
         edge_id = f"{self.current}-{self.target_node}"
-        actual_speed = real_speed
+        actual_speed = real_speed  # m/s
         
         if shared and hasattr(shared, 'edge_type') and edge_id in shared.edge_type:
             slowdown_value = shared.edge_type[edge_id].get("slowdown", 0)
@@ -412,10 +384,11 @@ class Vehicle:
                     shared.knowledge_model.discover_slowdown(edge_id, slowdown_value)
         
         distance = actual_speed * dt
+        
         self.progress += distance / length
         
-        self.daily_dist += distance
-        self.total_dist += distance
+        self.daily_dist += distance / 1000
+        self.total_dist += distance / 1000
 
         if self.progress >= 1.0:
             try:

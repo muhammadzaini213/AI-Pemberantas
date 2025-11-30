@@ -1,0 +1,6 @@
+Minggu 1 (Pararel)
+
+Polish AI biar gak dongok, jangan lupa masukin objective function (ini bisa sekali banyak)
+Cek cek lokasi tps di daerah balikpapan
+Cari data truk sampah (jumlah, kapasitas, kecepatan) di balikpapan (lewat berita harusnya ada)
+Laporan pake markdown
