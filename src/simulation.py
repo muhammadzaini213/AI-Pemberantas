@@ -72,12 +72,13 @@ def run_simulation(GRAPH, shared):
             print("[Simulation] simulation_running = False, breaking loop...")
             break
         
-        controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running)
-        
         sim_time_acc = sync(shared, sim_time_acc)
         shared.fps = int(clock.get_fps())
 
         dt, last_time = getDt(time, last_time)
+        
+        controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running, dt)
+
 
         if not shared.paused:
             sim_time_acc += dt * shared.speed * (60 ** 1)
