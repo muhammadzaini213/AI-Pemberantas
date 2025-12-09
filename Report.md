@@ -53,6 +53,98 @@ Komponen fungsi objektif mencakup:
 
 Sertakan formulasi matematika dalam bentuk persamaan.
 
+## 3. Knowledge model
+
+#### a). Peta dan Lokasi TPS/TPA Diketahui
+
+Representasi peta kota:
+
+```
+G = (V, E)
+```
+
+**Makna variabel:**
+
+| Variabel     | Penjelasan                                           |
+| ------------ | ---------------------------------------------------- |
+| `V`          | Himpunan semua node (simpul jalan, TPS, TPA, garasi) |
+| `E`          | Himpunan semua edge (ruas jalan)                     |
+| `(x_v, y_v)` | Koordinat geografis dari node `v`                    |
+| `V_TPS`      | Subset node yang merupakan TPS                       |
+| `V_TPA`      | Subset node yang merupakan TPA                       |
+
+**Formulasi:**
+
+```
+∀ v ∈ V : lokasi (x_v, y_v) diketahui
+v ∈ V_TPS (lokasi TPS diketahui)
+v ∈ V_TPA (lokasi TPA diketahui)
+```
+
+---
+
+## 2. Delay & Kemacetan Tidak Diketahui Sebelum Dialami
+
+Model waktu tempuh:
+
+```
+T_e = T_e_base × S_e
+```
+
+**Makna variabel:**
+
+| Variabel   | Penjelasan                                         |
+| ---------- | -------------------------------------------------- |
+| `T_e`      | Waktu tempuh aktual pada edge `e`                  |
+| `T_e_base` | Waktu tempuh tanpa hambatan (baseline)             |
+| `S_e`      | Faktor slowdown (kemacetan, hambatan, delay)       |
+| `f_e(t)`   | Distribusi probabilitas untuk slowdown di edge `e` |
+
+Sifat pengetahuan:
+
+```
+S_e = unknown        jika truk belum melewati edge e
+S_e = observed value jika truk telah melewati edge e
+```
+
+Artinya sistem hanya mengetahui kondisi kemacetan setelah truk mengalaminya.
+
+---
+
+## 3. Volume Sampah TPS Tidak Diketahui Sebelum Truk Tiba
+
+Model volume sampah:
+
+```
+W_i ~ g_i(t)
+```
+
+**Makna variabel:**
+
+| Variabel | Penjelasan                                           |
+| -------- | ---------------------------------------------------- |
+| `W_i`    | Volume sampah aktual di TPS `i`                      |
+| `g_i(t)` | Distribusi probabilitas volume sampah TPS `i`        |
+| `A_i(t)` | Indikator apakah sudah ada truk yang tiba di TPS `i` |
+| `Ŵ_i(t)` | Informasi volume sampah yang diketahui sistem        |
+
+Indikator kunjungan:
+
+```
+A_i(t) = 0 (belum ada truk yang tiba)
+A_i(t) = 1 (sudah ada truk yang tiba)
+```
+
+Pengetahuan sistem:
+
+```
+Ŵ_i(t) = W_i(t)     jika A_i(t) = 1
+Ŵ_i(t) = unknown    jika A_i(t) = 0
+```
+
+Interpretasi:
+Sistem tidak mengetahui berapa volume sampah sebelum setidaknya satu truk benar-benar tiba di TPS tersebut.
+
 ---
 
 # C. Implementation
@@ -117,8 +209,6 @@ node_id: {
         "route": list[node_id]
     }
 ```
-
-##### d) Knowledge model
 
 ### 3. Rollout Algorithm Integration
 
