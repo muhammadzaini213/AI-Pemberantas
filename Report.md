@@ -16,10 +16,14 @@
 
 ---
 
+<br> 
+
 # A. Abstract
 Nanti abstract belakangan
 
 ---
+
+<br> 
 
 # B. Methods
 
@@ -42,6 +46,8 @@ Algoritma look-ahead dilakukan dengan:
 
 Pada tahap eksekusi rute, sistem menggunakan ```shortest path``` dari ```OSMnx``` untuk menentukan jalur perjalanan truk pada jaringan jalan yang dapat diberikan pengecualian. Namun, aspek ini tidak menjadi fokus utama penelitian karena pathfinding hanya berfungsi sebagai komponen teknis pendukung. Fokus utama simulasi adalah pada multi-target, multi-instance decision-making, yaitu bagaimana agen truk mengambil keputusan rute dan prioritas TPS secara adaptif melalui mekanisme Rollout.
 
+<br> 
+
 ## 2. Objective Function
 
 Komponen fungsi objektif mencakup:
@@ -52,6 +58,8 @@ Komponen fungsi objektif mencakup:
 * optimasi energi atau biaya operasional
 
 Sertakan formulasi matematika dalam bentuk persamaan.
+
+<br> 
 
 ## 3. Knowledge model
 
@@ -146,6 +154,8 @@ Artinya sistem tidak mengetahui berapa volume sampah sebelum setidaknya satu tru
 
 ---
 
+<br> 
+
 # C. Implementation
 
 ### 1. Environment Setup
@@ -153,6 +163,7 @@ Pada sistem yang telah kami buat, kami menggunakan library pygame untuk melakuka
 
 Untuk menambahkan data TPA, TPS, Garasi, Mobil, dan Kemacetan, kami menyediakan map editor sehingga pengeditan dapat dilakukan dengan lebih leluasa dan mudah yang datanya akan disimpan dalam file ```.json```. Meskipun begitu, data yang cukup jarang diubah seperti kecepatan kendaraan, waktu shift, serta warna warna node dan edges, kami letakkan di ```src/environment.py```.
 
+<br> 
 
 ### 2. Data Modeling
 
@@ -184,6 +195,8 @@ node_id: {
 }
 ```
 
+<br> 
+
 ##### b) Edges data model
 
 ```
@@ -209,9 +222,13 @@ node_id: {
     }
 ```
 
+<br> 
+
 ### 3. Rollout Algorithm Integration
 
 Tunjukkan langkah demi langkah implementasi, mulai dari base policy, proses look ahead, hingga evaluasi state.
+
+<br> 
 
 ### 4. Simulation Engine
 
@@ -220,6 +237,8 @@ Cara menjalankan skenario dynamic routing, logging hasil, visualisasi, dan debug
 Tambahkan potongan kode dengan syntax highlighting agar tampak profesional.
 
 ---
+
+<br> 
 
 # D. Demo
 
@@ -230,6 +249,8 @@ a) Cek apakah pip sudah terpasang:
 python -m pip --version
 ```
 
+<br> 
+
 b) Masuk ke virtual environment:
 ### Windows (PowerShell)
 
@@ -237,7 +258,6 @@ b) Masuk ke virtual environment:
 python -m venv venv
 venv\Scripts\activate
 ```
-
 ### Linux (bash)
 
 ```bash
@@ -245,11 +265,15 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
+<br> 
+
 c) Setelah environment aktif, jalankan kode berikut untuk menginstall library yang dibutuhkan: 
 
 ```bash
 pip install numpy pandas scikit-learn matplotlib pygame osmnx
 ```
+
+<br> 
 
 d) Kemudian ketik ini di terminal untuk menjalankan simulasi:
 ```bash
@@ -257,6 +281,9 @@ python -m src.start
 ```
 
 ---
+
+<br> 
+
 
 # E. Summary
 
@@ -268,6 +295,9 @@ Tuliskan ringkasan yang berfokus pada:
 * potensi pengembangan lanjutan
 
 ---
+
+<br> 
+
 
 # F. References
 
