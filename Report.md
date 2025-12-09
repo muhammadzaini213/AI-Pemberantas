@@ -53,16 +53,6 @@ Komponen fungsi objektif mencakup:
 
 Sertakan formulasi matematika dalam bentuk persamaan.
 
-## 3. Knowledge Model
-
-Struktur model pengetahuan dapat mencakup:
-
-* representasi TPS
-* kapasitas truk
-* kondisi lalu lintas
-* aturan pengambilan keputusan agen
-* mekanisme pembaruan informasi secara real-time
-
 ---
 
 # C. Implementation
@@ -127,6 +117,8 @@ node_id: {
         "route": list[node_id]
     }
 ```
+
+##### d) Knowledge model
 
 ### 3. Rollout Algorithm Integration
 
