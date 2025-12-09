@@ -83,7 +83,7 @@ v ∈ V_TPA (lokasi TPA diketahui)
 
 ---
 
-## b) Delay & Kemacetan Tidak Diketahui Sebelum Dialami
+#### b) Delay & Kemacetan Tidak Diketahui Sebelum Dialami
 
 Model waktu tempuh:
 
@@ -111,7 +111,7 @@ Artinya sistem hanya mengetahui kondisi kemacetan setelah truk mengalaminya.
 
 ---
 
-## c) Volume Sampah TPS Tidak Diketahui Sebelum Truk Tiba
+#### c) Volume Sampah TPS Tidak Diketahui Sebelum Truk Tiba
 
 Model volume sampah:
 
@@ -121,7 +121,7 @@ W_i ~ g_i(t)
 
 **Makna variabel:**
 
-| Variabel | Penjelasan                                           |
+| Variabel | Penjelasan                                         Ŵ_i(t)  |
 | -------- | ---------------------------------------------------- |
 | `W_i`    | Volume sampah aktual di TPS `i`                      |
 | `g_i(t)` | Distribusi probabilitas volume sampah TPS `i`        |
@@ -142,8 +142,7 @@ Pengetahuan sistem:
 Ŵ_i(t) = unknown    jika A_i(t) = 0
 ```
 
-Interpretasi:
-Sistem tidak mengetahui berapa volume sampah sebelum setidaknya satu truk benar-benar tiba di TPS tersebut.
+Artinya sistem tidak mengetahui berapa volume sampah sebelum setidaknya satu truk benar-benar tiba di TPS tersebut.
 
 ---
 
