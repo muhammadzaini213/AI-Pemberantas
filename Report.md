@@ -1,27 +1,170 @@
-## Simulasi Agen Koordinator Truk Sampah Menggunakan Matheuristic Rolloutuntuk Beradaptasi dalam Kondisi Uncertain (Stochastic) di Kota Balikpapan
+# Simulasi Agen Koordinator Truk Sampah Menggunakan Matheuristic Rollout dalam Kondisi Uncertain (Stochastic) Kota Balikpapan
+
+---
 
 ## Kelompok 10
-Muhammad Zaini 11241064
-Mayoga Finanda
-Ferdianta Tarigan
-Ahmad Rafif Rafi
 
-#
-## Abstract
-Manajemen pengangkutan sampah di wilayah perkotaan menghadapi tantangan signifikan akibat ketidakpastian pada kondisi operasional, seperti variasi volume sampah, kemacetan lalu lintas, perubahan waktu layanan, serta gangguan rute. Penelitian ini mengembangkan sebuah simulasi agen koordinator truk sampah yang mampu beradaptasi secara dinamis pada lingkungan uncertain (stochastic) dengan memanfaatkan pendekatan matheuristic berbasis Rollout. Metode Rollout digunakan sebagai strategi keputusan berulang (sequential decision-making) yang memperbaiki kebijakan dasar (base policy) melalui proses look-ahead terhingga, sehingga menghasilkan keputusan rute yang lebih optimal dalam kondisi real-time. Simulasi ini memodelkan setiap truk sebagai agen otonom yang melakukan penilaian ulang terhadap kondisi kota Balikpapan, termasuk fluktuasi timbunan sampah per TPS, jarak tempuh, waktu tunggu, dan kondisi jaringan jalan. Hasil eksperimen menunjukkan bahwa integrasi algoritma Rollout mampu meningkatkan efektivitas pergerakan truk, mengurangi total waktu perjalanan, serta meminimalkan risiko penumpukan sampah dibandingkan pendekatan deterministik konvensional. Dengan demikian, sistem ini menawarkan kerangka adaptif yang relevan bagi pemerintah kota Balikpapan dalam meningkatkan efisiensi layanan persampahan pada situasi yang penuh ketidakpastian.
+| Nama              | NIM      |
+| ----------------- | -------- |
+| Muhammad Zaini    | 11241064 |
+| Ahmad Rafif Rafi  | 11241006 |
+| Mayoga Finanda    | 11241044 |
+| Ferdianta Tarigan | 11241030 |
 
-## Methods
-Knowledgemodel, matheuristic rollout, reinforcement learning. Objective function
+---
 
-## Implementation
+# A. Abstract
+Nanti abstract belakangan
 
-Shows your code step by step like writing a tutorial, but formal
+---
 
-## Demo
-Can be screenshot or gif animation (suggested)
+# B. Methods
 
-## Summary
-Kesimpulan disini
+## 1. Matheuristic Rollout
+Metode Rollout merupakan teknik matheuristic yang  tujuannya meningkatkan kualitas keputusan dalam masalah sequential decision-making pada lingkungan stochastic. Rollout bekerja dengan memanfaatkan base policy (keputusan cepat) sebagai kebijakan awal, kemudian melakukan evaluasi ke depan (look-ahead) untuk memilih tindakan yang lebih baik daripada keputusan dasar.
 
-## References
-Daftar pustaka, (sumber data, paper, dll)
+Konsep dasar Rollout adalah menilai beberapa aksi kandidat melalui simulasi pendek menggunakan base policy. Setiap aksi dihitung nilai biayanya sesuai objective function yang telah dibuat, kemudian aksi dengan hasil terbaik akan dipilih untuk dieksekusi
+
+Peningkatan keputusan terjadi karena Rollout tidak hanya berusaha melihat kondisi saat ini, tetapi juga memprediksi dampak tindakan pada beberapa langkah ke depan terutama pada kondisi yang berubah-ubah mulai dari kemacetan jalan dan fluktuasi volume sampah yang tidak selalu diketahui
+
+Algoritma look-ahead dilakukan dengan:
+
+* memilih aksi kandidat,
+
+* menjalankan simulasi singkat berbasis base policy,
+
+* mengevaluasi total biaya, dan
+
+* memilih aksi dengan nilai optimal.
+
+Pada tahap eksekusi rute, sistem menggunakan ```shortest path``` dari ```OSMnx``` untuk menentukan jalur perjalanan truk pada jaringan jalan yang dapat diberikan pengecualian. Namun, aspek ini tidak menjadi fokus utama penelitian karena pathfinding hanya berfungsi sebagai komponen teknis pendukung. Fokus utama simulasi adalah pada multi-target, multi-instance decision-making, yaitu bagaimana agen truk mengambil keputusan rute dan prioritas TPS secara adaptif melalui mekanisme Rollout.
+
+## 2. Objective Function
+
+Komponen fungsi objektif mencakup:
+
+* minimisasi waktu tempuh
+* minimisasi total perjalanan
+* reduksi tingkat penumpukan TPS
+* optimasi energi atau biaya operasional
+
+Sertakan formulasi matematika dalam bentuk persamaan.
+
+## 3. Knowledge Model
+
+Struktur model pengetahuan dapat mencakup:
+
+* representasi TPS
+* kapasitas truk
+* kondisi lalu lintas
+* aturan pengambilan keputusan agen
+* mekanisme pembaruan informasi secara real-time
+
+---
+
+# C. Implementation
+
+### 1. Environment Setup
+Pada sistem yang telah kami buat, kami menggunakan library pygame untuk melakukan visualisasi dan simulasi untuk environment. Dengan data ```.graphml``` yang diambil langsung dari ```openstreetmap.org``` melalui library osmnx yang tersedia di python.
+
+Untuk menambahkan data TPA, TPS, Garasi, Mobil, dan Kemacetan, kami menyediakan map editor sehingga pengeditan dapat dilakukan dengan lebih leluasa dan mudah yang datanya akan disimpan dalam file ```.json```. Meskipun begitu, data yang cukup jarang diubah seperti kecepatan kendaraan, waktu shift, serta warna warna node dan edges, kami letakkan di ```src/environment.py```.
+
+
+### 2. Data Modeling
+
+##### a) Nodes data model
+
+```
+node_id: {
+    "tps": boolean,
+    "tpa": boolean,
+    "garage": boolean,
+
+    "tps_data": {
+        "nama": String, 
+        "sampah_kg": float, 
+        "sampah_per_hari": float, # Interval ±30%
+    },
+
+    "tpa_data": {
+        "nama": String, 
+        "total_sampah": float
+    },
+
+    "garage_data": {
+        "nama": "Garage", 
+        "total_armada": int, 
+        "armada_bertugas": int, 
+        "armada_standby": int
+    }
+}
+```
+
+##### b) Edges data model
+
+```
+    edge_id: {
+    "slowdown": float,
+    "slowdown_start": int,
+    "slowdown_end": int
+    },
+```
+
+##### c) Truck data model
+
+```
+    truck_id: {
+        "garage_node": node_id,
+        "state": enum CarState, # Idle, Moving, Loading, Unloading, Stuck, Standby
+        "speed": float,
+        "daily_dist": float,
+        "total_dist": float,
+        "load": float,
+        "max_load": float,
+        "route": list[node_id]
+    }
+```
+
+### 3. Rollout Algorithm Integration
+
+Tunjukkan langkah demi langkah implementasi, mulai dari base policy, proses look ahead, hingga evaluasi state.
+
+### 4. Simulation Engine
+
+Cara menjalankan skenario dynamic routing, logging hasil, visualisasi, dan debugging.
+
+Tambahkan potongan kode dengan syntax highlighting agar tampak profesional.
+
+---
+
+# D. Demo
+
+Direkomendasikan untuk menyertakan:
+
+* screenshot simulasi rute
+* tampilan dashboard status TPS
+* grafik performa sebelum dan sesudah Rollout
+* animasi gif truk bergerak dalam simulasi
+
+Anda bisa menambahkan block seperti:
+
+---
+
+# E. Summary
+
+Tuliskan ringkasan yang berfokus pada:
+
+* efektivitas Rollout dalam kondisi uncertain
+* perbandingan dengan pendekatan deterministik
+* implikasi kebijakan bagi manajemen sampah kota
+* potensi pengembangan lanjutan
+
+---
+
+# F. References
+
+* Anuar, W.K.; Lee, L.S.; Seow, H.-V.; Pickl, S. A Multi-Depot Vehicle Routing Problem with Stochastic Road Capacity and Reduced Two-Stage Stochastic Integer Linear Programming Models for Rollout Algorithm. Mathematics 2021, 9, 1572. https://doi.org/10.3390/math9131572.
+
+
+---
+
