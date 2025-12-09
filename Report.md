@@ -11,6 +11,9 @@
 | Mayoga Finanda    | 11241044 |
 | Ferdianta Tarigan | 11241030 |
 
+
+<img width="980" height="803" alt="image" src="https://github.com/user-attachments/assets/e5ccbebc-47f1-4a18-b882-6db368c0c480" />
+
 ---
 
 # A. Abstract
