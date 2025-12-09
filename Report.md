@@ -12,7 +12,8 @@
 | Ferdianta Tarigan | 11241030 |
 
 
-<img width="980" height="803" alt="image" src="https://github.com/user-attachments/assets/e5ccbebc-47f1-4a18-b882-6db368c0c480" />
+<img width="1257" height="1053" alt="image" src="https://github.com/user-attachments/assets/2449c5cf-73ec-4114-bd37-168bc84d65a5" />
+
 
 ---
 
