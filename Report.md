@@ -90,7 +90,6 @@ G = (V, E)
 v ∈ V_TPS (lokasi TPS diketahui)
 v ∈ V_TPA (lokasi TPA diketahui)
 ```
-
 <br> 
 
 #### b) Delay & Kemacetan Tidak Diketahui Sebelum Dialami
