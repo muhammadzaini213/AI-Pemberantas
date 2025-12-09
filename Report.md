@@ -63,6 +63,8 @@ Sertakan formulasi matematika dalam bentuk persamaan.
 
 ## 3. Knowledge model
 
+<br> 
+
 #### a) Peta dan Lokasi TPS/TPA Diketahui
 
 Representasi peta kota:
@@ -89,7 +91,7 @@ v ∈ V_TPS (lokasi TPS diketahui)
 v ∈ V_TPA (lokasi TPA diketahui)
 ```
 
----
+<br> 
 
 #### b) Delay & Kemacetan Tidak Diketahui Sebelum Dialami
 
@@ -117,7 +119,7 @@ S_e = observed value jika truk telah melewati edge e
 
 Artinya sistem hanya mengetahui kondisi kemacetan setelah truk mengalaminya.
 
----
+<br> 
 
 #### c) Volume Sampah TPS Tidak Diketahui Sebelum Truk Tiba
 
