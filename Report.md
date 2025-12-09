@@ -143,12 +143,13 @@ Tambahkan potongan kode dengan syntax highlighting agar tampak profesional.
 # D. Demo
 
 ## 1. Cara Menjalankan Simulasi
-Cek apakah pip sudah terpasang:
+a) Cek apakah pip sudah terpasang:
 
 ```bash
 python -m pip --version
 ```
 
+b) Masuk ke virtual environment:
 ### Windows (PowerShell)
 
 ```bash
@@ -163,13 +164,13 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-Setelah environment aktif, jalankan kode berikut untuk menginstall library yang dibutuhkan: 
+c) Setelah environment aktif, jalankan kode berikut untuk menginstall library yang dibutuhkan: 
 
 ```bash
 pip install numpy pandas scikit-learn matplotlib pygame osmnx
 ```
 
-Kemudian ketik ini di terminal untuk menjalankan simulasi:
+d) Kemudian ketik ini di terminal untuk menjalankan simulasi:
 ```bash
 python -m src.start
 ```
