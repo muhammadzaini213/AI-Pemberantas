@@ -2,6 +2,9 @@
 
 ---
 
+<img width="1257" height="1053" alt="image" src="https://github.com/user-attachments/assets/2449c5cf-73ec-4114-bd37-168bc84d65a5" />
+
+
 ## Kelompok 10
 
 | Nama              | NIM      |
@@ -10,10 +13,6 @@
 | Ahmad Rafif Rafi  | 11241006 |
 | Mayoga Finanda    | 11241044 |
 | Ferdianta Tarigan | 11241030 |
-
-
-<img width="1257" height="1053" alt="image" src="https://github.com/user-attachments/assets/2449c5cf-73ec-4114-bd37-168bc84d65a5" />
-
 
 ---
 
