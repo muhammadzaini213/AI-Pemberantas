@@ -82,6 +82,7 @@ G = (V, E)
 | `(x_v, y_v)` | Koordinat geografis dari node `v`                    |
 | `V_TPS`      | Subset node yang merupakan TPS                       |
 | `V_TPA`      | Subset node yang merupakan TPA                       |
+| `V_GARAGE`   | Subset node yang merupakan GARAGE                    |
 
 **Formulasi:**
 
@@ -89,7 +90,11 @@ G = (V, E)
 ∀ v ∈ V : lokasi (x_v, y_v) diketahui
 v ∈ V_TPS (lokasi TPS diketahui)
 v ∈ V_TPA (lokasi TPA diketahui)
+v ∈ V_GARAGE (lokasi Garasi diketahui)
+
 ```
+Artinya model sudah mengetahui semua rute serta lokasi TPS, TPA, dan Garasi secara lengkap.
+
 <br> 
 
 #### b) Delay & Kemacetan Tidak Diketahui Sebelum Dialami
