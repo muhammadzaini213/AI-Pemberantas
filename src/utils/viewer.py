@@ -1,6 +1,5 @@
 import pygame
 from ..environment import WIDTH, HEIGHT, TPA_COL, TPS_COL, GARAGE_COL
-import math
 
 class GraphViewer:
     def __init__(self, pos_dict, shared, width=WIDTH, height=HEIGHT, node_size=2):
@@ -49,17 +48,12 @@ class GraphViewer:
         self.last_offy = self.offset_y
 
     def draw_arrow_fast(self, screen, color, x1, y1, x2, y2, width, draw_head=True):
-        """
-        Faster arrow drawing. If draw_head=False, only draw a line.
-        Width and arrow size should already be adapted to current scale.
-        """
-        # draw main line (always)
+
         pygame.draw.line(screen, color, (x1, y1), (x2, y2), max(1, int(width)))
 
         if not draw_head:
             return
 
-        # light trig only when needed
         dx = x2 - x1
         dy = y2 - y1
         length = (dx*dx + dy*dy) ** 0.5
@@ -78,13 +72,11 @@ class GraphViewer:
         p2 = (x2 - ux*size + px*size*0.5, y2 - uy*size + py*size*0.5)
         p3 = (x2 - ux*size - px*size*0.5, y2 - uy*size - py*size*0.5)
 
-        # integer coords for polygon
         pygame.draw.polygon(screen, color, ( (int(p1[0]),int(p1[1])), (int(p2[0]),int(p2[1])), (int(p3[0]),int(p3[1])) ))
 
 
     def draw_graph(self, screen, G, default_color, edge_color):
 
-        # cache coords
         if not hasattr(self, "_coord_cache"):
             self._coord_cache = {}
         self._coord_cache.clear()
@@ -93,47 +85,38 @@ class GraphViewer:
 
         scale = max(self.scale, 1e-9)
 
-        # ----- ARROW RULES -----
-        ARROW_MIN_SCALE = 3      # arrow hanya muncul di zoom sangat dekat
-        ARROW_MIN_LEN_PX = 150       # jarak layar minimal untuk munculkan arrow
+        ARROW_MIN_SCALE = 3 
+        ARROW_MIN_LEN_PX = 150   
 
 
         for u, v in G.edges():
             x1, y1 = self._coord_cache[u]
             x2, y2 = self._coord_cache[v]
 
-            # skip if offscreen
             if (max(x1, x2) < -15 or min(x1, x2) > self.WIDTH + 15 or
                 max(y1, y2) < -15 or min(y1, y2) > self.HEIGHT + 15):
                 continue
 
-            # edge length on screen
             dx = x2 - x1
             dy = y2 - y1
             onscreen_len = (dx*dx + dy*dy) ** 0.5
 
-            # get edge style
             edge_id = f"{u}-{v}"
             e = self.shared.edge_type.get(edge_id)
             is_slow = e and e.get("slowdown", 0) > 0
             color = (255, 0, 0) if is_slow else edge_color
 
-            # width scales with zoom
             base_width = 1 if not is_slow else 2
             width = max(1, int(base_width * min(1.0, scale * 1.4)))
 
-            # -------------------------
-            #  SHOULD DRAW ARROWHEAD?
-            # -------------------------
+
             draw_head = (
                 scale >= ARROW_MIN_SCALE and
                 onscreen_len >= ARROW_MIN_LEN_PX
             )
 
-            # always draw the line
             self.draw_arrow_fast(screen, color, x1, y1, x2, y2, width, draw_head=draw_head)
 
-        # ----- draw important nodes only -----
         for n in G.nodes():
             x, y = self._coord_cache[n]
             if not (-10 <= x <= self.WIDTH+10 and -10 <= y <= self.HEIGHT+10):
