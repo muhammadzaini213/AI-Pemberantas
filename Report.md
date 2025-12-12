@@ -2,6 +2,9 @@
 
 ---
 
+<img width="1600" height="1005" alt="image" src="https://github.com/user-attachments/assets/0c2b3193-f3db-42ff-bab2-ceab704daffb" />
+
+
 ## Kelompok 10
 
 | Nama              | NIM      |
@@ -13,10 +16,14 @@
 
 ---
 
+<br> 
+
 # A. Abstract
 Nanti abstract belakangan
 
 ---
+
+<br> 
 
 # B. Methods
 
@@ -39,6 +46,8 @@ Algoritma look-ahead dilakukan dengan:
 
 Pada tahap eksekusi rute, sistem menggunakan ```shortest path``` dari ```OSMnx``` untuk menentukan jalur perjalanan truk pada jaringan jalan yang dapat diberikan pengecualian. Namun, aspek ini tidak menjadi fokus utama penelitian karena pathfinding hanya berfungsi sebagai komponen teknis pendukung. Fokus utama simulasi adalah pada multi-target, multi-instance decision-making, yaitu bagaimana agen truk mengambil keputusan rute dan prioritas TPS secara adaptif melalui mekanisme Rollout.
 
+<br> 
+
 ## 2. Objective Function
 
 Komponen fungsi objektif mencakup:
@@ -50,17 +59,108 @@ Komponen fungsi objektif mencakup:
 
 Sertakan formulasi matematika dalam bentuk persamaan.
 
-## 3. Knowledge Model
+<br> 
 
-Struktur model pengetahuan dapat mencakup:
+## 3. Knowledge model
 
-* representasi TPS
-* kapasitas truk
-* kondisi lalu lintas
-* aturan pengambilan keputusan agen
-* mekanisme pembaruan informasi secara real-time
+<br> 
+
+#### a) Peta dan Lokasi TPS/TPA Diketahui
+
+Representasi peta kota:
+
+```
+G = (V, E)
+```
+
+**Makna variabel:**
+
+| Variabel     | Penjelasan                                           |
+| ------------ | ---------------------------------------------------- |
+| `V`          | Himpunan semua node (simpul jalan, TPS, TPA, garasi) |
+| `E`          | Himpunan semua edge (ruas jalan)                     |
+| `(x_v, y_v)` | Koordinat geografis dari node `v`                    |
+| `V_TPS`      | Subset node yang merupakan TPS                       |
+| `V_TPA`      | Subset node yang merupakan TPA                       |
+| `V_GARAGE`   | Subset node yang merupakan GARAGE                    |
+
+**Formulasi:**
+
+```
+∀ v ∈ V : lokasi (x_v, y_v) diketahui
+v ∈ V_TPS (lokasi TPS diketahui)
+v ∈ V_TPA (lokasi TPA diketahui)
+v ∈ V_GARAGE (lokasi Garasi diketahui)
+
+```
+Artinya model sudah mengetahui semua rute serta lokasi TPS, TPA, dan Garasi secara lengkap.
+
+<br> 
+
+#### b) Delay & Kemacetan Tidak Diketahui Sebelum Dialami
+
+Model waktu tempuh:
+
+```
+T_e = T_e_base × S_e
+```
+
+**Makna variabel:**
+
+| Variabel   | Penjelasan                                         |
+| ---------- | -------------------------------------------------- |
+| `T_e`      | Waktu tempuh aktual pada edge `e`                  |
+| `T_e_base` | Waktu tempuh tanpa hambatan (baseline)             |
+| `S_e`      | Faktor slowdown (kemacetan, hambatan, delay)       |
+| `f_e(t)`   | Distribusi probabilitas untuk slowdown di edge `e` |
+
+Sifat pengetahuan:
+
+```
+S_e = unknown        jika truk belum melewati edge e
+S_e = observed value jika truk telah melewati edge e
+```
+
+Artinya model hanya mengetahui kondisi kemacetan setelah truk mengalaminya.
+
+<br> 
+
+#### c) Volume Sampah TPS Tidak Diketahui Sebelum Truk Tiba
+
+Model volume sampah:
+
+```
+W_i ~ g_i(t)
+```
+
+**Makna variabel:**
+
+| Variabel | Penjelasan                                         Ŵ_i(t)  |
+| -------- | ---------------------------------------------------- |
+| `W_i`    | Volume sampah aktual di TPS `i`                      |
+| `g_i(t)` | Distribusi probabilitas volume sampah TPS `i`        |
+| `A_i(t)` | Indikator apakah sudah ada truk yang tiba di TPS `i` |
+| `Ŵ_i(t)` | Informasi volume sampah yang diketahui sistem        |
+
+Indikator kunjungan:
+
+```
+A_i(t) = 0 (belum ada truk yang tiba)
+A_i(t) = 1 (sudah ada truk yang tiba)
+```
+
+Pengetahuan sistem:
+
+```
+Ŵ_i(t) = W_i(t)     jika A_i(t) = 1
+Ŵ_i(t) = unknown    jika A_i(t) = 0
+```
+
+Artinya model tidak mengetahui berapa volume sampah sebelum setidaknya satu truk benar-benar tiba di TPS tersebut.
 
 ---
+
+<br> 
 
 # C. Implementation
 
@@ -69,6 +169,7 @@ Pada sistem yang telah kami buat, kami menggunakan library pygame untuk melakuka
 
 Untuk menambahkan data TPA, TPS, Garasi, Mobil, dan Kemacetan, kami menyediakan map editor sehingga pengeditan dapat dilakukan dengan lebih leluasa dan mudah yang datanya akan disimpan dalam file ```.json```. Meskipun begitu, data yang cukup jarang diubah seperti kecepatan kendaraan, waktu shift, serta warna warna node dan edges, kami letakkan di ```src/environment.py```.
 
+<br> 
 
 ### 2. Data Modeling
 
@@ -100,6 +201,8 @@ node_id: {
 }
 ```
 
+<br> 
+
 ##### b) Edges data model
 
 ```
@@ -125,9 +228,22 @@ node_id: {
     }
 ```
 
-### 3. Rollout Algorithm Integration
+<br> 
 
-Tunjukkan langkah demi langkah implementasi, mulai dari base policy, proses look ahead, hingga evaluasi state.
+### 3. Rollout Algorithm Integration
+#### a) Dispatch
+Pada awal jam kerja, truk yang tersedia akan dikeluarkan dari garasi dan pergi menuju TPS yang tersedia, pada proses ini dilakukan base policy untuk menentukan rute tercepat secara deterministik, kemudian dilakukan proses look ahead berdasarkan pengalaman dari truk sebelumnya (kemacetan, jumlah sampah terakhir).
+
+#### b) Gathering
+Setelah truk mencapai TPS, sampah akan diambil berdasarkan kapasitas maksimal truk, kemudian diantarkan ke TPA, proses ini akan dilakukan selama jam kerja dan akan diakhiri jika jam kerja selesai ataupun semua sampah harian di TPS telah dikosongkan.
+
+#### c) Reschedule/Rerouting
+Jika truk mendapat pengetahuan baru seperti jalan macet serta jumlah sampah di TPS, modal akan melakukan reschedule ulang untuk memastikan apakah rute sekarang masih efektif atau tidak dan menyesuaikan dengan meminimalkan perubahan rute pada truk lain yang tidak relevan dengan kondisi yang terjadi.
+
+#### d) Ending
+Jika sampah sudah habis atau jam kerja sudah selesai, semua truk akan kembali dan model akan melakukan evaluasi untuk menentukan mekanisme saat dispatch di jam kerja selanjutnya agar lebih efektif.
+
+<br> 
 
 ### 4. Simulation Engine
 
@@ -137,18 +253,52 @@ Tambahkan potongan kode dengan syntax highlighting agar tampak profesional.
 
 ---
 
+<br> 
+
 # D. Demo
 
-Direkomendasikan untuk menyertakan:
+## 1. Cara Menjalankan Simulasi
+a) Cek apakah pip sudah terpasang:
 
-* screenshot simulasi rute
-* tampilan dashboard status TPS
-* grafik performa sebelum dan sesudah Rollout
-* animasi gif truk bergerak dalam simulasi
+```bash
+python -m pip --version
+```
 
-Anda bisa menambahkan block seperti:
+<br> 
+
+b) Masuk ke virtual environment:
+### Windows (PowerShell)
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+### Linux (bash)
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+<br> 
+
+c) Setelah environment aktif, jalankan kode berikut untuk menginstall library yang dibutuhkan: 
+
+```bash
+pip install numpy pandas scikit-learn matplotlib pygame osmnx
+```
+
+<br> 
+
+d) Kemudian ketik ini di terminal untuk menjalankan simulasi:
+```bash
+python -m src.start
+```
 
 ---
+
+<br> 
+
 
 # E. Summary
 
@@ -160,6 +310,9 @@ Tuliskan ringkasan yang berfokus pada:
 * potensi pengembangan lanjutan
 
 ---
+
+<br> 
+
 
 # F. References
 
