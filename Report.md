@@ -2,7 +2,7 @@
 
 ---
 
-<img width="1257" height="1053" alt="image" src="https://github.com/user-attachments/assets/2449c5cf-73ec-4114-bd37-168bc84d65a5" />
+<img width="1600" height="1005" alt="image" src="https://github.com/user-attachments/assets/0c2b3193-f3db-42ff-bab2-ceab704daffb" />
 
 
 ## Kelompok 10
