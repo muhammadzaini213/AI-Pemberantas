@@ -107,7 +107,7 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
     
     for v in vehicles:
         metrics["vehicle_utilization"][v.id] = {
-            "total_distance_km": v.total_dist,
+            "total_dist": v.total_dist,
             "final_state": v.state,
             "final_load": v.load
         }

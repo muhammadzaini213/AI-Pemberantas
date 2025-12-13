@@ -82,10 +82,6 @@ class AIModel:
         print(f"[AIModel] Dispatched: {count}/{len(idle_vehicles)}")
 
     def _calc_tps_priority(self, vehicle=None, top_n=70):
-        """
-        Hitung prioritas TPS untuk kendaraan tertentu
-        top_n: batasi jumlah TPS yang diperiksa
-        """
         priorities = {}
         tps_list = list(self.knowledge.TPS_nodes)
 
@@ -248,35 +244,13 @@ class AIModel:
     
     # ============ PREVENTIVE REROUTE ============
     def _preventive_reroute(self, vehicle):
-        if not vehicle.path or len(vehicle.path) < 2:
-            return
-        next_node = vehicle.path[1]
-        edge_id = f"{vehicle.current}-{next_node}"
-        slowdown = self.knowledge.get_slowdown(edge_id, hour=self.shared.sim_hour)
-        if slowdown is not None and slowdown < 5:
-            new_path = self._safe_path(vehicle.current, vehicle.path[-1], vehicle.G)
-            if new_path:
-                vehicle.set_path(new_path)
-                self.reschedule_count += 1
-                print(f"[AIModel] Preventively rerouted {vehicle.id} from slow edge {edge_id}")
+        # tidak melakukan apa-apa, biarkan kendaraan mengikuti path default
+        pass
 
     # ============ SAFE PATH ============
     def _safe_path(self, start, end, G):
-        hour = self.shared.sim_hour
-        def weight(u, v, d):
-            edge_id = f"{u}-{v}"
-            length = d.get("length", 1)
-            slowdown = self.knowledge.get_slowdown(edge_id, hour=hour)
-            if slowdown is not None:
-                if slowdown < 5: return float('inf')
-                return length * (VEHICLE_SPEED / slowdown)
-            return length
         try:
-            path = nx.shortest_path(G, start, end, weight=weight)
-            for i in range(len(path)-1):
-                edge_id = f"{path[i]}-{path[i+1]}"
-                if self.knowledge.get_slowdown(edge_id, hour=hour) is not None and self.knowledge.get_slowdown(edge_id, hour=hour) < 5:
-                    return None
+            path = nx.shortest_path(G, start, end, weight='length')
             return path
         except:
             return None

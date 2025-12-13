@@ -14,7 +14,6 @@ class ObjectiveFunction:
         self.SHIFT_DURATION_HOURS = self.SHIFT_END - self.SHIFT_START
         
     def calculate(self, metrics: Dict[str, Any], shared=None, knowledge_model=None) -> Dict[str, float]:
-        # Pastikan total_distance dalam km
         total_distance_km = metrics.get('total_distance', 0) / 1000.0
         avg_overtime_minutes = self._calculate_avg_overtime(metrics)
         unserved_tps_count = self._calculate_unserved_tps(metrics, shared, knowledge_model)
@@ -58,7 +57,6 @@ class ObjectiveFunction:
         for day_data in daily_metrics:
             vehicle_stats = day_data.get('vehicle_stats', {})
             for stats in vehicle_stats.values():
-                # Pastikan jarak dalam km
                 distance_km = stats.get('daily_dist', 0) / 1000.0
                 estimated_hours = distance_km / VEHICLE_SPEED
                 overtime_hours = max(0, estimated_hours - self.SHIFT_DURATION_HOURS)
