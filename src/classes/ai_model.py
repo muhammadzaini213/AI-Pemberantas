@@ -81,35 +81,60 @@ class AIModel:
             print(f"[AIModel] {vehicle.id} -> TPS {tps_id} ({self._path_distance(path, vehicle.G):.0f}m)")
         print(f"[AIModel] Dispatched: {count}/{len(idle_vehicles)}")
 
-    def _calc_tps_priority(self):
+    def _calc_tps_priority(self, vehicle=None, top_n=70):
+        """
+        Hitung prioritas TPS untuk kendaraan tertentu
+        top_n: batasi jumlah TPS yang diperiksa
+        """
         priorities = {}
-        for tps_id in self.knowledge.TPS_nodes:
-            # sampah yang diketahui atau default
-            garbage = self.knowledge.get_discovered_garbage(tps_id) or self.knowledge.known_tps.get(tps_id, {}).get("sampah_per_hari", 0)
+        tps_list = list(self.knowledge.TPS_nodes)
+
+        # Ambil subset TPS berdasarkan garbage default, descending
+        tps_list.sort(key=lambda tps: self.knowledge.known_tps.get(tps, {}).get("sampah_per_hari", 0), reverse=True)
+        tps_list = tps_list[:top_n]
+
+        for tps_id in tps_list:
+            garbage = self.knowledge.get_discovered_garbage(tps_id) \
+                    or self.knowledge.known_tps.get(tps_id, {}).get("sampah_per_hari", 0)
             if garbage <= 0:
                 continue
-            
-            # faktor truk yang sudah menuju TPS
+
             assign_factor = 1.0 / (1 + len(self.tps_assignments[tps_id]))
-            
-            # faktor lama tidak dilayani
+
+            # faktor frekuensi cek
             if tps_id in self.knowledge.discovered_garbage:
-                # hitung selisih waktu dalam jam
                 last_time = self.knowledge.discovered_garbage[tps_id]["last_check_time"]
                 last_day, last_hm = last_time.split(" ")[1], last_time.split(" ")[2]
                 last_hour = int(last_hm.split(":")[0]) + int(last_hm.split(":")[1])/60
                 last_day = int(last_day)
-                
-                # total jam sejak terakhir dicek
                 hours_since_check = (self.shared.sim_day - last_day) * 24 + (self.shared.sim_hour - last_hour)
-                freq_factor = 1 + hours_since_check / 24.0   # bisa skala 1 + hari
+                freq_factor = 1 + hours_since_check / 24.0
             else:
-                freq_factor = 2.0  # jika belum pernah dicek
-            
-            priorities[tps_id] = (garbage / 1000.0) * assign_factor * freq_factor
-        
+                freq_factor = 1.0
+
+            # faktor jarak
+            dist_factor = 1.0
+            if vehicle is not None and getattr(vehicle, 'G', None) is not None:
+                key = (vehicle.current, tps_id)
+                if key in self._distance_cache:
+                    distance = self._distance_cache[key]
+                else:
+                    path = self._safe_path(vehicle.current, tps_id, vehicle.G)
+                    try:
+                        distance = float('inf') if path is None else self._path_distance(path, vehicle.G)
+                    except:
+                        distance = float('inf')
+                    self._distance_cache[key] = distance
+                if distance < 200:  # bonus TPS sangat dekat
+                    dist_factor = 1.5 / (distance + 1)
+                else:
+                    dist_factor = 1.0 / (distance + 1) if distance != float('inf') else 0.01
+
+            priorities[tps_id] = (garbage / 1000.0) * assign_factor * freq_factor * dist_factor
+
         return priorities
 
+    
 
     # ============ GATHERING ============
     def phase_gathering(self, vehicles):
@@ -185,43 +210,42 @@ class AIModel:
 
     # ============ FIND NEXT TPS ============
     def _find_next_tps(self, vehicle):
-        best_tps, best_score = None, 0
-        hour = self.shared.sim_hour
-        sorted_tps = sorted(self._calc_tps_priority().items(), key=lambda x: x[1], reverse=True)
+        best_tps, best_score = None, -1
 
-        for tps_id, _ in sorted_tps[:10]:
+        G = getattr(vehicle, 'G', None)
+        if G is None:
+            return None
+
+        # Hitung prioritas untuk kendaraan ini, batasi TPS
+        sorted_tps = sorted(self._calc_tps_priority(vehicle=vehicle).items(), key=lambda x: x[1], reverse=True)
+
+        for tps_id, priority in sorted_tps:
             if tps_id == vehicle.current:
                 continue
-            # cek TPS locked
             if tps_id in self._locked_tps and self._locked_tps[tps_id] != vehicle.id:
                 continue
 
-            garbage = self.knowledge.get_discovered_garbage(tps_id) or self.knowledge.known_tps.get(tps_id, {}).get("sampah_per_hari", 0)
-            if garbage <= 10:
+            garbage = self.knowledge.get_discovered_garbage(tps_id) \
+                    or self.knowledge.known_tps.get(tps_id, {}).get("sampah_per_hari", 0)
+            if garbage <= 0:
                 continue
 
-            key = (vehicle.current, tps_id, hour)
-            if key in self._distance_cache:
-                distance = self._distance_cache[key]
-            else:
-                path = self._safe_path(vehicle.current, tps_id, vehicle.G)
-                distance = float('inf') if path is None else self._path_distance(path, vehicle.G)
-                self._distance_cache[key] = distance
+            key = (vehicle.current, tps_id)
+            distance = self._distance_cache.get(key, float('inf'))
             if distance == float('inf'):
                 continue
 
             assignments = len(self.tps_assignments[tps_id])
-            score = garbage / (distance + 1) / (1 + assignments)
+            score = (garbage + 1) / (distance + 1) / (1 + assignments)
+
             if score > best_score:
                 best_score, best_tps = score, tps_id
 
-        # lock TPS untuk truk ini
         if best_tps:
             self._locked_tps[best_tps] = vehicle.id
 
         return best_tps
-
-
+    
     # ============ PREVENTIVE REROUTE ============
     def _preventive_reroute(self, vehicle):
         if not vehicle.path or len(vehicle.path) < 2:

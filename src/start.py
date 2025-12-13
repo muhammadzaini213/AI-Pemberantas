@@ -21,7 +21,7 @@ _simulation_active = False
 _simulation_lock = threading.Lock()
 
 # ============== THREAD ==============
-def start_simulation_thread(GRAPH, shared):
+def start_simulation_thread(GRAPH, shared, isSingleRender):
     global _simulation_thread, _simulation_active
     
     with _simulation_lock:
@@ -32,7 +32,7 @@ def start_simulation_thread(GRAPH, shared):
         shared.simulation_running = True
         
         _simulation_thread = threading.Thread(
-            target=lambda: run_simulation(GRAPH, shared, isSingleRender=False), 
+            target=lambda: run_simulation(GRAPH, shared, isSingleRender), 
             daemon=True
         )
         _simulation_thread.start()
@@ -182,15 +182,18 @@ def main():
     print("="*70)
     print("SELECT MODE")
     print("="*70)
-    print("1. Normal Simulation (with GUI)")
-    print("2. Benchmark Mode (no rendering)")
+    print("1. Normal Simulation")
+    print("2. Simulation Editor")
+    print("3. Benchmark Mode (no rendering)")
     mode = input("\nChoice (1-2, default 1): ").strip() or "1"
     
-    if mode == "2":
+    if mode == "1":
+        start_simulation_thread(GRAPH, shared, True)
+    elif mode == "2":
+        start_simulation_thread(GRAPH, shared, False)
+    elif mode == "3":
         show_benchmark_menu(GRAPH, shared)
         return
-    
-    start_simulation_thread(GRAPH, shared)
 
     # ============== SETUP ==============
     program_summary = ProgramSummaryWindow()

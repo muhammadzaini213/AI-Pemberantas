@@ -184,8 +184,6 @@ def run_simulation_single_render(GRAPH, shared):
         shared.fps = int(clock.get_fps())
         dt, last_time = getDt(time, last_time)
 
-        controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running, dt)
-
         if not shared.paused:
             sim_time_acc += dt * shared.speed * 60
             total_minutes = int(sim_time_acc / 60)
