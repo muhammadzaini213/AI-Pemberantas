@@ -101,6 +101,7 @@ G = (V, E)
 
 | Variabel     | Penjelasan                                           |
 | ------------ | ---------------------------------------------------- |
+| `G`          | Graph atau peta kota                                 |
 | `V`          | Himpunan semua node (simpul jalan, TPS, TPA, garasi) |
 | `E`          | Himpunan semua edge (ruas jalan)                     |
 | `(x_v, y_v)` | Koordinat geografis dari node `v`                    |
@@ -270,10 +271,48 @@ Jika sampah sudah habis atau jam kerja sudah selesai, semua truk akan kembali da
 <br> 
 
 ### 4. Simulation Engine
+Pada ```src/simulation.py```, simulasi akan langsung menginisialisasi graph, nodes, serta vehicle
 
-Cara menjalankan skenario dynamic routing, logging hasil, visualisasi, dan debugging.
+```python
 
-Tambahkan potongan kode dengan syntax highlighting agar tampak profesional.
+    # ======================== VIEWER ========================
+    viewer = GraphViewer(pos, shared)
+    range_x = viewer.max_x - viewer.min_x
+    range_y = viewer.max_y - viewer.min_y
+
+    viewer.scale = min(viewer.WIDTH / range_x, viewer.HEIGHT / range_y) * 0.95
+    viewer.offset_x = viewer.WIDTH/2 - ((viewer.min_x+viewer.max_x)/2 - viewer.min_x)*viewer.scale
+    viewer.offset_y = viewer.HEIGHT/2 - ((viewer.max_y+viewer.min_y)/2 - viewer.min_y)*viewer.scale
+
+    TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
+    
+    vehicles = []
+    generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA_nodes)
+
+    last_garbage_generation_day = shared.sim_day
+```
+
+Kemudian KnowledgeModel dan AIModel akan diinisialisasi, program juga dimulai dengan kondisi pause dan bisa diaktifkan melalui map editor
+
+```python
+    # ======================== MODEL INITIALIZATION ========================
+    knowledge_model = KnowledgeModel(GRAPH, shared, TPS_nodes, TPA_nodes, GARAGE_nodes)
+    shared.knowledge_model = knowledge_model
+    
+    print(f"[Simulation] KnowledgeModel initialized")
+    print(f"[Simulation] Agent knowledge: {knowledge_model.get_knowledge_summary()}")
+
+    ai_model = AIModel(knowledge_model, shared)
+    shared.ai_model = ai_model
+    
+    print(f"[Simulation] AIModel initialized with Matheuristic Rollout")
+    
+    running = True
+    shared.paused = True
+    
+    print(f"\n[Simulation] Entering main loop...")
+    print(f"[Simulation] simulation_running flag: {shared.simulation_running}")
+```
 
 ---
 
