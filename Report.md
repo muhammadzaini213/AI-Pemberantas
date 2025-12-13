@@ -25,7 +25,29 @@ Nanti abstract belakangan
 
 <br> 
 
-# B. Methods
+# B. Data Used
+## 1. Total TPS, sebaran, dan jumlah sampah per hari
+Data diambil dari KAJIAN POOL KENDARAAN PENGANGKUTAN SAMPAH DI KOTA BALIKPAPAN TAHUN 2022
+<img width="407" height="875" alt="image" src="https://github.com/user-attachments/assets/97fa218e-26c6-4d06-a2e5-dc350d684d47" />
+<img width="890" height="686" alt="image" src="https://github.com/user-attachments/assets/26705395-f821-454d-80bf-c1e1bfbd3592" />
+
+NOTE: Dikarenakan terdapat 417 TPS, kami menghomogenkan seluruh data dengan mengambil rata-rata dari seluruh TPS dan memberikannya interval ±30% randomisasi agar dapat lebih fokus ke proses pengembangan AI.
+
+<br>
+
+## 2. Jadwal pengambilan sampah
+<a href="https://rri.co.id/lain-lain/537534/dlh-balikpapan-atur-ulang-jadwal-angkut-sampah">Jadwal Angkut Sampah Balikpapan></a>
+<img width="517" height="115" alt="image" src="https://github.com/user-attachments/assets/7054b0d8-2f7e-4643-9320-ea5a8adad782" />
+
+<br>
+
+## 3. Lokasi TPA
+<a href="https://pu.go.id/berita/diresmikan-presiden-pembangunan-tpa-sampah-manggar-di-balikpapan-terbaik-di-indonesia">Peresmian TPA Manggar</a>
+<img width="667" height="519" alt="image" src="https://github.com/user-attachments/assets/f9892404-0a4d-471c-a436-ab89a1f076ac" />
+
+<br>
+
+# C. Methods
 
 ## 1. Matheuristic Rollout
 Metode Rollout merupakan teknik matheuristic yang  tujuannya meningkatkan kualitas keputusan dalam masalah sequential decision-making pada lingkungan stochastic. Rollout bekerja dengan memanfaatkan base policy (keputusan cepat) sebagai kebijakan awal, kemudian melakukan evaluasi ke depan (look-ahead) untuk memilih tindakan yang lebih baik daripada keputusan dasar.
@@ -162,7 +184,7 @@ Artinya model tidak mengetahui berapa volume sampah sebelum setidaknya satu truk
 
 <br> 
 
-# C. Implementation
+# D. Implementation
 
 ### 1. Environment Setup
 Pada sistem yang telah kami buat, kami menggunakan library pygame untuk melakukan visualisasi dan simulasi untuk environment. Dengan data ```.graphml``` yang diambil langsung dari ```openstreetmap.org``` melalui library osmnx yang tersedia di python.
@@ -255,7 +277,7 @@ Tambahkan potongan kode dengan syntax highlighting agar tampak profesional.
 
 <br> 
 
-# D. Demo
+# E. Demo
 
 ## 1. Cara Menjalankan Simulasi
 a) Cek apakah pip sudah terpasang:
@@ -288,9 +310,12 @@ c) Setelah environment aktif, jalankan kode berikut untuk menginstall library ya
 pip install numpy pandas scikit-learn matplotlib pygame osmnx
 ```
 
+NOTE: Untuk Linux ubuntu, gunakan pygame-ce
+
 <br> 
 
 d) Kemudian ketik ini di terminal untuk menjalankan simulasi:
+
 ```bash
 python -m src.start
 ```
@@ -300,24 +325,20 @@ python -m src.start
 <br> 
 
 
-# E. Summary
-
-Tuliskan ringkasan yang berfokus pada:
-
-* efektivitas Rollout dalam kondisi uncertain
-* perbandingan dengan pendekatan deterministik
-* implikasi kebijakan bagi manajemen sampah kota
-* potensi pengembangan lanjutan
+# F. Summary
+Pada simulasi dan benchmark yang kami buat, meskipun lokasi serta data hanya mendekati dan tidak 100% sama dengan kondisi 
 
 ---
 
 <br> 
 
 
-# F. References
+# G. References
 
-* Anuar, W.K.; Lee, L.S.; Seow, H.-V.; Pickl, S. A Multi-Depot Vehicle Routing Problem with Stochastic Road Capacity and Reduced Two-Stage Stochastic Integer Linear Programming Models for Rollout Algorithm. Mathematics 2021, 9, 1572. https://doi.org/10.3390/math9131572.
-
+* Anuar, W. K., Lee, L. S., Seow, H.-V., & Pickl, S. (2021). A Multi-Depot Vehicle Routing Problem with Stochastic Road Capacity and Reduced Two-Stage Stochastic Integer Linear Programming Models for Rollout Algorithm. Mathematics, 9(13), 1572. https://doi.org/10.3390/math9131572.
+* Pemerintah Kota Balikpapan Dinas Lingkungan Hidup. (2022). Kajian pool kendaraan pengangkutan sampah di Kota Balikpapan, Tahun 2022 (Laporan Akhir). Pemerintah Kota Balikpapan Dinas Lingkungan Hidup.,
+* RRI. (2024, Januari 31). DLH Balikpapan atur ulang jadwal angkut sampah. rri.co.id. Diakses 13 Desember 2025, dari https://rri.co.id/lain-lain/537534/dlh-balikpapan-atur-ulang-jadwal-angkut-sampah
+* Kementerian Pekerjaan Umum dan Perumahan Rakyat. (2019, Desember 19). Diresmikan Presiden, pembangunan TPA Sampah Manggar di Balikpapan terbaik di Indonesia. pu.go.id. Diakses 13 Desember 2025, dari https://pu.go.id/berita/diresmikan-presiden-pembangunan-tpa-sampah-manggar-di-balikpapan-terbaik-di-indonesia
 
 ---
 
