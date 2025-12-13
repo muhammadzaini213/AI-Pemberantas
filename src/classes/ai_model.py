@@ -11,7 +11,7 @@ class AIModel:
         self.SHIFT_END = SHIFT_END
         self.OVERTIME_BUFFER = 1
 
-        self.decision_interval = 1.0
+        self.decision_interval = 0.2
         self.last_decision_time = 0
 
         self.current_phase = "IDLE"
