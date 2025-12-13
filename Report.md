@@ -397,9 +397,11 @@ python -m src.start
 
 <br>
 
-##### 2. Ilustration
+## 2. Ilustration
 
-##### 3. Result
+<br>
+
+## 3. Result
 
 ---
 
