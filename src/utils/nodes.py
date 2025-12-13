@@ -15,7 +15,6 @@ def generate_tps_garbage(TPS_nodes, shared):
                     actual_sampah = max(0, actual_sampah)
                     
                     tps_data["sampah_kg"] = actual_sampah
-                    print(f"[Simulation] TPS {tps_id}: Initial garbage {actual_sampah:.2f} kg")
 
 
 

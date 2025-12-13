@@ -31,8 +31,6 @@ class Vehicle:
         # ===== Slowdown tracking (to avoid duplicate reports) =====
         self._slowdown_reported_edges = set()
     
-        print(f"[Vehicle] Created ID: {self.id}")
-
     def _update_garage_stats(self):
         if not self.garage_node or not self.shared:
             return
@@ -45,7 +43,6 @@ class Vehicle:
             else:
                 garage_data["armada_bertugas"] = garage_data.get("armada_bertugas", 0) + 1
             
-            print(f"[Vehicle {self.id}] Updated garage {self.garage_node} stats: standby={garage_data.get('armada_standby', 0)}, bertugas={garage_data.get('armada_bertugas', 0)}")
 
     def _update_state_in_garage_stats(self, old_state):
         if not self.garage_node or not self.shared:
