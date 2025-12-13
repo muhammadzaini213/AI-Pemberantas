@@ -109,7 +109,7 @@ class ObjectiveFunction:
         print("="*70)
         
         print("\n--- Raw Metrics ---")
-        print(f"Total Distance:           {result['total_distance_km']:.2f} km")
+        print(f"Total Distance:           {100 * result['total_distance_km']:.2f} km")
         print(f"Avg Overtime per Vehicle: {result['avg_overtime_minutes']:.2f} minutes")
         print(f"Unserved TPS Count:       {result['unserved_tps_count']}")
         print(f"Workload Std Dev:         {result['workload_std_dev_km']:.2f} km")

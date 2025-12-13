@@ -1,9 +1,13 @@
 {
   "6668147992-7568920020": {
-    "slowdown": 2
+    "slowdown": 0,
+    "start_hour": 0,
+    "end_hour": 23
   },
   "7568920020-6668147992": {
-    "slowdown": 2
+    "slowdown": 0,
+    "start_hour": 0,
+    "end_hour": 23
   },
   "8560309426-5539175666": {
     "slowdown": 0
