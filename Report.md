@@ -200,7 +200,7 @@ Untuk menambahkan data TPA, TPS, Garasi, Mobil, dan Kemacetan, kami menyediakan 
 
 ##### a) Nodes data model
 
-```json
+```text
 node_id: {
     "tps": boolean,
     "tpa": boolean,
@@ -230,7 +230,7 @@ node_id: {
 
 ##### b) Edges data model
 
-```json
+```text
     edge_id: {
     "slowdown": float,
     "slowdown_start": int,
@@ -240,7 +240,7 @@ node_id: {
 
 ##### c) Truck data model
 
-```json
+```text
     truck_id: {
         "garage_node": node_id,
         "state": enum CarState, # Idle, Moving, Loading, Unloading, Stuck, Standby
