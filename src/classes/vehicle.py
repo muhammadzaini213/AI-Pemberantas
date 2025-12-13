@@ -247,7 +247,7 @@ class Vehicle:
         loaded = self.actuator_load_garbage(can_load)
         tps_data["sampah_kg"] = max(0, available - loaded)
         
-        print(f"[Vehicle {self.id}] Loaded {loaded:.2f}kg from TPS {self.current} (rem: {tps_data['sampah_kg']:.2f}kg)")
+        print(f"[Vehicle {self.id}] Loaded {loaded:.2f}kg from TPS {self.current} (rem: {tps_data['sampah_kg']:.2f}kg) (current: {self.load}kg)")
         
         # jangan langsung ke TPA, biarkan AI yang tentukan route selanjutnya
         return loaded

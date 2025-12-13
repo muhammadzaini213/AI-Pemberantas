@@ -16,7 +16,7 @@ def run_simulation(GRAPH, shared, isSingleRender):
         run_simulation_editor(GRAPH, shared)
 
 def run_simulation_editor(GRAPH, shared):
-    
+    GRAPH.remove_nodes_from([5441776594])
     # ======================== CLEAR EXISTING VEHICLES ========================
     print(f"\n{'='*60}")
     print(f"[Simulation] Starting simulation...")
@@ -122,6 +122,7 @@ def run_simulation_editor(GRAPH, shared):
 
 def run_simulation_single_render(GRAPH, shared):
 
+    GRAPH.remove_nodes_from([5441776594])
     print(f"\n{'='*60}")
     print(f"[Simulation] Starting simulation...")
     print(f"{'='*60}")
@@ -133,7 +134,7 @@ def run_simulation_single_render(GRAPH, shared):
     last_time = time.time()
 
     TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
-    GRAPH = preprocess_graph(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes)
+    # GRAPH = preprocess_graph(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes)
 
     SCALE_DIV = 1000.0
     pos = {n: (data['x'] / SCALE_DIV, data['y'] / SCALE_DIV)
