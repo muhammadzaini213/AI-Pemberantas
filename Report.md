@@ -319,7 +319,36 @@ root/
 
 <br>
 
-##### b). Flowchart
+##### b). Implementation Flow
+Sebelum simulasi dijalankan, akan dilakukan persiapan visual, nodes, vehicle(sensor & actuator), dan model yang digunakan 
+```python
+    # ======================== VIEWER ========================
+    viewer = GraphViewer(pos, shared)
+    range_x = viewer.max_x - viewer.min_x
+    range_y = viewer.max_y - viewer.min_y
+
+    viewer.scale = min(viewer.WIDTH / range_x, viewer.HEIGHT / range_y) * 0.95
+    viewer.offset_x = viewer.WIDTH/2 - ((viewer.min_x+viewer.max_x)/2 - viewer.min_x)*viewer.scale
+    viewer.offset_y = viewer.HEIGHT/2 - ((viewer.max_y+viewer.min_y)/2 - viewer.min_y)*viewer.scale
+
+    TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
+    
+    vehicles = []
+    generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA_nodes)
+
+    last_garbage_generation_day = shared.sim_day
+
+    # ======================== MODEL INITIALIZATION ========================
+    knowledge_model = KnowledgeModel(GRAPH, shared, TPS_nodes, TPA_nodes, GARAGE_nodes)
+    shared.knowledge_model = knowledge_model
+
+    ai_model = AIModel(knowledge_model, shared)
+    shared.ai_model = ai_model
+        
+    running = True
+    shared.paused = True
+```
+
 
 ---
 
