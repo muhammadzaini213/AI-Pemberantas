@@ -114,5 +114,5 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
     
     obj_func = ObjectiveFunction()
     metrics['objective_function'] = obj_func.calculate(metrics, shared, knowledge_model)
-    
+    obj_func.print_report(metrics['objective_function'], scenario_name="Benchmark")
     return metrics
