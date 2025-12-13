@@ -106,10 +106,10 @@ class ObjectiveFunction:
         print("\n--- Weighted Costs ---")
         c = result['components']
         w = result['weights']
-        print(f"Distance Cost:   {c['distance_cost']:>12.2f}  (w1={w['w1']} × {result['total_distance_km']:.2f})")
-        print(f"Overtime Cost:   {c['overtime_cost']:>12.2f}  (w2={w['w2']} × {result['avg_overtime_minutes']:.2f})")
-        print(f"Unserved Cost:   {c['unserved_cost']:>12.2f}  (w3={w['w3']} × {result['unserved_tps_count']})")
-        print(f"Workload Cost:   {c['workload_cost']:>12.2f}  (w4={w['w4']} × {result['workload_std_dev_km']:.2f})")
+        print(f"Distance Cost:   {c['distance_cost']:>12.2f}  (w1={w['w1']} x {result['total_distance_km']:.2f})")
+        print(f"Overtime Cost:   {c['overtime_cost']:>12.2f}  (w2={w['w2']} x {result['avg_overtime_minutes']:.2f})")
+        print(f"Unserved Cost:   {c['unserved_cost']:>12.2f}  (w3={w['w3']} x {result['unserved_tps_count']})")
+        print(f"Workload Cost:   {c['workload_cost']:>12.2f}  (w4={w['w4']} x {result['workload_std_dev_km']:.2f})")
         
         print("\n--- Total Objective Value ---")
         print(f"OBJECTIVE = {result['objective_value']:.2f}")
