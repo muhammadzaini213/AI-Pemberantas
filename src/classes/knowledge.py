@@ -3,11 +3,12 @@ import networkx as nx
 class KnowledgeModel:
     
     def __init__(self, graph, shared, tps_nodes, tpa_nodes, garage_nodes):
-        self.graph = graph
         self.shared = shared
         self.TPS_nodes = tps_nodes
         self.TPA_nodes = tpa_nodes
         self.GARAGE_nodes = garage_nodes
+
+        self.graph = graph
         
         # ===== Known information (static) =====
         self.known_garages = {node_id: self._get_garage_info(node_id) for node_id in garage_nodes}
@@ -23,6 +24,7 @@ class KnowledgeModel:
         self.vehicle_assignments = {}
         self.all_vehicle_ids = set()
 
+    
     # ============== STATIC KNOWLEDGE ==============
     def _get_garage_info(self, garage_id):
         if garage_id in self.shared.node_type:

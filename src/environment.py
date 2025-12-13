@@ -16,7 +16,7 @@ VEHICLE_CAP = 25000
 
 # ================== SHIFT SETTINGS (00:00 WITH INTEGER 0) ==================
 SHIFT_START = 18
-SHIFT_END = 6
+SHIFT_END = 23
 
 # ================== SPRITES ==================
 NODE_COL = (255,120,120) # Node kuning

@@ -6,6 +6,7 @@ from .utils.controls import controls
 from .utils.nodes import initNodes, generate_daily_garbage, generate_car_in_garage
 from .classes.knowledge import KnowledgeModel
 from .classes.ai_model import AIModel
+from .utils.preprocessing import preprocess_graph
 import time
 
 def run_simulation(GRAPH, shared, isSingleRender):
@@ -90,7 +91,7 @@ def run_simulation_editor(GRAPH, shared):
         if not shared.paused:
             sim_time_acc += dt * shared.speed * (60 ** 1)
             total_minutes = int(sim_time_acc / 60)
-            shared.sim_hour = (6 + (total_minutes // 60)) % 24
+            shared.sim_hour = (SHIFT_START + (total_minutes // 60)) % 24
             shared.sim_min = total_minutes % 60
             shared.sim_day = 1 + (total_minutes // (24 * 60))
             
@@ -131,6 +132,9 @@ def run_simulation_single_render(GRAPH, shared):
     sim_time_acc = 0.0
     last_time = time.time()
 
+    TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
+    GRAPH = preprocess_graph(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes)
+
     SCALE_DIV = 1000.0
     pos = {n: (data['x'] / SCALE_DIV, data['y'] / SCALE_DIV)
            for n, data in GRAPH.nodes(data=True)}
@@ -144,7 +148,6 @@ def run_simulation_single_render(GRAPH, shared):
     viewer.offset_x = viewer.WIDTH / 2 - ((viewer.min_x + viewer.max_x) / 2 - viewer.min_x) * viewer.scale
     viewer.offset_y = viewer.HEIGHT / 2 - ((viewer.max_y + viewer.min_y) / 2 - viewer.min_y) * viewer.scale
 
-    TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
 
     vehicles = []
     generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA_nodes)
@@ -174,7 +177,6 @@ def run_simulation_single_render(GRAPH, shared):
     # ======================== MAIN LOOP ========================
     while running and shared.simulation_running:
 
-        # --- EVENT PUMP (WAJIB) ---
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 shared.simulation_running = False
@@ -188,7 +190,7 @@ def run_simulation_single_render(GRAPH, shared):
             sim_time_acc += dt * shared.speed * 60
             total_minutes = int(sim_time_acc / 60)
 
-            shared.sim_hour = (8 + (total_minutes // 60)) % 24
+            shared.sim_hour = (SHIFT_START + (total_minutes // 60)) % 24
             shared.sim_min = total_minutes % 60
             shared.sim_day = 1 + (total_minutes // (24 * 60))
 
@@ -200,7 +202,6 @@ def run_simulation_single_render(GRAPH, shared):
 
         # ======================== RENDER ========================
 
-        # --- Render graph ONCE ---
         if not graph_rendered_once:
             graph_surface = pygame.Surface((viewer.WIDTH, viewer.HEIGHT)).convert()
             graph_surface.fill((20, 20, 20))
@@ -208,10 +209,8 @@ def run_simulation_single_render(GRAPH, shared):
             graph_rendered_once = True
             print("[Render] Graph rendered once")
 
-        # --- Blit graph EVERY FRAME ---
         screen.blit(graph_surface, (0, 0))
 
-        # --- Dynamic objects ---
         viewer.draw_dynamic_objects(screen, vehicles)
 
         for v in vehicles:

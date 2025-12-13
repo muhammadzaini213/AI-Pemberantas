@@ -7,10 +7,10 @@ class Vehicle:
     def __init__(self, graph, tps_nodes=None, tpa_node=None, garage_nodes=None, shared=None):
         self.id = str(uuid.uuid4())[:8]
         
-        self.G = graph
         self.TPS_nodes = tps_nodes
         self.TPA_node = tpa_node
         self.garage_nodes = garage_nodes or []
+        self.G = graph
         self.shared = shared
         self.garage_node = None
         self.current = None
@@ -29,6 +29,7 @@ class Vehicle:
         
         self._slowdown_reported = set()
     
+
     # ============ GARAGE STATS ============
     def _update_garage_stats(self):
         if not self.garage_node or not self.shared:

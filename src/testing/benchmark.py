@@ -6,6 +6,7 @@ from ..classes.knowledge import KnowledgeModel
 from ..classes.ai_model import AIModel
 from ..environment import SHIFT_START, SHIFT_END
 from .objective_function import ObjectiveFunction
+from ..utils.preprocessing import preprocess_graph
 
 def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
     shared.vehicles.clear()
@@ -16,7 +17,9 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
     sim_time_acc = 0.0
     last_time = time.time()
     
+    
     TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
+    GRAPH = preprocess_graph(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes)
     vehicles = []
     generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA_nodes)
     

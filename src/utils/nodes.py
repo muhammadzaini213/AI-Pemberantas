@@ -37,6 +37,7 @@ def generate_daily_garbage(shared, TPS_nodes, ai_model, last_garbage_generation_
                     daily_garbage = max(0, daily_garbage)
                     
                     tps_data["sampah_kg"] += daily_garbage
+                    print(f"[Simulation] TPS {tps_id}: +{daily_garbage:.2f} kg (total: {tps_data['sampah_kg']:.2f} kg)")
         
         last_garbage_generation_day = shared.sim_day
     return last_garbage_generation_day
@@ -108,7 +109,7 @@ def generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA
     if len(shared.vehicles) != len(vehicles):
         print(f"[ERROR] Mismatch! Local: {len(vehicles)}, Shared: {len(shared.vehicles)}")
     else:
-        print(f"[Simulation] Vehicle assignment successful!")
+        print(f"[Simulation] ✓ Vehicle assignment successful!")
     
     vehicle_ids = [v.id for v in shared.vehicles]
     unique_ids = set(vehicle_ids)
@@ -143,7 +144,7 @@ def initNodes(GRAPH, shared):
     if TPA_nodes:
         print(f"[Simulation] TPA nodes list: {list(TPA_nodes)}")
     else:
-        print(f"[Simulation] ⚠️ WARNING: NO TPA NODES CONFIGURED!")
+        print(f"[Simulation] WARNING: NO TPA NODES CONFIGURED!")
     
     shared.node_count = GRAPH.number_of_nodes()
     shared.edge_count = GRAPH.number_of_edges()
