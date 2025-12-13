@@ -99,6 +99,8 @@ Setelah environment aktif, jalankan:
 pip install numpy pandas scikit-learn matplotlib pygame osmnx
 ```
 
+NOTE: Untuk linux ubuntu gunakan pygame-ce
+
 ---
 
 ## ▶️ Menjalankan Simulasi Real Time
