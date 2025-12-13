@@ -36,13 +36,15 @@ NOTE: Dikarenakan terdapat 417 TPS, kami menghomogenkan seluruh data dengan meng
 <br>
 
 ## 2. Jadwal pengambilan sampah
-<a href="https://rri.co.id/lain-lain/537534/dlh-balikpapan-atur-ulang-jadwal-angkut-sampah">Jadwal Angkut Sampah Balikpapan></a>
+<a href="https://rri.co.id/lain-lain/537534/dlh-balikpapan-atur-ulang-jadwal-angkut-sampah">Jadwal Angkut Sampah Balikpapan>Jadwal Pengambilan Sampah</a>
+<br>
 <img width="517" height="115" alt="image" src="https://github.com/user-attachments/assets/7054b0d8-2f7e-4643-9320-ea5a8adad782" />
 
 <br>
 
 ## 3. Lokasi TPA
 <a href="https://pu.go.id/berita/diresmikan-presiden-pembangunan-tpa-sampah-manggar-di-balikpapan-terbaik-di-indonesia">Peresmian TPA Manggar</a>
+<br>
 <img width="667" height="519" alt="image" src="https://github.com/user-attachments/assets/f9892404-0a4d-471c-a436-ab89a1f076ac" />
 
 <br>
