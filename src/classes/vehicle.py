@@ -242,11 +242,15 @@ class Vehicle:
         if amount is None:
             amount = available
         
-        loaded = self.actuator_load_garbage(amount)
+        can_load = min(amount, self.max_load - self.load)
+        loaded = self.actuator_load_garbage(can_load)
         tps_data["sampah_kg"] = max(0, available - loaded)
         
         print(f"[Vehicle {self.id}] Loaded {loaded:.2f}kg from TPS {self.current} (rem: {tps_data['sampah_kg']:.2f}kg)")
+        
+        # jangan langsung ke TPA, biarkan AI yang tentukan route selanjutnya
         return loaded
+
     
     def actuator_arrive_at_tpa(self):
         if isinstance(self.TPA_node, (set, list)):

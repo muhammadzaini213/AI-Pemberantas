@@ -32,7 +32,7 @@ def start_simulation_thread(GRAPH, shared):
         shared.simulation_running = True
         
         _simulation_thread = threading.Thread(
-            target=lambda: run_simulation(GRAPH, shared, isSingleRender=True), 
+            target=lambda: run_simulation(GRAPH, shared, isSingleRender=False), 
             daemon=True
         )
         _simulation_thread.start()
