@@ -12,7 +12,9 @@ from window.window_garage_state import GarageStateWindow
 from window.window_car_state import CarStateWindow
 from .environment import *
 from .simulation import run_simulation
+from .testing.benchmark import run_benchmark
 from .utils.shared import SharedState
+import json
 
 _simulation_thread = None
 _simulation_active = False
@@ -30,7 +32,7 @@ def start_simulation_thread(GRAPH, shared):
         shared.simulation_running = True
         
         _simulation_thread = threading.Thread(
-            target=lambda: run_simulation(GRAPH, shared), 
+            target=lambda: run_simulation(GRAPH, shared, isSingleRender=True), 
             daemon=True
         )
         _simulation_thread.start()
@@ -58,6 +60,109 @@ def stop_simulation_thread():
         except:
             pass
 
+# ============== BENCHMARK FUNCTIONS ==============
+def run_benchmark_mode(GRAPH, shared):
+    print("\n" + "="*70)
+    print("BENCHMARK MODE")
+    print("="*70)
+    
+    num_days = int(input("Number of days to simulate (default 7): ") or "7")
+    speed = int(input("Speed multiplier (default 20): ") or "20")
+    verbose = input("Verbose output? (y/n, default n): ").lower() == 'y'
+    
+    print("\nConfigure edge slowdowns? (y/n, default n): ", end="")
+    if input().lower() == 'y':
+        print("\nEnter edge configurations (format: edge_id slowdown start_hour end_hour)")
+        print("Example: 1234-5678 20 7 9")
+        print("Press Enter without input to finish")
+        
+        while True:
+            config_input = input("Edge config: ").strip()
+            if not config_input:
+                break
+            
+            try:
+                parts = config_input.split()
+                if len(parts) == 4:
+                    edge_id, slowdown, start_hour, end_hour = parts
+                    shared.edge_type[edge_id] = {
+                        "slowdown": int(slowdown),
+                        "start_hour": int(start_hour),
+                        "end_hour": int(end_hour)
+                    }
+                    print(f"Added: {edge_id} = {slowdown} km/h ({start_hour}:00-{end_hour}:00)")
+                else:
+                    print("Invalid format")
+            except Exception as e:
+                print(f"Error: {e}")
+    
+    shared.sim_day = 1
+    shared.sim_hour = 8
+    shared.sim_min = 0
+    shared.simulation_running = False
+    
+    print("\nStarting benchmark...")
+    metrics = run_benchmark(GRAPH, shared, num_days, speed, verbose)
+    
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    filename = f"benchmark_results_{timestamp}.json"
+    
+    with open(filename, 'w') as f:
+        json.dump(metrics, f, indent=2, default=str)
+    
+    print(f"\nResults saved to {filename}")
+    
+    if input("\nView detailed daily metrics? (y/n): ").lower() == 'y':
+        for day_data in metrics['daily_metrics']:
+            print(f"\n--- Day {day_data['day']} ---")
+            print(f"  Garbage: {day_data['garbage_collected']:.2f} kg")
+            print(f"  Trips: {day_data['trips']}")
+            print(f"  Reschedules: {day_data['reschedules']}")
+            print(f"  Slowdowns: {day_data['known_slowdowns']}")
+            print(f"  Time: {day_data['simulation_time']:.2f}s")
+
+def run_quick_test(GRAPH, shared):
+    print("\n" + "="*70)
+    print("QUICK TEST MODE (1 day, 50x speed)")
+    print("="*70)
+    
+    shared.sim_day = 1
+    shared.sim_hour = 8
+    shared.sim_min = 0
+    shared.simulation_running = False
+    
+    metrics = run_benchmark(GRAPH, shared, num_days=1, speed_multiplier=50, verbose=True)
+    
+    print("\nQuick test complete!")
+    print(f"  Garbage: {metrics['total_garbage_collected']:.2f} kg")
+    print(f"  Trips: {metrics['total_trips']}")
+    print(f"  Time: {metrics['simulation_time_seconds']:.2f}s")
+
+def show_benchmark_menu(GRAPH, shared):
+    while True:
+        print("\n" + "="*70)
+        print("BENCHMARK MENU")
+        print("="*70)
+        print("1. Quick Test (1 day, 50x speed)")
+        print("2. Single Benchmark Run")
+        print("3. Return to Normal Simulation")
+        print("="*70)
+
+        choice = input("\nChoice (1-3): ").strip()
+
+        if choice == "1":
+            run_quick_test(GRAPH, shared)
+        elif choice == "2":
+            run_benchmark_mode(GRAPH, shared)
+        elif choice == "3":
+            break
+        else:
+            print("Invalid choice")
+
+        if choice in ["1", "2"]:
+            input("\nPress Enter to continue...")
+
+
 def main():
     if not os.path.exists(GRAPH_FILE):
         print("Graph file tidak ditemukan:", GRAPH_FILE)
@@ -67,14 +172,25 @@ def main():
     print("LOADING GRAPH")
     print("="*50)
     GRAPH = ox.load_graphml(GRAPH_FILE)
-    print(f"✓ Graph loaded: {GRAPH.number_of_nodes()} nodes, {GRAPH.number_of_edges()} edges")
+    print(f"Graph loaded: {GRAPH.number_of_nodes()} nodes, {GRAPH.number_of_edges()} edges")
     print("="*50 + "\n")
 
     shared = SharedState()
     shared.simulation_running = False
 
+    # ============== MODE SELECTION ==============
+    print("="*70)
+    print("SELECT MODE")
+    print("="*70)
+    print("1. Normal Simulation (with GUI)")
+    print("2. Benchmark Mode (no rendering)")
+    mode = input("\nChoice (1-2, default 1): ").strip() or "1"
+    
+    if mode == "2":
+        show_benchmark_menu(GRAPH, shared)
+        return
+    
     start_simulation_thread(GRAPH, shared)
-
 
     # ============== SETUP ==============
     program_summary = ProgramSummaryWindow()

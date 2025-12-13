@@ -18,13 +18,17 @@
     "slowdown": 0
   },
   "687781694-687781697": {
-    "slowdown": 3
+    "slowdown": 3,
+    "start_hour": 8,
+    "end_hour": 10
   },
   "687781694-8559306085": {
     "slowdown": 0
   },
   "687781697-687781694": {
-    "slowdown": 3
+    "slowdown": 3,
+    "start_hour": 8,
+    "end_hour": 10
   },
   "687781643-687781686": {
     "slowdown": 1

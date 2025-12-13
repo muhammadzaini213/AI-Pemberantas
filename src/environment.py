@@ -1,12 +1,12 @@
 # ================== WINDOW ==================
 APP_NAME = "Simulasi Truk Sampah Balikpapan"
-WIDTH = 800
-HEIGHT = 600
+WIDTH = 1920
+HEIGHT = 1080
 CAM_SPEED = 10
 MAX_FPS = 60
 
 # ================== TEST SETUP ==================
-GRAPH_FILE = "./data/simpl_balikpapan_drive.graphml"
+GRAPH_FILE = "./data/simpl_klandasan_ilir_drive.graphml"
 
 
 # ================== VEHICLE ==================

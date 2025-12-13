@@ -20,15 +20,17 @@ class Vehicle:
         self.progress = 0.0
         self.target_node = None
         self.state = "idle"
-        self.speed = VEHICLE_SPEED  # Speed in meters/second or km/hour
+        self.speed = VEHICLE_SPEED 
         
-        # ===== Tracking metrics (in meters) =====
         self.daily_dist = 0.0
         self.total_dist = 0.0
         self.load = 0
         self.max_load = VEHICLE_CAP
         self.route = []
         
+        # ===== Slowdown tracking (to avoid duplicate reports) =====
+        self._slowdown_reported_edges = set()
+    
         print(f"[Vehicle] Created ID: {self.id}")
 
     def _update_garage_stats(self):
@@ -84,8 +86,26 @@ class Vehicle:
         self._update_garage_stats()
         print(f"[Vehicle {self.id}] Reassigned to garage {new_garage_node}")
 
-
-
+    def _is_edge_slow_now(self, edge_data):
+        if not edge_data or not self.shared:
+            return False
+        
+        slowdown = edge_data.get("slowdown", 0)
+        if slowdown <= 0:
+            return False
+        
+        start_hour = edge_data.get("start_hour")
+        end_hour = edge_data.get("end_hour")
+        
+        if start_hour is None or end_hour is None:
+            return True
+        
+        current_hour = self.shared.sim_hour
+        
+        if start_hour <= end_hour:
+            return start_hour <= current_hour <= end_hour
+        else:
+            return current_hour >= start_hour or current_hour <= end_hour
 
     # ============== ACTUATOR (NO BRAIN LOGIC) ==============    
     def actuator_set_path(self, path):
@@ -152,7 +172,7 @@ class Vehicle:
             self.G[path[i]][path[i+1]][0]['length'] 
             for i in range(len(path)-1)
             )
-            print(f"[Vehicle] {self.id} Routing to TPA {tpa_target} (distance: {path_distance:.0f}m / {path_distance/1000:.2f}km)")  # ✅ meter & km
+            print(f"[Vehicle] {self.id} Routing to TPA {tpa_target} (distance: {path_distance:.0f}m / {path_distance/1000:.2f}km)")
             return True
         except Exception as e:
             print(f"[Vehicle {self.id}] ERROR: Failed to route to TPA: {e}")
@@ -275,7 +295,7 @@ class Vehicle:
                 tpa_data = self.shared.node_type[self.current].get("tpa_data", {})
                 tpa_data["total_sampah"] = tpa_data.get("total_sampah", 0) + unloaded
             
-            print(f"[Vehicle {self.id}] ✓ Unloaded {unloaded:.0f}kg to TPA {self.current}")
+            print(f"[Vehicle {self.id}] Unloaded {unloaded:.0f}kg to TPA {self.current}")
         
         return unloaded
 
@@ -293,12 +313,15 @@ class Vehicle:
         edge_id = f"{self.current}-{self.target_node}"
         
         if hasattr(self.shared, 'edge_type') and edge_id in self.shared.edge_type:
-            slowdown = self.shared.edge_type[edge_id].get("slowdown", 0)
+            edge_data = self.shared.edge_type[edge_id]
             
-            if slowdown > 0 and hasattr(self.shared, 'knowledge_model'):
-                self.shared.knowledge_model.discover_slowdown(edge_id, slowdown)
-            
-            return slowdown
+            if self._is_edge_slow_now(edge_data):
+                slowdown = edge_data.get("slowdown", 0)
+                
+                if hasattr(self.shared, 'knowledge_model'):
+                    self.shared.knowledge_model.discover_slowdown(edge_id, slowdown)
+                
+                return slowdown
         
         return None
 
@@ -376,12 +399,23 @@ class Vehicle:
         actual_speed = real_speed  # m/s
         
         if shared and hasattr(shared, 'edge_type') and edge_id in shared.edge_type:
-            slowdown_value = shared.edge_type[edge_id].get("slowdown", 0)
-            if slowdown_value > 0:
+            edge_config = shared.edge_type[edge_id]
+            
+            if self._is_edge_slow_now(edge_config):
+                slowdown_value = edge_config.get("slowdown", 0)
                 actual_speed = slowdown_value * shared.speed
                 
                 if hasattr(shared, 'knowledge_model'):
-                    shared.knowledge_model.discover_slowdown(edge_id, slowdown_value)
+                    if edge_id not in self._slowdown_reported_edges:
+                        shared.knowledge_model.discover_slowdown(edge_id, slowdown_value)
+                        self._slowdown_reported_edges.add(edge_id)
+                
+                if not hasattr(self, '_last_slow_edge') or self._last_slow_edge != edge_id:
+                    print(f"[Vehicle {self.id}] Experiencing slowdown on {edge_id}: {slowdown_value} km/h (Hour: {shared.sim_hour})")
+                    self._last_slow_edge = edge_id
+            else:
+                if hasattr(self, '_last_slow_edge') and self._last_slow_edge == edge_id:
+                    delattr(self, '_last_slow_edge')
         
         distance = actual_speed * dt
         
@@ -405,6 +439,11 @@ class Vehicle:
                 self.current = self.target_node
                 self.target_node = self.path[idx + 1]
                 self.progress = 0.0
+                
+                if hasattr(self, '_slowdown_reported_edges'):
+                    old_edge = f"{self.path[idx]}-{self.target_node}" if idx > 0 else None
+                    if old_edge and old_edge in self._slowdown_reported_edges:
+                        self._slowdown_reported_edges.discard(old_edge)
             else:
                 self.current = self.target_node
                 self.target_node = None

@@ -1,0 +1,2628 @@
+{
+  "days_simulated": 0,
+  "total_garbage_collected": 0,
+  "total_trips": 0,
+  "total_distance": 0.0,
+  "total_reschedules": 0,
+  "slowdown_discoveries": 0,
+  "vehicles_used": 45,
+  "daily_metrics": [
+    {
+      "day": 0,
+      "garbage_collected": 0,
+      "trips": 0,
+      "reschedules": 0,
+      "known_slowdowns": 0,
+      "simulation_time": 0.7609272003173828,
+      "vehicle_stats": {
+        "c7ac19ae": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "bb41f252": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "a6e8a708": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "c5e13a96": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "82d20f69": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "1265fb9e": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "d6bfb6e8": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "ffc97ee3": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "96b106dd": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "f420ae7a": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "70411770": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "7fe8cd56": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "22a8e7b8": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "0a267a01": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "25d7f5ae": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "f5d8c39e": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "6ca418c9": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "12aa00ca": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "56f5b9ca": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "74b111ee": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "e608da07": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "aaaeedc2": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "942d9e3f": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "f842b631": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "1bfe8deb": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "eb550a1f": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "a206d527": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "0dc840d3": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "79bb2e8e": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "240aa9a4": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "d066445f": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "08c906e3": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "8d969ea3": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "6e25ad78": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "aba49a23": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "aa1c26c4": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "588c6572": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "153040d7": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "4c3212b4": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "42d3fbc5": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "46be85d3": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "e01db3ad": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "bd85ee69": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "5f6ffeff": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        },
+        "e45a12d9": {
+          "daily_dist": 0.0,
+          "total_dist": 0.0,
+          "state": "idle",
+          "load": 0
+        }
+      }
+    }
+  ],
+  "hourly_slowdowns": {},
+  "edge_slowdown_patterns": {},
+  "vehicle_utilization": {
+    "c7ac19ae": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "bb41f252": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "a6e8a708": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "c5e13a96": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "82d20f69": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "1265fb9e": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "d6bfb6e8": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "ffc97ee3": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "96b106dd": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "f420ae7a": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "70411770": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "7fe8cd56": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "22a8e7b8": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "0a267a01": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "25d7f5ae": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "f5d8c39e": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "6ca418c9": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "12aa00ca": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "56f5b9ca": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "74b111ee": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "e608da07": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "aaaeedc2": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "942d9e3f": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "f842b631": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "1bfe8deb": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "eb550a1f": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "a206d527": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "0dc840d3": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "79bb2e8e": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "240aa9a4": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "d066445f": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "08c906e3": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "8d969ea3": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "6e25ad78": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "aba49a23": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "aa1c26c4": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "588c6572": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "153040d7": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "4c3212b4": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "42d3fbc5": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "46be85d3": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "e01db3ad": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "bd85ee69": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "5f6ffeff": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "e45a12d9": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    }
+  },
+  "tps_service_rates": {
+    "1512669185": {
+      "current_garbage": 1050.4010217712496,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514340356": {
+      "current_garbage": 1084.35544435592,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687783945": {
+      "current_garbage": 711.7581186784466,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3769913360": {
+      "current_garbage": 884.6193646624099,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3769913364": {
+      "current_garbage": 846.6478779788894,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512669210": {
+      "current_garbage": 739.301250405241,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8574765084": {
+      "current_garbage": 892.9962604943257,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442183201": {
+      "current_garbage": 753.0974978822028,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3399565347": {
+      "current_garbage": 797.7841496183971,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7937153064": {
+      "current_garbage": 946.164932176048,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512669225": {
+      "current_garbage": 1036.799749523693,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442183218": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5441968187": {
+      "current_garbage": 774.3947257536771,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536412229": {
+      "current_garbage": 862.557630905246,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2571053130": {
+      "current_garbage": 743.1314552580866,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442136148": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1252309077": {
+      "current_garbage": 688.5993976804064,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3331338326": {
+      "current_garbage": 1210.3352351858675,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687784024": {
+      "current_garbage": 749.6318275519633,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "4069830759": {
+      "current_garbage": 807.4695772559016,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3331338348": {
+      "current_garbage": 871.3339009889744,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442136176": {
+      "current_garbage": 1057.0063833992713,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7452913777": {
+      "current_garbage": 741.272404227371,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441722482": {
+      "current_garbage": 1120.0220720860862,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442136187": {
+      "current_garbage": 1032.2337924387414,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5334325377": {
+      "current_garbage": 983.2928610950648,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6145456268": {
+      "current_garbage": 1005.1745979590853,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6265559180": {
+      "current_garbage": 1093.733230881769,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1230432407": {
+      "current_garbage": 1147.2540717684324,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442136223": {
+      "current_garbage": 886.61048129358,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6101663906": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5442136227": {
+      "current_garbage": 1139.2537392839677,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512870057": {
+      "current_garbage": 761.1589462208508,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1513095348": {
+      "current_garbage": 958.7594153343971,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7547095228": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778005": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536412374": {
+      "current_garbage": 1215.811228413615,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441947861": {
+      "current_garbage": 836.5867918529626,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5529809113": {
+      "current_garbage": 976.8223731259538,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441947868": {
+      "current_garbage": 802.547140741273,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778017": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5442150631": {
+      "current_garbage": 1092.5884112304732,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778024": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778026": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "6099831019": {
+      "current_garbage": 970.9022808808397,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778030": {
+      "current_garbage": 818.772324574479,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3459113198": {
+      "current_garbage": 872.8822507609514,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1513095414": {
+      "current_garbage": 892.9008346403612,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778040": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778043": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778051": {
+      "current_garbage": 1009.5871516698028,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6098217220": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778053": {
+      "current_garbage": 749.6820479749105,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778061": {
+      "current_garbage": 879.900987449103,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778062": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "7284441357": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "8741959949": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778067": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778068": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778069": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1514225940": {
+      "current_garbage": 735.0764885471078,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536406295": {
+      "current_garbage": 1093.2760327506626,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6264992021": {
+      "current_garbage": 808.0737576300039,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7152877851": {
+      "current_garbage": 1011.3113320879435,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778081": {
+      "current_garbage": 909.1804627129434,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512870179": {
+      "current_garbage": 1138.0550276331944,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441839395": {
+      "current_garbage": 1090.990890715846,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5506720037": {
+      "current_garbage": 1204.6555271157733,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5506720042": {
+      "current_garbage": 1090.277246377225,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3782037806": {
+      "current_garbage": 1163.1533470773097,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5523288370": {
+      "current_garbage": 659.1445904645655,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778103": {
+      "current_garbage": 1184.9706087659563,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6098217282": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1200415052": {
+      "current_garbage": 1079.671680220733,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514340691": {
+      "current_garbage": 670.1492755129946,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5516063061": {
+      "current_garbage": 1160.3437873401313,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778142": {
+      "current_garbage": 982.3001797896087,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514283369": {
+      "current_garbage": 990.4491596501421,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512733038": {
+      "current_garbage": 904.3939992194378,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778163": {
+      "current_garbage": 786.6515969133778,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778167": {
+      "current_garbage": 674.1444861475114,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514094968": {
+      "current_garbage": 1181.3597846629418,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1198250374": {
+      "current_garbage": 657.0119489800179,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778183": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778184": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "6100638088": {
+      "current_garbage": 673.3665865467641,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6100638094": {
+      "current_garbage": 670.4515937534383,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512542616": {
+      "current_garbage": 780.0087431632155,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1200415130": {
+      "current_garbage": 942.7807198696121,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7249150366": {
+      "current_garbage": 808.653177865352,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442150816": {
+      "current_garbage": 889.2356801697133,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778213": {
+      "current_garbage": 792.7254468256423,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1198250411": {
+      "current_garbage": 796.1679275840374,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514226095": {
+      "current_garbage": 1009.3462878554415,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5455585722": {
+      "current_garbage": 1034.8114714903259,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7568914878": {
+      "current_garbage": 729.3153802106967,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6098309569": {
+      "current_garbage": 1106.7468083825756,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514340802": {
+      "current_garbage": 802.7181935753141,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441733058": {
+      "current_garbage": 822.5587195130977,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6098309572": {
+      "current_garbage": 776.1981514780947,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8556878277": {
+      "current_garbage": 990.1185508754274,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512870342": {
+      "current_garbage": 986.1560450907543,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6265604555": {
+      "current_garbage": 673.4927693612867,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1513095629": {
+      "current_garbage": 1122.2288804656107,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441558991": {
+      "current_garbage": 737.5324629685117,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441733074": {
+      "current_garbage": 675.3634253670439,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1513095638": {
+      "current_garbage": 754.3679701787579,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7452953056": {
+      "current_garbage": 796.6916770283855,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778273": {
+      "current_garbage": 812.1514688767618,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778279": {
+      "current_garbage": 675.2088532067987,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687778280": {
+      "current_garbage": 683.2547373123192,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1513095659": {
+      "current_garbage": 832.9819024131751,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2571055596": {
+      "current_garbage": 1141.6698953163175,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512870395": {
+      "current_garbage": 705.2097662001845,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1200415227": {
+      "current_garbage": 1038.4800414849383,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6098358780": {
+      "current_garbage": 786.3844783857359,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1230406146": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536394244": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687778317": {
+      "current_garbage": 697.5713158523491,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1513095694": {
+      "current_garbage": 834.0911064553712,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620841488": {
+      "current_garbage": 1026.017737178343,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3469171221": {
+      "current_garbage": 776.9917509935119,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1513095711": {
+      "current_garbage": 1045.7143301712567,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3469171237": {
+      "current_garbage": 768.8122048603796,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512542766": {
+      "current_garbage": 670.4567960939496,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442230830": {
+      "current_garbage": 1169.48302809978,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1513095732": {
+      "current_garbage": 922.6142276066748,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442206268": {
+      "current_garbage": 1005.0917457670246,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3173440066": {
+      "current_garbage": 829.4275049672676,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442249282": {
+      "current_garbage": 1209.7683431595458,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3469171272": {
+      "current_garbage": 1124.7057585801917,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512542797": {
+      "current_garbage": 1020.8732635418942,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6098555483": {
+      "current_garbage": 982.1456940867272,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442206300": {
+      "current_garbage": 834.6846643372093,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512542839": {
+      "current_garbage": 721.727416871528,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3461202556": {
+      "current_garbage": 1186.1257362340823,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536394365": {
+      "current_garbage": 683.4134389484593,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1200415359": {
+      "current_garbage": 1214.8593723578256,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441733251": {
+      "current_garbage": 1184.1923069509126,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6101701255": {
+      "current_garbage": 1137.3069058606366,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536394377": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "8738069136": {
+      "current_garbage": 1173.8046220825909,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536394388": {
+      "current_garbage": 691.1316115588543,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512870560": {
+      "current_garbage": 1136.741033108542,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "315509410": {
+      "current_garbage": 830.9002756955914,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1200415394": {
+      "current_garbage": 1072.0049501407375,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "315509414": {
+      "current_garbage": 829.1828767673403,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1200415399": {
+      "current_garbage": 1179.290382662644,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7025142439": {
+      "current_garbage": 975.4174053479869,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514226347": {
+      "current_garbage": 856.6460822206013,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536400567": {
+      "current_garbage": 1138.2305327002578,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2214867655": {
+      "current_garbage": 891.5712135261176,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442136776": {
+      "current_garbage": 788.251256027848,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6102084304": {
+      "current_garbage": 1186.92245075753,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5372150482": {
+      "current_garbage": 922.2501217481035,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6127452887": {
+      "current_garbage": 906.9763035874942,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442183900": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5441862367": {
+      "current_garbage": 788.839566161786,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2494888673": {
+      "current_garbage": 888.5629789135372,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442183906": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5372150504": {
+      "current_garbage": 1174.320685846773,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6098336488": {
+      "current_garbage": 1186.6517227126149,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "12234025711": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536396530": {
+      "current_garbage": 1133.554989382716,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536412916": {
+      "current_garbage": 870.7354127426448,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441839866": {
+      "current_garbage": 887.1595734112695,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514283774": {
+      "current_garbage": 1038.4845431307945,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8556919557": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "3098184458": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "620835598": {
+      "current_garbage": 850.4892392618992,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097931023": {
+      "current_garbage": 1182.2668838374616,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442136853": {
+      "current_garbage": 1034.355726361412,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5505229590": {
+      "current_garbage": 861.568827564268,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620835607": {
+      "current_garbage": 1128.1748096718543,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3098184471": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1230580509": {
+      "current_garbage": 770.32386140377,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620835614": {
+      "current_garbage": 839.4172801871043,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514095390": {
+      "current_garbage": 1108.1748837171294,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3098184479": {
+      "current_garbage": 957.4322360634767,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097931037": {
+      "current_garbage": 782.1097650799393,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6101758754": {
+      "current_garbage": 664.4805657998777,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5804505894": {
+      "current_garbage": 919.6519697357464,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620835630": {
+      "current_garbage": 1045.0725687953172,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536388403": {
+      "current_garbage": 962.997982164319,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1234834238": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "3787041598": {
+      "current_garbage": 1104.494772096133,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1230269249": {
+      "current_garbage": 1051.4443851208077,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3787041602": {
+      "current_garbage": 948.3804686211006,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6102297410": {
+      "current_garbage": 656.4393593914602,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536400713": {
+      "current_garbage": 781.9919009783671,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6102735689": {
+      "current_garbage": 1195.8958134226896,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "718652237": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "9509761869": {
+      "current_garbage": 1196.46563677766,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6672509776": {
+      "current_garbage": 960.7853276639987,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "718662488": {
+      "current_garbage": 1183.357837260771,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1230269276": {
+      "current_garbage": 694.5487586796235,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6672509788": {
+      "current_garbage": 943.4090187293652,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442138976": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5372150625": {
+      "current_garbage": 1050.3570805425682,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442138984": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5442014061": {
+      "current_garbage": 1081.0463512362403,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "718662514": {
+      "current_garbage": 1026.1334567715244,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6101629816": {
+      "current_garbage": 879.5657222641398,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442014073": {
+      "current_garbage": 1101.8066465579384,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441883003": {
+      "current_garbage": 864.689422752703,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442419581": {
+      "current_garbage": 1121.2150383046578,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441883011": {
+      "current_garbage": 1082.9841100697727,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1239481220": {
+      "current_garbage": 781.9370468442598,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441883018": {
+      "current_garbage": 798.6707950917569,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1200415634": {
+      "current_garbage": 976.442397804045,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3359132569": {
+      "current_garbage": 808.2973836162058,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7030354853": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "7400387493": {
+      "current_garbage": 1080.224243535438,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441733543": {
+      "current_garbage": 820.9920125565443,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536400830": {
+      "current_garbage": 689.6513046693093,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6100202433": {
+      "current_garbage": 963.7933752288509,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2571058116": {
+      "current_garbage": 1203.3719424661824,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1239481294": {
+      "current_garbage": 869.1053549236365,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8556434383": {
+      "current_garbage": 707.0973691127963,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "4263603152": {
+      "current_garbage": 1116.6366161284554,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8559692750": {
+      "current_garbage": 994.2780707960252,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5391815635": {
+      "current_garbage": 1178.2051712248383,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3782265826": {
+      "current_garbage": 732.8972623417576,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8738483193": {
+      "current_garbage": 1200.2972239408039,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6098564097": {
+      "current_garbage": 833.5683172753678,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514226699": {
+      "current_garbage": 743.311396220388,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620835865": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5391815706": {
+      "current_garbage": 708.4512278879691,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7311141929": {
+      "current_garbage": 681.6800896241743,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512870962": {
+      "current_garbage": 796.8650366182417,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "315509822": {
+      "current_garbage": 841.1478945108322,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442434112": {
+      "current_garbage": 924.660566064134,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1233407052": {
+      "current_garbage": 1014.6375290399158,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6101627981": {
+      "current_garbage": 812.1157137007928,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1233407058": {
+      "current_garbage": 886.7062481445384,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "315509844": {
+      "current_garbage": 1009.1944507479534,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1233407062": {
+      "current_garbage": 990.2206521518863,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8547247236": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5002970252": {
+      "current_garbage": 916.5816243286438,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536394894": {
+      "current_garbage": 1143.6235519924053,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536394899": {
+      "current_garbage": 976.5391339951082,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536394900": {
+      "current_garbage": 1208.4742744937844,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536394905": {
+      "current_garbage": 944.8312688671864,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514226844": {
+      "current_garbage": 848.790264700006,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3461688480": {
+      "current_garbage": 847.200176526786,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3461688481": {
+      "current_garbage": 1198.6237701986565,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7547270305": {
+      "current_garbage": 825.7606951611216,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442067625": {
+      "current_garbage": 1050.162936346308,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6129640618": {
+      "current_garbage": 696.8995153338666,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3461688492": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "620840112": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "620840119": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "8556975290": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5372150972": {
+      "current_garbage": 721.0093411981456,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512570045": {
+      "current_garbage": 1076.499540689629,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442434236": {
+      "current_garbage": 727.4534219603179,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512570066": {
+      "current_garbage": 1015.9356628087228,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8556975344": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536397042": {
+      "current_garbage": 894.5310936326553,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097921268": {
+      "current_garbage": 1182.1675571484911,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536397049": {
+      "current_garbage": 707.5990859847249,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097921274": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536397052": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536397054": {
+      "current_garbage": 852.593909355943,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442434306": {
+      "current_garbage": 752.6862329370495,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512602889": {
+      "current_garbage": 1034.608089642376,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441998097": {
+      "current_garbage": 721.3751271027572,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5535667473": {
+      "current_garbage": 1084.6361606653836,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3461688596": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1514284314": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5441727773": {
+      "current_garbage": 900.5523802501266,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1513219357": {
+      "current_garbage": 814.9149284547592,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514284322": {
+      "current_garbage": 811.7503621855038,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "767290664": {
+      "current_garbage": 1109.3562805374659,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514284330": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1200416046": {
+      "current_garbage": 948.4767657672589,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512602929": {
+      "current_garbage": 812.1582693878136,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1253823797": {
+      "current_garbage": 706.6947731868408,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512871234": {
+      "current_garbage": 707.1574524866762,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3331339586": {
+      "current_garbage": 1029.9237912639592,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6127904074": {
+      "current_garbage": 794.830030498961,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1081185616": {
+      "current_garbage": 1148.723628692681,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1081185618": {
+      "current_garbage": 973.3454214420251,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6866175315": {
+      "current_garbage": 1012.5264681250454,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514227031": {
+      "current_garbage": 922.4032690542913,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442112860": {
+      "current_garbage": 1166.1017816123328,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512602976": {
+      "current_garbage": 1002.9613741063572,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441742179": {
+      "current_garbage": 1143.470117818716,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3751083365": {
+      "current_garbage": 1073.7218918314843,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8559306085": {
+      "current_garbage": 991.7012806992639,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442112875": {
+      "current_garbage": 834.0200046032195,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1081185648": {
+      "current_garbage": 1007.3354679794294,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8559091057": {
+      "current_garbage": 1154.5192635160881,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441742204": {
+      "current_garbage": 1186.015178044611,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3460939139": {
+      "current_garbage": 722.299920512091,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536403358": {
+      "current_garbage": 1023.821464790074,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097923505": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1233391027": {
+      "current_garbage": 1121.749141665589,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1230544310": {
+      "current_garbage": 788.8630858502288,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7568919992": {
+      "current_garbage": 908.9353279142548,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097923529": {
+      "current_garbage": 731.7911338808133,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3751515596": {
+      "current_garbage": 705.507585167312,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "939017677": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1514284494": {
+      "current_garbage": 1084.198371106359,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5567927768": {
+      "current_garbage": 761.261247293779,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097923544": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5442135517": {
+      "current_garbage": 770.6580108456724,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442067934": {
+      "current_garbage": 1210.120906208512,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442110948": {
+      "current_garbage": 1191.6481224845393,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097923558": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536411632": {
+      "current_garbage": 1047.9346917327875,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536411637": {
+      "current_garbage": 687.284058390532,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3455139323": {
+      "current_garbage": 1138.5114906139,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514284541": {
+      "current_garbage": 1052.760723877347,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620842494": {
+      "current_garbage": 868.888286211291,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442088471": {
+      "current_garbage": 928.0386092189799,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536405529": {
+      "current_garbage": 948.3660393309349,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442088477": {
+      "current_garbage": 1082.4831197774963,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514284583": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "7043210805": {
+      "current_garbage": 680.1781795389084,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536405558": {
+      "current_garbage": 982.8259185079995,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5555547729": {
+      "current_garbage": 782.4415316061602,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097682006": {
+      "current_garbage": 806.191017411806,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7298313815": {
+      "current_garbage": 684.9896729184541,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8556498526": {
+      "current_garbage": 921.122953399107,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2730516063": {
+      "current_garbage": 678.0846083553561,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1230413408": {
+      "current_garbage": 948.5142290684169,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442082405": {
+      "current_garbage": 834.397132694564,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8556498533": {
+      "current_garbage": 1061.9426532959833,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536401516": {
+      "current_garbage": 860.2812719401685,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6866136684": {
+      "current_garbage": 981.5998132849271,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5455576686": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536405622": {
+      "current_garbage": 777.6931167591803,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514284678": {
+      "current_garbage": 934.1054512251719,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441726096": {
+      "current_garbage": 890.4285760052766,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3076152983": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "3463155360": {
+      "current_garbage": 931.0501619501964,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1230532258": {
+      "current_garbage": 709.4747529117694,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2211266217": {
+      "current_garbage": 837.0108883767364,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442223787": {
+      "current_garbage": 721.0004909763782,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514137261": {
+      "current_garbage": 994.1402033399518,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3076153005": {
+      "current_garbage": 704.2005318727353,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536401592": {
+      "current_garbage": 947.7526158334342,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "3782096574": {
+      "current_garbage": 707.4473725741422,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536401605": {
+      "current_garbage": 764.4407720112279,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514284742": {
+      "current_garbage": 988.9583247608648,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1315555018": {
+      "current_garbage": 1215.027147196924,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2571067089": {
+      "current_garbage": 928.7138280882715,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2791173853": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5441967837": {
+      "current_garbage": 805.7328875514294,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5455660775": {
+      "current_garbage": 727.1284728004921,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7030359784": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1514137341": {
+      "current_garbage": 1115.2360241772517,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781639": {
+      "current_garbage": 870.0402572744274,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512732424": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "8560426764": {
+      "current_garbage": 889.0444300911211,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781648": {
+      "current_garbage": 833.9098518391555,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441967889": {
+      "current_garbage": 687.1069507331174,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781654": {
+      "current_garbage": 1127.0411966985403,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6097528603": {
+      "current_garbage": 1187.1299493063939,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7401033500": {
+      "current_garbage": 846.491259378213,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1315555102": {
+      "current_garbage": 884.0686068495381,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514137375": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "687781667": {
+      "current_garbage": 1019.3052296502826,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441967908": {
+      "current_garbage": 800.1716703331887,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441967914": {
+      "current_garbage": 1057.4924146543503,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5441703725": {
+      "current_garbage": 1208.803255944069,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514137392": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "1514137396": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "6098589496": {
+      "current_garbage": 944.4853214464722,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781689": {
+      "current_garbage": 870.1793494863875,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781694": {
+      "current_garbage": 1022.1654244894478,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781697": {
+      "current_garbage": 1148.3425477445285,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514137411": {
+      "current_garbage": 872.2174515969788,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781703": {
+      "current_garbage": 901.346139656672,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514137419": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "5455566668": {
+      "current_garbage": 1155.1342047457927,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512732493": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536395602": {
+      "current_garbage": 1215.4985728991633,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "2290382681": {
+      "current_garbage": 952.1578123295042,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512732506": {
+      "current_garbage": 789.8429225162955,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5442082651": {
+      "current_garbage": 815.3424188427593,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514137439": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "613048160": {
+      "current_garbage": 794.4183646384186,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8559574882": {
+      "current_garbage": 686.0110956143078,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8177971044": {
+      "current_garbage": 1181.6949064908952,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1315555174": {
+      "current_garbage": 1086.203423718342,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781739": {
+      "current_garbage": 1030.0058021532145,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781751": {
+      "current_garbage": 952.5637639205014,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "687781754": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "939046787": {
+      "current_garbage": 1181.8732246238558,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620840837": {
+      "current_garbage": 1184.9292889027674,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "939046790": {
+      "current_garbage": 748.7968574745736,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620840839": {
+      "current_garbage": 714.2098917799876,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "939046791": {
+      "current_garbage": 943.1165983487242,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620840841": {
+      "current_garbage": 834.2448153082127,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "939046792": {
+      "current_garbage": 1199.5300025292984,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "939046793": {
+      "current_garbage": 776.652578471374,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "939046794": {
+      "current_garbage": 923.2354754801413,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5455566731": {
+      "current_garbage": 1143.3200276912721,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536412059": {
+      "current_garbage": 962.8464744593455,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "620840862": {
+      "current_garbage": 1151.0600867708813,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "7611555743": {
+      "current_garbage": 690.7505462302281,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512732583": {
+      "current_garbage": 1044.3319313478978,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "8737828776": {
+      "current_garbage": 1080.2432959831178,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512732604": {
+      "current_garbage": 859.9559602305884,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536395709": {
+      "current_garbage": 1000.4356777637869,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514340287": {
+      "current_garbage": 1135.8530870648767,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "536401860": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "536401877": {
+      "current_garbage": 1072.209589425139,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1514340309": {
+      "current_garbage": 729.583781352726,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "5530925014": {
+      "current_garbage": 1174.015221949761,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512869852": {
+      "current_garbage": 0,
+      "daily_generation": 0,
+      "discovered": null
+    },
+    "8560076769": {
+      "current_garbage": 685.434535525616,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6887624676": {
+      "current_garbage": 959.3813969382509,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "1512869867": {
+      "current_garbage": 782.4923450388569,
+      "daily_generation": 937.0,
+      "discovered": null
+    },
+    "6265157611": {
+      "current_garbage": 661.4265956025298,
+      "daily_generation": 937.0,
+      "discovered": null
+    }
+  },
+  "simulation_time_seconds": 1.2434430122375488,
+  "slowdown_encounters": 0,
+  "objective_function": {
+    "total_distance_km": 0.0,
+    "avg_overtime_minutes": 0.0,
+    "unserved_tps_count": 352,
+    "workload_std_dev_km": 0.0,
+    "objective_value": 1760000.0,
+    "components": {
+      "distance_cost": 0.0,
+      "overtime_cost": 0.0,
+      "unserved_cost": 1760000.0,
+      "workload_cost": 0.0
+    },
+    "weights": {
+      "w1": 1.0,
+      "w2": 100.0,
+      "w3": 5000.0,
+      "w4": 0.3
+    }
+  }
+}

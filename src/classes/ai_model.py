@@ -3,16 +3,6 @@ from collections import defaultdict
 from ..environment import SHIFT_START, SHIFT_END, VEHICLE_SPEED
 
 class AIModel:
-    """
-    AI Controller dengan Matheuristic Rollout untuk dispatch dan scheduling truk sampah.
-
-    Phase:
-    1. DISPATCH - Keluarkan semua truk dari garasi saat shift start
-    2. GATHERING - Kumpulkan sampah dari TPS ke TPA
-    3. RESCHEDULE - Handle masalah (slowdown, full vehicle)
-    4. ENDING - Kembalikan semua truk ke garasi sebelum overtime
-    """
-
     def __init__(self, knowledge_model, shared):
         self.knowledge = knowledge_model
         self.shared = shared
@@ -34,19 +24,18 @@ class AIModel:
         self.total_garbage_collected = 0
         self.reschedule_count = 0
 
-        # Historical knowledge about bad edges discovered earlier in the day
         self.historical_bad_edges = set()
+        self.vehicle_last_reroute_time = {}
 
-        # Track when vehicle was last rerouted to prevent too-frequent rerouting
-        self.vehicle_last_reroute_time = {}  # vehicle_id -> sim_time
+        # === REROUTE CONTROL ===
+        self.MAX_REROUTE_PER_TICK = 3
+        self.MIN_REROUTE_INTERVAL = 60
 
         print("[AIModel] Initialized with Matheuristic Rollout Controller")
 
-    # -------------------------
-    # Main loop
-    # -------------------------
+
+    # ==================== MAIN LOOP ====================
     def update(self, dt, vehicles):
-        """Main AI update loop - dipanggil setiap frame"""
         if self.shared.paused:
             return
 
@@ -57,7 +46,6 @@ class AIModel:
             self.make_decisions(vehicles)
 
     def make_decisions(self, vehicles):
-        """Core decision making logic"""
         current_hour = self.shared.sim_hour
 
         if current_hour >= self.SHIFT_START and not self.dispatch_done:
@@ -76,11 +64,8 @@ class AIModel:
             self.phase_gathering(vehicles)
             self.phase_reschedule(vehicles)
 
-    # -------------------------
-    # Dispatch
-    # -------------------------
+    # ==================== DISPATCH ====================
     def phase_dispatch(self, vehicles):
-        """Dispatch semua truk dari garasi ke TPS optimal"""
         print(f"\n{'='*50}")
         print(f"[AIModel] PHASE: DISPATCH - Shift Start at {self.shared.sim_hour:02d}:00")
         print(f"{'='*50}")
@@ -118,19 +103,17 @@ class AIModel:
                     vehicle.state = "to_tps"
                     dispatched_count += 1
                     
-                    # Calculate path distance
                     path_distance = sum(
                         vehicle.G[path[i]][path[i+1]][0]['length'] 
                         for i in range(len(path)-1)
                     )
-                    print(f"[AIModel] ✓ Dispatched {vehicle.id} to TPS {tps_id} (priority: {priority:.2f}, distance: {path_distance:.0f}m)")
+                    print(f"[AIModel] Dispatched {vehicle.id} to TPS {tps_id} (priority: {priority:.2f}, distance: {path_distance:.0f}m)")
             except Exception as e:
                 print(f"[AIModel] ✗ Failed to dispatch {vehicle.id} to TPS {tps_id}: {e}")
 
         print(f"[AIModel] Dispatch complete: {dispatched_count}/{len(idle_vehicles)} vehicles")
 
     def _calculate_tps_priorities(self):
-        """Calculate priority score untuk setiap TPS"""
         priorities = {}
 
         for tps_id in self.knowledge.TPS_nodes:
@@ -148,11 +131,8 @@ class AIModel:
 
         return priorities
 
-    # -------------------------
-    # Gathering
-    # -------------------------
+    # ==================== GATHERING ====================
     def phase_gathering(self, vehicles):
-        """Manage gathering operations - TPS collection and TPA disposal"""
 
         for vehicle in vehicles:
             st = getattr(vehicle, "state", "").lower()
@@ -164,7 +144,6 @@ class AIModel:
                 self._reassign_vehicle(vehicle)
 
     def _handle_at_tps(self, vehicle):
-        """Handle vehicle yang tiba di TPS"""
         if vehicle.actuator_is_full():
             print(f"[AIModel] Vehicle {vehicle.id} already full ({vehicle.load:.2f} kg) - routing to TPA")
             self._route_to_tpa(vehicle)
@@ -200,7 +179,6 @@ class AIModel:
                         self._route_to_garage(vehicle)
 
     def _handle_at_tpa(self, vehicle):
-        """Handle vehicle yang tiba di TPA"""
         unloaded = vehicle.actuator_unload_to_tpa()
 
         if unloaded > 0:
@@ -216,7 +194,6 @@ class AIModel:
             self._route_to_garage(vehicle)
 
     def _find_next_tps(self, vehicle):
-        """Find next TPS dengan sampah paling banyak yang belum diassign terlalu banyak"""
         best_tps = None
         best_score = 0
 
@@ -248,177 +225,118 @@ class AIModel:
 
         return best_tps
 
-    # -------------------------
-    # Rescheduling & Reroute (FIXED)
-    # -------------------------
+    # =============== RESCHEDULER ===============
     def phase_reschedule(self, vehicles):
-        """
-        Handle rescheduling karena masalah (slowdown, stuck, dll)
-        
-        FIXED: Sekarang memeriksa SELURUH path, bukan hanya next edge
-        """
         current_sim_time = self.shared.sim_hour * 3600 + self.shared.sim_min * 60
 
-        # Phase 1: Update historical bad edges dari vehicles yang sedang di dalam edge macet
-        for vehicle in vehicles:
-            if getattr(vehicle, "target_node", None) is not None and getattr(vehicle, "current", None) is not None:
-                edge_id = f"{vehicle.current}-{vehicle.target_node}"
-                slowdown = self.knowledge.get_slowdown(edge_id)
-                progress = getattr(vehicle, "progress", 0.0)
-                
-                # Vehicle sedang traverse edge yang macet
-                if slowdown is not None and progress > 0.0:
-                    severe_threshold = max(1.0, VEHICLE_SPEED * 0.5)
-                    if slowdown < severe_threshold:
-                        if edge_id not in self.historical_bad_edges:
-                            self.historical_bad_edges.add(edge_id)
-                            print(f"[AIModel] 🚨 Marked historical bad edge: {edge_id} (speed {slowdown:.1f} km/h)")
+        reroute_candidates = []
 
-        # Phase 2: Reroute vehicles yang akan melewati bad edges
+        # === DETECT BAD EDGES ON ACTIVE VEHICLES ===
         for vehicle in vehicles:
-            # Skip stuck vehicles
-            if self._is_vehicle_stuck(vehicle):
-                print(f"[AIModel] 🚨 Vehicle {vehicle.id} is stuck - rescheduling")
-                self._reschedule_vehicle(vehicle)
-                self.reschedule_count += 1
+            if getattr(vehicle, "target_node", None) is None:
                 continue
 
-            # Skip vehicles without path
             path = getattr(vehicle, "path", None)
             if not path or len(path) < 2:
                 continue
 
-            # Skip vehicles that are idle or at destination
-            if getattr(vehicle, "target_node", None) is None:
-                continue
-
-            # Get vehicle's current progress
             progress = getattr(vehicle, "progress", 0.0)
-            
-            # Don't reroute if vehicle is already in the middle of an edge
-            if progress > 0.1:  # Allow reroute only at start of edge
+            if progress > 0.01:
                 continue
 
-            # Check cooldown: don't reroute too frequently (minimum 30 seconds)
             last_reroute_time = self.vehicle_last_reroute_time.get(vehicle.id, 0)
-            if current_sim_time - last_reroute_time < 30:
+            if current_sim_time - last_reroute_time < self.MIN_REROUTE_INTERVAL:
                 continue
 
-            # **CRITICAL FIX**: Check if ANY edge in remaining path is slow
-            bad_edges_in_path = self._find_bad_edges_in_path(vehicle, path)
-            
-            if not bad_edges_in_path:
-                continue  # Path is clean
+            bad_edges = self._find_bad_edges_in_path(vehicle, path)
+            if not bad_edges:
+                continue
 
-            # Path contains bad edges - attempt reroute
+            reroute_candidates.append((vehicle, bad_edges))
+
+        if not reroute_candidates:
+            return
+
+        # === PRIORITIZE MOST PROBLEMATIC VEHICLES ===
+        reroute_candidates.sort(key=lambda x: len(x[1]), reverse=True)
+        reroute_candidates = reroute_candidates[:self.MAX_REROUTE_PER_TICK]
+
+        # === EXECUTE LIMITED REROUTES ===
+        for vehicle, bad_edges_in_path in reroute_candidates:
             destination = self._get_vehicle_destination(vehicle)
-            
             if not destination:
                 continue
 
-            # Build avoid set: all historical bad edges + discovered slow edges
             avoid_edges = set(self.historical_bad_edges)
-            
-            # Also check for currently known slow edges in the path
-            for i in range(len(path) - 1):
-                edge_id = f"{path[i]}-{path[i+1]}"
-                slowdown = self.knowledge.get_slowdown(edge_id)
-                if slowdown is not None:
-                    severe_threshold = max(1.0, VEHICLE_SPEED * 0.5)
-                    if slowdown < severe_threshold:
-                        avoid_edges.add(edge_id)
+            avoid_edges.update(bad_edges_in_path)
 
-            # Attempt reroute
             new_path = self._shortest_path_excluding_edges(
-                vehicle.G, 
-                vehicle.current, 
-                destination, 
+                vehicle.G,
+                vehicle.current,
+                destination,
                 avoid_edges
             )
 
-            if new_path and len(new_path) > 1:
-                # Verify new path doesn't contain bad edges
-                new_bad_edges = self._find_bad_edges_in_path(vehicle, new_path)
-                
-                if len(new_bad_edges) < len(bad_edges_in_path):  # New path is better
-                    # Calculate distances for comparison
-                    old_distance = sum(
-                        vehicle.G[path[i]][path[i+1]][0]['length'] 
-                        for i in range(len(path)-1)
-                    )
-                    new_distance = sum(
-                        vehicle.G[new_path[i]][new_path[i+1]][0]['length'] 
-                        for i in range(len(new_path)-1)
-                    )
-                    
-                    # Only reroute if new path isn't too much longer (max 50% longer)
-                    if new_distance <= old_distance * 1.5:
-                        vehicle.set_path(new_path)
-                        self.vehicle_last_reroute_time[vehicle.id] = current_sim_time
-                        
-                        print(f"[AIModel] ✓ Rerouted {vehicle.id}: avoided {len(bad_edges_in_path)} slow edges")
-                        print(f"    Old distance: {old_distance:.0f}m, New distance: {new_distance:.0f}m")
-                        print(f"    Avoided edges: {', '.join(bad_edges_in_path)}")
-                    else:
-                        print(f"[AIModel] ✗ Alternative path for {vehicle.id} too long ({new_distance:.0f}m vs {old_distance:.0f}m)")
-                else:
-                    print(f"[AIModel] ✗ No better alternative for {vehicle.id} (still has {len(new_bad_edges)} slow edges)")
-            else:
-                print(f"[AIModel] ✗ No alternative path found for {vehicle.id}")
+            if not new_path or len(new_path) < 2:
+                continue
+
+            old_distance = sum(
+                vehicle.G[vehicle.path[i]][vehicle.path[i+1]][0]['length']
+                for i in range(len(vehicle.path) - 1)
+            )
+            new_distance = sum(
+                vehicle.G[new_path[i]][new_path[i+1]][0]['length']
+                for i in range(len(new_path) - 1)
+            )
+
+            if new_distance <= old_distance * 1.3:
+                vehicle.set_path(new_path)
+                self.vehicle_last_reroute_time[vehicle.id] = current_sim_time
+                self.reschedule_count += 1
+
+                print(
+                    f"[AIModel] Rerouted {vehicle.id} "
+                    f"(bad edges: {len(bad_edges_in_path)}, "
+                    f"old: {old_distance:.0f}m, new: {new_distance:.0f}m)"
+                )
+
 
     def _find_bad_edges_in_path(self, vehicle, path):
-        """
-        CRITICAL: Find all slow/bad edges in the given path
-        Returns list of edge_ids that are slow
-        """
         bad_edges = []
         severe_threshold = max(1.0, VEHICLE_SPEED * 0.5)
-        
+
         for i in range(len(path) - 1):
             edge_id = f"{path[i]}-{path[i+1]}"
-            
-            # Check if edge is in historical bad edges
+
             if edge_id in self.historical_bad_edges:
                 bad_edges.append(edge_id)
                 continue
-            
-            # Check current slowdown value
+
             slowdown = self.knowledge.get_slowdown(edge_id)
             if slowdown is not None and slowdown < severe_threshold:
                 bad_edges.append(edge_id)
-        
+
         return bad_edges
 
+
     def _get_vehicle_destination(self, vehicle):
-        """
-        Determine the vehicle's intended final node for current task.
-        """
-        # 1) If assigned task present
         task = self.assigned_tasks.get(vehicle.id)
         if task and task.get("type") == "collect":
             return task.get("tps_id")
 
-        # 2) If vehicle.path exists, last element is destination
         p = getattr(vehicle, "path", None)
         if p and len(p) > 0:
             return p[-1]
 
-        # 3) fallback to target_node or garage
         if getattr(vehicle, "target_node", None) is not None:
             return getattr(vehicle, "target_node")
 
         return vehicle.garage_node
 
     def _shortest_path_excluding_edges(self, G, source, target, exclude_edges):
-        """
-        Find shortest path from source to target while excluding edges in exclude_edges.
-        exclude_edges: set of strings "u-v"
-        Returns path list or None.
-        """
         if source == target:
             return [source]
 
-        # Create a copy of graph and remove excluded edges
         G2 = G.copy()
         removed_count = 0
         
@@ -430,7 +348,6 @@ class AIModel:
             except Exception:
                 continue
 
-            # Remove both directions (for undirected behavior)
             if G2.has_edge(u, v):
                 try:
                     G2.remove_edge(u, v)
@@ -444,7 +361,6 @@ class AIModel:
                 except Exception:
                     pass
 
-        # Try shortest path on modified graph
         try:
             path = nx.shortest_path(G2, source, target, weight="length")
             return path
@@ -454,18 +370,15 @@ class AIModel:
             return None
 
     def _maybe_cast_node(self, s):
-        """Try to cast node id strings back to ints if needed"""
         try:
             return int(s)
         except Exception:
             return s
 
     def _is_vehicle_stuck(self, vehicle):
-        """Check if vehicle stuck"""
         return getattr(vehicle, "state", "") == "random"
 
     def _reschedule_vehicle(self, vehicle):
-        """Reschedule stuck vehicle"""
         if vehicle.id in self.assigned_tasks:
             old_task = self.assigned_tasks[vehicle.id]
             del self.assigned_tasks[vehicle.id]
@@ -474,23 +387,13 @@ class AIModel:
         vehicle.actuator_idle()
         self._reassign_vehicle(vehicle)
 
-    # -------------------------
-    # Path helpers
-    # -------------------------
     def _path_contains_edge(self, path, edge_id):
-        """
-        Check if path contains specific edge
-        """
         if not path or len(path) < 2:
             return False
         edge_set = { f"{path[i]}-{path[i+1]}" for i in range(len(path)-1) }
         return edge_id in edge_set
 
     def _get_optimal_path(self, start, end, G, allow_force=False):
-        """
-        Get optimal path dengan penalti slowdown + historical congestion.
-        Jika tidak ada jalur alternatif, fallback ke shortest path normal.
-        """
 
         def edge_weight(u, v, d):
             base_length = d.get('length', 1)
@@ -501,14 +404,12 @@ class AIModel:
 
             if slowdown is not None and slowdown > 0:
                 try:
-                    # Inverse speed penalty: slower = higher penalty
                     penalty *= (VEHICLE_SPEED / max(slowdown, 0.1))
                 except Exception:
                     penalty *= 5.0
 
-            # Historical bad edge penalty
             if edge_id in self.historical_bad_edges:
-                penalty *= 5.0  # Strong penalty
+                penalty *= 5.0
 
             return base_length * penalty
 
@@ -517,7 +418,6 @@ class AIModel:
             return path
 
         except Exception:
-            # Fallback: try without penalty
             if allow_force:
                 try:
                     path = nx.shortest_path(G, start, end, weight="length")
@@ -527,11 +427,12 @@ class AIModel:
 
             return self._get_optimal_path(start, end, G, allow_force=True)
 
-    # -------------------------
-    # Reassignment + Ending
-    # -------------------------
+
+
+
+
+    # =============== REASSIGN ===============
     def _reassign_vehicle(self, vehicle):
-        """Reassign idle vehicle to new task"""
         if getattr(vehicle, "load", 0) > 0:
             print(f"[AIModel] Vehicle {vehicle.id} has load ({vehicle.load:.2f} kg) - sending to TPA before new task")
             self._route_to_tpa(vehicle)
@@ -553,7 +454,6 @@ class AIModel:
             self._route_to_garage(vehicle)
 
     def phase_ending(self, vehicles):
-        """Return all vehicles to garage before overtime"""
         print(f"\n{'='*50}")
         print(f"[AIModel] PHASE: ENDING - Shift End Approaching at {self.shared.sim_hour:02d}:00")
         print(f"{'='*50}")
@@ -577,11 +477,9 @@ class AIModel:
             if vehicle.id in self.assigned_tasks:
                 del self.assigned_tasks[vehicle.id]
 
-    # -------------------------
-    # Smart Routing Methods (MENGGUNAKAN OPTIMAL PATH)
-    # -------------------------
+
+    # ================ ROUTING METHODS ================
     def _route_to_tpa(self, vehicle):
-        """Route vehicle to TPA using optimal path that avoids bad edges"""
         if not vehicle.TPA_node:
             print(f"[AIModel] ERROR: No TPA_node configured for {vehicle.id}!")
             return False
@@ -599,7 +497,6 @@ class AIModel:
             vehicle.state = "at_tpa"
             return True
         
-        # Use optimal path that avoids bad edges
         path = self._get_optimal_path(vehicle.current, tpa_target, vehicle.G)
         
         if not path or len(path) < 2:
@@ -613,11 +510,10 @@ class AIModel:
             vehicle.G[path[i]][path[i+1]][0]['length'] 
             for i in range(len(path)-1)
         )
-        print(f"[AIModel] 🚛 Routing {vehicle.id} to TPA {tpa_target} (distance: {path_distance:.0f}m, avoiding {len(self.historical_bad_edges)} known slow edges)")
+        print(f"[AIModel] Routing {vehicle.id} to TPA {tpa_target} (distance: {path_distance:.0f}m, avoiding {len(self.historical_bad_edges)} known slow edges)")
         return True
 
     def _route_to_garage(self, vehicle):
-        """Route vehicle to garage using optimal path that avoids bad edges"""
         if not vehicle.garage_node:
             print(f"[AIModel] ERROR: No garage for {vehicle.id}!")
             return False
@@ -626,7 +522,6 @@ class AIModel:
             vehicle.state = "idle"
             return True
         
-        # Use optimal path that avoids bad edges
         path = self._get_optimal_path(vehicle.current, vehicle.garage_node, vehicle.G)
         
         if not path:
@@ -640,16 +535,14 @@ class AIModel:
             vehicle.G[path[i]][path[i+1]][0]['length'] 
             for i in range(len(path)-1)
         )
-        print(f"[AIModel] 🏠 Routing {vehicle.id} to garage (distance: {path_distance:.0f}m)")
+        print(f"[AIModel] Routing {vehicle.id} to garage (distance: {path_distance:.0f}m)")
         return True
 
     def _route_to_location(self, vehicle, target_node, new_state):
-        """Route vehicle to any location using optimal path that avoids bad edges"""
         if target_node == vehicle.current:
             vehicle.state = new_state
             return True
         
-        # Use optimal path that avoids bad edges
         path = self._get_optimal_path(vehicle.current, target_node, vehicle.G)
         
         if not path:
@@ -664,17 +557,15 @@ class AIModel:
             for i in range(len(path)-1)
         )
         
-        # Check if path contains any bad edges
         bad_edges_in_path = self._find_bad_edges_in_path(vehicle, path)
         if bad_edges_in_path:
-            print(f"[AIModel] ⚠️ Routing {vehicle.id} to {target_node} (distance: {path_distance:.0f}m) - WARNING: path contains {len(bad_edges_in_path)} slow edges (unavoidable)")
+            print(f"[AIModel] Routing {vehicle.id} to {target_node} (distance: {path_distance:.0f}m) - WARNING: path contains {len(bad_edges_in_path)} slow edges (unavoidable)")
         else:
-            print(f"[AIModel] ✓ Routing {vehicle.id} to {target_node} (distance: {path_distance:.0f}m)")
+            print(f"[AIModel] Routing {vehicle.id} to {target_node} (distance: {path_distance:.0f}m)")
         
         return True
 
     def _assign_task(self, vehicle, task):
-        """Assign task to vehicle"""
         self.assigned_tasks[vehicle.id] = task
 
         if task.get("type") == "collect":
@@ -684,11 +575,10 @@ class AIModel:
 
         self.knowledge.assign_task(vehicle.id, task)
 
-    # -------------------------
-    # Utilities
-    # -------------------------
+
+
+    # =================== UTILS ===================
     def get_statistics(self):
-        """Get AI statistics"""
         return {
             "current_phase": self.current_phase,
             "total_trips": self.total_trips,
@@ -700,7 +590,6 @@ class AIModel:
         }
 
     def reset_daily(self):
-        """Reset daily statistics (called at start of new day)"""
         self.dispatch_done = False
         self.current_phase = "IDLE"
         self.assigned_tasks.clear()

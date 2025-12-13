@@ -26,7 +26,7 @@ class ProgramSummaryWindow:
 
         time_frame = ttk.Frame(content)
 
-        self.hour_var = tk.StringVar(value="08")
+        self.hour_var = tk.StringVar(value="06")
         self.minute_var = tk.StringVar(value="00")
         self.day_var = tk.StringVar(value="1")
 
@@ -261,8 +261,8 @@ class ProgramSummaryWindow:
                 messagebox.showinfo(
                     "Save Successful", 
                     f"Data berhasil disimpan ke:\n\n"
-                    f"📄 {self.shared.node_data_file}\n"
-                    f"📄 {self.shared.edge_data_file}"
+                    f"{self.shared.node_data_file}\n"
+                    f"{self.shared.edge_data_file}"
                 )
             else:
                 messagebox.showerror(
