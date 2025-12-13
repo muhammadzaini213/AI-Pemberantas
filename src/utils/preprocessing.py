@@ -43,6 +43,7 @@ def preprocess_graph(graph, TPS_nodes, TPA_nodes, GARAGE_nodes):
 
         g.remove_nodes_from(nodes_to_remove)
         removed_total += len(nodes_to_remove)
+        print("Nodes Removed:", removed_total)
 
     print(f"[Preprocessing Safe Aggressive MP] Preprocessed graph: removed {removed_total} irrelevant nodes")
     return g
