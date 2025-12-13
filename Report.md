@@ -322,7 +322,6 @@ root/
 ##### b). Implementation Flow
 Sebelum simulasi dijalankan, akan dilakukan persiapan visual, nodes, vehicle(sensor & actuator), dan model yang digunakan 
 ```python
-    # ======================== VIEWER ========================
     viewer = GraphViewer(pos, shared)
     range_x = viewer.max_x - viewer.min_x
     range_y = viewer.max_y - viewer.min_y
@@ -338,7 +337,6 @@ Sebelum simulasi dijalankan, akan dilakukan persiapan visual, nodes, vehicle(sen
 
     last_garbage_generation_day = shared.sim_day
 
-    # ======================== MODEL INITIALIZATION ========================
     knowledge_model = KnowledgeModel(GRAPH, shared, TPS_nodes, TPA_nodes, GARAGE_nodes)
     shared.knowledge_model = knowledge_model
 
