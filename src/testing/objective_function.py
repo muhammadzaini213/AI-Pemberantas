@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Dict, List, Any
+from typing import Dict, Any
 from ..environment import VEHICLE_SPEED, SHIFT_START, SHIFT_END
 
 class ObjectiveFunction:
@@ -11,15 +11,15 @@ class ObjectiveFunction:
         
         self.SHIFT_START = SHIFT_START
         self.SHIFT_END = SHIFT_END
-        self.SHIFT_DURATION_HOURS = self.SHIFT_END - self.SHIFT_START  # 9 hours
+        self.SHIFT_DURATION_HOURS = self.SHIFT_END - self.SHIFT_START
         
     def calculate(self, metrics: Dict[str, Any], shared=None, knowledge_model=None) -> Dict[str, float]:
-        total_distance_km = metrics.get('total_distance', 0)
+        # Pastikan total_distance dalam km
+        total_distance_km = metrics.get('total_distance', 0) / 1000.0
         avg_overtime_minutes = self._calculate_avg_overtime(metrics)
         unserved_tps_count = self._calculate_unserved_tps(metrics, shared, knowledge_model)
         workload_std_dev_km = self._calculate_workload_std_dev(metrics)
         
-        # ============== CALCULATE COSTS ==============
         distance_cost = self.w1 * total_distance_km
         overtime_cost = self.w2 * avg_overtime_minutes
         unserved_cost = self.w3 * unserved_tps_count
@@ -57,51 +57,40 @@ class ObjectiveFunction:
         
         for day_data in daily_metrics:
             vehicle_stats = day_data.get('vehicle_stats', {})
-            
-            for vehicle_id, stats in vehicle_stats.items():
-                distance_km = stats.get('daily_dist', 0)
+            for stats in vehicle_stats.values():
+                # Pastikan jarak dalam km
+                distance_km = stats.get('daily_dist', 0) / 1000.0
                 estimated_hours = distance_km / VEHICLE_SPEED
-                
                 overtime_hours = max(0, estimated_hours - self.SHIFT_DURATION_HOURS)
                 total_overtime_minutes += overtime_hours * 60
                 total_vehicle_days += 1
         
-        avg_overtime = total_overtime_minutes / max(1, total_vehicle_days)
-        return avg_overtime
+        return total_overtime_minutes / max(1, total_vehicle_days)
     
     def _calculate_unserved_tps(self, metrics: Dict[str, Any], shared=None, knowledge_model=None) -> int:
         if not shared or not knowledge_model:
-            total_garbage_collected = metrics.get('total_garbage_collected', 0)
             return 0
         
         unserved_count = 0
         tps_service_rates = metrics.get('tps_service_rates', {})
-        
         for tps_id, data in tps_service_rates.items():
             current_garbage = data.get('current_garbage', 0)
             daily_generation = data.get('daily_generation', 0)
-            
-            if current_garbage > daily_generation * 0.5:
+            if daily_generation > 0 and current_garbage > daily_generation * 0.5:
                 unserved_count += 1
-        
         return unserved_count
     
     def _calculate_workload_std_dev(self, metrics: Dict[str, Any]) -> float:
         vehicle_utilization = metrics.get('vehicle_utilization', {})
-        
         if not vehicle_utilization:
             return 0.0
-        
         distances = [
-            data.get('total_distance_km', 0) 
+            data.get('total_distance_km', data.get('total_distance', 0) / 1000.0)
             for data in vehicle_utilization.values()
         ]
-        
         if len(distances) < 2:
             return 0.0
-        
-        std_dev = np.std(distances)
-        return std_dev
+        return np.std(distances)
     
     def print_report(self, result: Dict[str, Any], scenario_name: str = "Simulation"):
         print("\n" + "="*70)
@@ -109,17 +98,18 @@ class ObjectiveFunction:
         print("="*70)
         
         print("\n--- Raw Metrics ---")
-        print(f"Total Distance:           {100 * result['total_distance_km']:.2f} km")
+        print(f"Total Distance:           {result['total_distance_km']:.2f} km")
         print(f"Avg Overtime per Vehicle: {result['avg_overtime_minutes']:.2f} minutes")
         print(f"Unserved TPS Count:       {result['unserved_tps_count']}")
         print(f"Workload Std Dev:         {result['workload_std_dev_km']:.2f} km")
         
         print("\n--- Weighted Costs ---")
-        components = result['components']
-        print(f"Distance Cost:   {components['distance_cost']:>12.2f}  (w1={result['weights']['w1']} × {result['total_distance_km']:.2f})")
-        print(f"Overtime Cost:   {components['overtime_cost']:>12.2f}  (w2={result['weights']['w2']} × {result['avg_overtime_minutes']:.2f})")
-        print(f"Unserved Cost:   {components['unserved_cost']:>12.2f}  (w3={result['weights']['w3']} × {result['unserved_tps_count']})")
-        print(f"Workload Cost:   {components['workload_cost']:>12.2f}  (w4={result['weights']['w4']} × {result['workload_std_dev_km']:.2f})")
+        c = result['components']
+        w = result['weights']
+        print(f"Distance Cost:   {c['distance_cost']:>12.2f}  (w1={w['w1']} × {result['total_distance_km']:.2f})")
+        print(f"Overtime Cost:   {c['overtime_cost']:>12.2f}  (w2={w['w2']} × {result['avg_overtime_minutes']:.2f})")
+        print(f"Unserved Cost:   {c['unserved_cost']:>12.2f}  (w3={w['w3']} × {result['unserved_tps_count']})")
+        print(f"Workload Cost:   {c['workload_cost']:>12.2f}  (w4={w['w4']} × {result['workload_std_dev_km']:.2f})")
         
         print("\n--- Total Objective Value ---")
         print(f"OBJECTIVE = {result['objective_value']:.2f}")
@@ -127,13 +117,12 @@ class ObjectiveFunction:
         total = result['objective_value']
         if total > 0:
             print("\n--- Cost Breakdown ---")
-            print(f"Distance:  {(components['distance_cost']/total)*100:>6.2f}%")
-            print(f"Overtime:  {(components['overtime_cost']/total)*100:>6.2f}%")
-            print(f"Unserved:  {(components['unserved_cost']/total)*100:>6.2f}%")
-            print(f"Workload:  {(components['workload_cost']/total)*100:>6.2f}%")
+            print(f"Distance:  {(c['distance_cost']/total)*100:>6.2f}%")
+            print(f"Overtime:  {(c['overtime_cost']/total)*100:>6.2f}%")
+            print(f"Unserved:  {(c['unserved_cost']/total)*100:>6.2f}%")
+            print(f"Workload:  {(c['workload_cost']/total)*100:>6.2f}%")
         
         print("="*70 + "\n")
-
 
 
 # ============== INTEGRATION ==============
