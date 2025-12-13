@@ -399,6 +399,10 @@ python -m src.start
 
 ## 2. Ilustration
 
+
+https://github.com/user-attachments/assets/0b51bb76-1750-4d9b-bdc2-7cc09d0e203e
+
+
 <br>
 
 ## 3. Result
