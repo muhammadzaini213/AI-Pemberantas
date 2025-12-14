@@ -3,7 +3,7 @@ def sync(shared, curr_time_acc):
     if hasattr(shared, "time_modified") and shared.time_modified:
         print(">> GUI requested time change")
 
-        h = shared.get_effective_hour()
+        h = shared.sim_hour
         m = shared.sim_min
         d = shared.sim_day
 

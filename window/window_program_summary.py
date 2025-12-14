@@ -132,7 +132,7 @@ class ProgramSummaryWindow:
         self.fps_var.set(str(value))
 
     def set_simulation_time(self, hour, minute, day):
-        self.hour_var.set(f"{TIME_OFFSET + int(hour):02d}")
+        self.hour_var.set(f"{int(hour):02d}")
         self.minute_var.set(f"{int(minute):02d}")
         self.day_var.set(str(day))
 
@@ -184,7 +184,7 @@ class ProgramSummaryWindow:
         self.set_fps(self.shared.fps)
 
         self.set_simulation_time(
-            self.shared.sim_hour,
+            self.shared.get_effective_hour(),
             self.shared.sim_min,
             self.shared.sim_day
         )

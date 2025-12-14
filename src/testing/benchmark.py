@@ -148,7 +148,6 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
                 shared, TPS_nodes, ai_model, last_garbage_generation_day
             )
 
-        # Update AI + vehicles
         ai_model.update(dt, vehicles)
         for v in vehicles:
             v.update(dt, shared)
