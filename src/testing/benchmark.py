@@ -4,7 +4,7 @@ from ..utils.timesync import sync, getDt
 from ..utils.nodes import initNodes, generate_daily_garbage, generate_car_in_garage
 from ..classes.knowledge import KnowledgeModel
 from ..classes.ai_model import AIModel
-from ..environment import SHIFT_START, SHIFT_END
+from ..environment import SHIFT_START, SHIFT_END, SIM_START
 
 class PerformanceMeasure:
     def __init__(self, num_vehicles, shift_duration):
@@ -139,7 +139,7 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
         sim_time_acc += dt * shared.speed * 60
 
         total_minutes = int(sim_time_acc / 60)
-        shared.sim_hour = (SHIFT_START + total_minutes // 60) % 24
+        shared.sim_hour = (SIM_START + total_minutes // 60) % 24
         shared.sim_min = total_minutes % 60
         shared.sim_day = 1 + (total_minutes // (24 * 60))
 

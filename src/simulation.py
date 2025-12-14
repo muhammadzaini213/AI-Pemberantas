@@ -83,13 +83,13 @@ def run_simulation_editor(GRAPH, shared):
 
         dt, last_time = getDt(time, last_time)
         
-        controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running, dt, True)
+        controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running, dt)
 
 
         if not shared.paused:
             sim_time_acc += dt * shared.speed * (60 ** 1)
             total_minutes = int(sim_time_acc / 60)
-            shared.sim_hour = (SHIFT_START + (total_minutes // 60)) % 24
+            shared.sim_hour = (SIM_START + (total_minutes // 60)) % 24
             shared.sim_min = total_minutes % 60
             shared.sim_day = 1 + (total_minutes // (24 * 60))
             
@@ -186,7 +186,7 @@ def run_simulation_single_render(GRAPH, shared):
             sim_time_acc += dt * shared.speed * 60
             total_minutes = int(sim_time_acc / 60)
 
-            shared.sim_hour = (SHIFT_START + (total_minutes // 60)) % 24
+            shared.sim_hour = (SIM_START + (total_minutes // 60)) % 24
             shared.sim_min = total_minutes % 60
             shared.sim_day = 1 + (total_minutes // (24 * 60))
 

@@ -1,4 +1,5 @@
 import networkx as nx
+from ..environment import TIME_OFFSET
 
 class KnowledgeModel:
     
@@ -7,6 +8,7 @@ class KnowledgeModel:
         self.TPS_nodes = tps_nodes
         self.TPA_nodes = tpa_nodes
         self.GARAGE_nodes = garage_nodes
+        self.TIME_OFFSET = TIME_OFFSET
 
         self.graph = graph
         
@@ -24,6 +26,9 @@ class KnowledgeModel:
         self.vehicle_assignments = {}
         self.all_vehicle_ids = set()
 
+    
+    def _effective_hour(self):
+        return (self.shared.get_effective_hour() + self.TIME_OFFSET) % 24
     
     # ================== STATIC KNOWLEDGE ==================
     def _get_garage_info(self, garage_id):
@@ -72,7 +77,7 @@ class KnowledgeModel:
         try:
             if avoid_current_slowdowns:
                 temp_graph = self.graph.copy()
-                current_hour = self.shared.sim_hour
+                current_hour = self._effective_hour()
                 
                 for edge_id, hour_data in self.discovered_slowdowns.items():
                     if current_hour in hour_data:
@@ -103,7 +108,7 @@ class KnowledgeModel:
 
     # ================== DISCOVERED/DYNAMIC KNOWLEDGE ==================
     def discover_slowdown(self, edge_id, slowdown_value):
-        current_hour = self.shared.sim_hour
+        current_hour = self._effective_hour()
         current_day = self.shared.sim_day
         
         if edge_id not in self.discovered_slowdowns:
@@ -129,7 +134,7 @@ class KnowledgeModel:
     
     def get_slowdown(self, edge_id, hour=None):
         if hour is None:
-            hour = self.shared.sim_hour
+            hour = self._effective_hour()
         
         if edge_id in self.discovered_slowdowns:
             if hour in self.discovered_slowdowns[edge_id]:
@@ -162,7 +167,7 @@ class KnowledgeModel:
         return summary
     
     def discover_garbage(self, tps_id, sampah_kg, sim_time=None):
-        current_time = f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}" if sim_time is None else sim_time
+        current_time = f"Day {self.shared.sim_day} {self._effective_hour():02d}:{self.shared.sim_min:02d}" if sim_time is None else sim_time
         
         if tps_id not in self.discovered_garbage:
             self.discovered_garbage[tps_id] = {
@@ -197,7 +202,7 @@ class KnowledgeModel:
             "load": status.get("load", 0),
             "load_percentage": status.get("load_percentage", 0),
             "state": status.get("state"),
-            "timestamp": f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"
+            "timestamp": f"Day {self.shared.sim_day} {self._effective_hour():02d}:{self.shared.sim_min:02d}"
         }
     
     def get_vehicle_status(self, vehicle_id):

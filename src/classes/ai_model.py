@@ -1,6 +1,6 @@
 import networkx as nx
 from collections import defaultdict
-from ..environment import SHIFT_START, SHIFT_END, VEHICLE_SPEED, VEHICLE_CAP
+from ..environment import SHIFT_START, SHIFT_END, VEHICLE_SPEED, VEHICLE_CAP, TIME_OFFSET
 
 class AIModel:
     def __init__(self, knowledge_model, shared):
@@ -63,7 +63,7 @@ class AIModel:
 
     # ================== DISPATCH ==================
     def phase_dispatch(self, vehicles):
-        print(f"\n[AIModel] DISPATCH - Hour {self.shared.sim_hour:02d}:00")
+        print(f"\n[AIModel] DISPATCH - Hour {self.shared.get_effective_hour():02d}:00")
         
         idle_vehicles = [v for v in vehicles if getattr(v, "state", "").lower() == "idle"]
         if not idle_vehicles:
@@ -89,7 +89,7 @@ class AIModel:
                 "type": "collect",
                 "tps_id": next_tps,
                 "priority": priority,
-                "assigned_at": f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"
+                "assigned_at": f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"
             }
             
             self._assign_task(vehicle, task)
@@ -105,7 +105,7 @@ class AIModel:
     
     def _calc_tps_priority_for_vehicle(self, vehicle):
         priorities = {}
-        current_hour = self.shared.sim_hour
+        current_hour = self.shared.get_effective_hour()
         
         for tps_id in self.knowledge.TPS_nodes:
             if tps_id == vehicle.current:
@@ -189,7 +189,7 @@ class AIModel:
         
         current_hour = self.shared.sim_hour
         if current_hour >= (self.SHIFT_END - self.OVERTIME_BUFFER):
-            if vehicle.load > VEHICLE_CAP * (1 - 0.01):
+            if vehicle.load > VEHICLE_CAP:
                 print(f"[AIModel] {vehicle.id} shift ending with load -> TPA")
                 self._route_to_tpa(vehicle)
             else:
@@ -227,7 +227,7 @@ class AIModel:
                     task = {
                         "type": "collect",
                         "tps_id": next_tps,
-                        "assigned_at": f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"
+                        "assigned_at": f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"
                     }
                     self._assign_task(vehicle, task)
                     vehicle.set_path(path)
@@ -261,7 +261,7 @@ class AIModel:
                 self.total_trips += 1
                 print(f"[AIModel] {vehicle.id} unloaded {unloaded:.2f}kg")
         
-        current_hour = self.shared.sim_hour
+        current_hour = self.shared.get_effective_hour()
         if current_hour >= (self.SHIFT_END - self.OVERTIME_BUFFER):
             print(f"[AIModel] {vehicle.id} shift ending -> garage")
             self._route_to_garage(vehicle)
@@ -271,7 +271,7 @@ class AIModel:
         if next_tps:
             path = self._safe_path(vehicle.current, next_tps, vehicle.G)
             if path:
-                task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"}
+                task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"}
                 self._assign_task(vehicle, task)
                 vehicle.set_path(path)
                 vehicle.state = "to_tps"
@@ -287,7 +287,7 @@ class AIModel:
 
         best_tps = None
         best_score = -float('inf')
-        current_hour = self.shared.sim_hour
+        current_hour = self.shared.get_effective_hour()
         
         candidates = []
 
@@ -357,7 +357,7 @@ class AIModel:
         
         next_node = vehicle.path[1]
         edge_id = f"{vehicle.current}-{next_node}"
-        slowdown = self.knowledge.get_slowdown(edge_id, hour=self.shared.sim_hour)
+        slowdown = self.knowledge.get_slowdown(edge_id, hour=self.shared.get_effective_hour())
         
         if slowdown is not None and slowdown < 5:
             new_path = self._safe_path(vehicle.current, vehicle.path[-1], vehicle.G)
@@ -368,7 +368,7 @@ class AIModel:
 
     # ================== SAFE PATH ==================
     def _safe_path(self, start, end, G):
-        current_hour = self.shared.sim_hour
+        current_hour = self.shared.get_effective_hour()
         def weight(u, v, d):
             edge_id = f"{u}-{v}"
             length = d.get("length", 1)
@@ -400,7 +400,7 @@ class AIModel:
         if next_tps:
             path = self._safe_path(vehicle.current, next_tps, vehicle.G)
             if path:
-                task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"}
+                task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"}
                 self._assign_task(vehicle, task)
                 vehicle.set_path(path)
                 vehicle.state = "to_tps"
@@ -411,7 +411,7 @@ class AIModel:
 
     # ================== ENDING ==================
     def phase_ending(self, vehicles):
-        print(f"\n[AIModel] ENDING - Hour {self.shared.sim_hour:02d}:00")
+        print(f"\n[AIModel] ENDING - Hour {self.shared.get_effective_hour():02d}:00")
         for vehicle in vehicles:
             if vehicle.state in ["to_garage", "idle"]:
                 continue

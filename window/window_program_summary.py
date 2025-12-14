@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-
+from src.environment import TIME_OFFSET
 
 class ProgramSummaryWindow:
     def __init__(self):
@@ -132,7 +132,7 @@ class ProgramSummaryWindow:
         self.fps_var.set(str(value))
 
     def set_simulation_time(self, hour, minute, day):
-        self.hour_var.set(f"{int(hour):02d}")
+        self.hour_var.set(f"{TIME_OFFSET + int(hour):02d}")
         self.minute_var.set(f"{int(minute):02d}")
         self.day_var.set(str(day))
 
