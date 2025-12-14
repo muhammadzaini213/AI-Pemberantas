@@ -95,7 +95,7 @@ class Vehicle:
         if start_hour is None or end_hour is None:
             return True
         
-        current_hour = self.shared.get_effective_hour()
+        current_hour = self.shared.sim_hour
         
         if start_hour <= end_hour:
             return start_hour <= current_hour <= end_hour
@@ -245,12 +245,16 @@ class Vehicle:
         
         can_load = min(amount, self.max_load - self.load)
         loaded = self.actuator_load_garbage(can_load)
-        tps_data["sampah_kg"] = max(0, available - loaded)
+        remaining = max(0, available - loaded)
+        tps_data["sampah_kg"] = remaining
         
-        print(f"[Vehicle {self.id}] Loaded {loaded:.2f}kg from TPS {self.current} (rem: {tps_data['sampah_kg']:.2f}kg) (current: {self.load}kg)")
+        # Update knowledge model setiap kali load
+        if hasattr(self.shared, 'knowledge_model'):
+            self.shared.knowledge_model.discover_garbage(self.current, remaining)
+        
+        print(f"[Vehicle {self.id}] Loaded {loaded:.2f}kg from TPS {self.current} (remaining: {remaining:.2f}kg, vehicle load: {self.load:.2f}kg)")
         
         return loaded
-
     
     def actuator_arrive_at_tpa(self):
         if isinstance(self.TPA_node, (set, list)):
@@ -395,7 +399,7 @@ class Vehicle:
                         self._slowdown_reported.add(edge_id)
                 
                 if not hasattr(self, '_last_slow') or self._last_slow != edge_id:
-                    print(f"[Vehicle {self.id}] Slowdown on {edge_id}: {slowdown_value}km/h (Hour {shared.get_effective_hour()})")
+                    print(f"[Vehicle {self.id}] Slowdown on {edge_id}: {slowdown_value}km/h (Hour {shared.sim_hour})")
                     self._last_slow = edge_id
             else:
                 if hasattr(self, '_last_slow') and self._last_slow == edge_id:

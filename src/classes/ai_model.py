@@ -1,6 +1,6 @@
 import networkx as nx
 from collections import defaultdict
-from ..environment import SHIFT_START, SHIFT_END, VEHICLE_SPEED, VEHICLE_CAP, TIME_OFFSET
+from ..environment import SHIFT_START, SHIFT_END, VEHICLE_CAP
 
 class AIModel:
     def __init__(self, knowledge_model, shared):
@@ -28,16 +28,9 @@ class AIModel:
         
         self.DISTANCE_WEIGHT = 3.0
         self.GARBAGE_WEIGHT = 1.0
-        self.ASSIGNMENT_WEIGHT = 0.5
         
-        self.DISTANCE_DOMINANCE_RATIO = 0.7
-        self.DISTANCE_DOMINANCE_ABS = 300
-
-        self.STEAL_DISTANCE_RATIO = 0.3
-        self.STEAL_MIN_ADVANTAGE = 500
-
-        self.last_steal_time = {}
-        self.STEAL_COOLDOWN = 5.0
+        self.STEAL_DISTANCE_RATIO = 0.2
+        self.STEAL_MIN_ADVANTAGE = 5000
 
         print("[AIModel] Initialized")
 
@@ -95,6 +88,15 @@ class AIModel:
             
             my_distance = self._path_distance(path, vehicle.G)
             
+            discovered = self.knowledge.get_discovered_garbage(next_tps)
+            if discovered is None:
+                tps_info = self.knowledge.known_tps.get(next_tps, {})
+                garbage = tps_info.get("sampah_per_hari", 0)
+                garbage_info = f"~{garbage:.0f}kg (estimated)"
+            else:
+                garbage = discovered
+                garbage_info = f"{garbage:.2f}kg (known)"
+            
             task = {
                 "type": "collect",
                 "tps_id": next_tps,
@@ -107,13 +109,11 @@ class AIModel:
             vehicle.state = "to_tps"
             count += 1
             
-            print(f"[AIModel] {vehicle.id} -> TPS {next_tps} (dist={my_distance:.0f}m)")
+            print(f"[AIModel] ✓ ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={my_distance:.0f}m, garbage={garbage_info})")
         
         print(f"[AIModel] Dispatched: {count}/{len(idle_vehicles)}")
 
-
     def _find_nearest_unassigned_tps_for_dispatch(self, vehicle):
-        """Cari TPS untuk dispatch awal - TIDAK boleh steal"""
         best_tps = None
         best_score = -float('inf')
         current_hour = self.shared.get_effective_hour()
@@ -171,22 +171,13 @@ class AIModel:
             for i, c in enumerate(candidates[:3]):
                 print(f"  {i+1}. TPS {c['tps_id']}: dist={c['distance']:.0f}m, garbage={c['garbage']:.0f}kg, score={c['score']:.3f}")
 
-        return best_tps  
-    
-    def _find_nearest_unassigned_tps(self, vehicle):
-        priorities = self._calc_tps_priority_for_vehicle(vehicle)
-        
-        if not priorities:
-            return None
-        
-        sorted_tps = sorted(priorities.items(), key=lambda x: x[1], reverse=True)
-        
-        best_tps = sorted_tps[0][0]
-        
         return best_tps
 
     # ================== GATHERING ==================
     def phase_gathering(self, vehicles):
+        # Cek dan cancel assignment ke TPS kosong
+        self._cancel_invalid_assignments(vehicles)
+        
         for vehicle in vehicles:
             state = getattr(vehicle, "state", "").lower()
             
@@ -195,16 +186,81 @@ class AIModel:
             elif state == "at_tpa":
                 self._handle_at_tpa(vehicle)
             elif state == "idle" and vehicle.current != vehicle.garage_node:
+                # Jika exhausted, paksa ke TPA
                 if self._all_tps_exhausted():
-                    if vehicle.load > 0:
-                        self._route_to_tpa(vehicle)
-                    else:
-                        self._route_to_garage(vehicle)
+                    print(f"[AIModel] All TPS exhausted, forcing idle {vehicle.id} to TPA (load: {vehicle.load:.2f}kg)")
+                    self._route_to_tpa(vehicle)
                 else:
                     self._reassign(vehicle)
-            else:
-                self._preventive_reroute(vehicle)
     
+    def _cancel_invalid_assignments(self, vehicles):
+        """Cancel assignments untuk vehicle yang menuju TPS kosong"""
+        all_exhausted = self._all_tps_exhausted()
+        
+        for vehicle in vehicles:
+            # Hanya cek vehicle yang sedang menuju TPS
+            if vehicle.state != "to_tps":
+                continue
+            
+            # Cek apakah ada assignment
+            if vehicle.id not in self.assigned_tasks:
+                continue
+            
+            task = self.assigned_tasks[vehicle.id]
+            tps_id = task.get("tps_id")
+            
+            if not tps_id:
+                continue
+            
+            # Jika semua TPS exhausted, langsung paksa ke TPA
+            if all_exhausted:
+                print(f"[AIModel] ⚠️ All TPS exhausted, forcing {vehicle.id} to TPA (was heading to TPS {tps_id})")
+                self._cancel_assignment(vehicle, tps_id)
+                self._route_to_tpa(vehicle)
+                continue
+            
+            # Cek garbage di TPS tujuan
+            discovered = self.knowledge.get_discovered_garbage(tps_id)
+            
+            # Jika TPS sudah diketahui kosong, cancel dan redirect
+            if discovered is not None and discovered <= 10:
+                print(f"[AIModel] ⚠️ {vehicle.id} heading to EMPTY TPS {tps_id} ({discovered:.2f}kg) - REDIRECTING")
+                
+                # Cancel assignment
+                self._cancel_assignment(vehicle, tps_id)
+                
+                # Cari TPS lain yang masih ada isinya
+                next_tps = self._find_next_tps(vehicle)
+                if next_tps:
+                    path = self._safe_path(vehicle.current, next_tps, vehicle.G)
+                    if path:
+                        discovered_new = self.knowledge.get_discovered_garbage(next_tps)
+                        if discovered_new is None:
+                            tps_info = self.knowledge.known_tps.get(next_tps, {})
+                            garbage = tps_info.get("sampah_per_hari", 0)
+                            garbage_info = f"~{garbage:.0f}kg (estimated)"
+                        else:
+                            garbage = discovered_new
+                            garbage_info = f"{garbage:.2f}kg (known)"
+                        
+                        dist = self._path_distance(path, vehicle.G)
+                        print(f"[AIModel] ✓ REDIRECTED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                        
+                        new_task = {
+                            "type": "collect",
+                            "tps_id": next_tps,
+                            "assigned_at": f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"
+                        }
+                        self._assign_task(vehicle, new_task)
+                        vehicle.set_path(path)
+                        vehicle.state = "to_tps"
+                    else:
+                        self._route_to_tpa(vehicle)
+                else:
+                    # Tidak ada TPS lain, ke TPA
+                    print(f"[AIModel] No TPS available, forcing {vehicle.id} to TPA")
+                    self._route_to_tpa(vehicle)
+
     def _handle_at_tps(self, vehicle):
         if vehicle.actuator_is_full():
             print(f"[AIModel] {vehicle.id} full - to TPA")
@@ -221,33 +277,56 @@ class AIModel:
                 self._route_to_garage(vehicle)
             return
         
+        # Ambil remaining SEBELUM load untuk pengecekan
         tps_data = self.shared.node_type.get(vehicle.current, {}).get("tps_data", {})
-        remaining = tps_data.get("sampah_kg", 0)
+        remaining_before = tps_data.get("sampah_kg", 0)
         
-        if remaining > 10:
+        if remaining_before > 10:
             loaded = vehicle.actuator_load_from_tps()
             if loaded > 0:
                 self.total_garbage_collected += loaded
-                print(f"[AIModel] {vehicle.id} loaded {loaded:.2f}kg")
+                
+                # Ambil remaining SETELAH load
+                tps_data = self.shared.node_type.get(vehicle.current, {}).get("tps_data", {})
+                remaining_after = tps_data.get("sampah_kg", 0)
+                
+                print(f"[AIModel] {vehicle.id} loaded {loaded:.2f}kg, remaining={remaining_after:.2f}kg")
             
             if vehicle.actuator_is_full():
                 print(f"[AIModel] {vehicle.id} full - to TPA")
                 self._route_to_tpa(vehicle)
         else:
+            current_tps = vehicle.current
+            if vehicle.id in self.assigned_tasks:
+                task = self.assigned_tasks[vehicle.id]
+                if task.get("tps_id") == current_tps:
+                    if current_tps in self.tps_assignments:
+                        if vehicle.id in self.tps_assignments[current_tps]:
+                            self.tps_assignments[current_tps].remove(vehicle.id)
+                            print(f"[AIModel] ✗ REMOVED assignment of {vehicle.id} from empty TPS {current_tps} (remaining={remaining_before:.2f}kg)")
+            
+            # Jika exhausted, langsung ke TPA
             if self._all_tps_exhausted():
-                if vehicle.load > 0:
-                    print(f"[AIModel] All TPS exhausted, {vehicle.id} carrying {vehicle.load:.2f}kg -> TPA")
-                    self._route_to_tpa(vehicle)
-                else:
-                    print(f"[AIModel] All TPS exhausted, {vehicle.id} empty -> garage")
-                    self._route_to_garage(vehicle)
+                print(f"[AIModel] All TPS exhausted, forcing {vehicle.id} to TPA (load: {vehicle.load:.2f}kg)")
+                self._force_to_tpa()
                 return
 
             next_tps = self._find_next_tps(vehicle)
             if next_tps:
                 path = self._safe_path(vehicle.current, next_tps, vehicle.G)
                 if path:
-                    print(f"[AIModel] {vehicle.id} -> TPS {next_tps}")
+                    discovered = self.knowledge.get_discovered_garbage(next_tps)
+                    if discovered is None:
+                        tps_info = self.knowledge.known_tps.get(next_tps, {})
+                        garbage = tps_info.get("sampah_per_hari", 0)
+                        garbage_info = f"~{garbage:.0f}kg (estimated)"
+                    else:
+                        garbage = discovered
+                        garbage_info = f"{garbage:.2f}kg (known)"
+                    
+                    dist = self._path_distance(path, vehicle.G)
+                    print(f"[AIModel] ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                    
                     task = {
                         "type": "collect",
                         "tps_id": next_tps,
@@ -260,30 +339,27 @@ class AIModel:
                     print(f"[AIModel] {vehicle.id} no safe path -> TPA")
                     self._route_to_tpa(vehicle)
             else:
-                if vehicle.load > 0:
-                    self._route_to_tpa(vehicle)
-                else:
-                    self._route_to_garage(vehicle)
-
-
-    
+                print(f"[AIModel] {vehicle.id} no more TPS available -> TPA")
+                self._route_to_tpa(vehicle)
 
     def _all_tps_exhausted(self):
         for tps_id in self.knowledge.TPS_nodes:
             discovered = self.knowledge.get_discovered_garbage(tps_id)
+            
             if discovered is None:
-                return False 
-            if discovered > 100:
                 return False
+            
+            if discovered > 10:
+                return False
+        
         return True
-
 
     def _handle_at_tpa(self, vehicle):
         if vehicle.load > 0:
             unloaded = vehicle.actuator_unload_to_tpa()
             if unloaded > 0:
                 self.total_trips += 1
-                print(f"[AIModel] {vehicle.id} unloaded {unloaded:.2f}kg")
+                print(f"[AIModel] {vehicle.id} unloaded {unloaded:.2f}kg at TPA")
         
         current_hour = self.shared.get_effective_hour()
         if current_hour >= (self.SHIFT_END - self.OVERTIME_BUFFER):
@@ -291,19 +367,39 @@ class AIModel:
             self._route_to_garage(vehicle)
             return
         
+        # Jika exhausted, langsung ke garage
+        if self._all_tps_exhausted():
+            print(f"[AIModel] All TPS exhausted, {vehicle.id} -> garage")
+            self._route_to_garage(vehicle)
+            return
+        
         next_tps = self._find_next_tps(vehicle)
         if next_tps:
             path = self._safe_path(vehicle.current, next_tps, vehicle.G)
             if path:
+                discovered = self.knowledge.get_discovered_garbage(next_tps)
+                if discovered is None:
+                    tps_info = self.knowledge.known_tps.get(next_tps, {})
+                    garbage = tps_info.get("sampah_per_hari", 0)
+                    garbage_info = f"~{garbage:.0f}kg (estimated)"
+                else:
+                    garbage = discovered
+                    garbage_info = f"{garbage:.2f}kg (known)"
+                
+                dist = self._path_distance(path, vehicle.G)
+                print(f"[AIModel] ✓ ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                
                 task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"}
                 self._assign_task(vehicle, task)
                 vehicle.set_path(path)
                 vehicle.state = "to_tps"
             else:
+                print(f"[AIModel] {vehicle.id} no safe path -> garage")
                 self._route_to_garage(vehicle)
         else:
+            print(f"[AIModel] {vehicle.id} no more TPS -> garage")
             self._route_to_garage(vehicle)
-    
+
     # ================== FIND NEXT TPS ==================
     def _find_next_tps(self, vehicle):
         if self._all_tps_exhausted():
@@ -316,6 +412,19 @@ class AIModel:
         candidates = []
 
         for tps_id in self.knowledge.TPS_nodes:
+            discovered = self.knowledge.get_discovered_garbage(tps_id)
+            if discovered is None:
+                tps_info = self.knowledge.known_tps.get(tps_id, {})
+                garbage = tps_info.get("sampah_per_hari", 0)
+            else:
+                garbage = discovered
+            
+            # Skip TPS kosong
+            if garbage <= 10:
+                if discovered is not None:
+                    print(f"[AIModel] 🚫 Skipping TPS {tps_id} - known empty ({garbage:.2f}kg)")
+                continue
+            
             assigned_vehicles = self.tps_assignments[tps_id]
             
             key = (vehicle.current, tps_id, current_hour)
@@ -353,23 +462,13 @@ class AIModel:
                     if (my_distance < assigned_dist * self.STEAL_DISTANCE_RATIO and 
                         distance_advantage >= self.STEAL_MIN_ADVANTAGE):
                         
-                        print(f"[AIModel] {vehicle.id} will STEAL TPS {tps_id} from {assigned_vid}")
+                        print(f"[AIModel] 🔄 {vehicle.id} will STEAL TPS {tps_id} from {assigned_vid}")
                         print(f"         my_dist={my_distance:.0f}m vs their_dist={assigned_dist:.0f}m (advantage={distance_advantage:.0f}m)")
                         can_take = True
                         self._cancel_assignment(assigned_vehicle, tps_id)
                         break
             
             if not can_take:
-                continue
-            
-            discovered = self.knowledge.get_discovered_garbage(tps_id)
-            if discovered is None:
-                tps_info = self.knowledge.known_tps.get(tps_id, {})
-                garbage = tps_info.get("sampah_per_hari", 0)
-            else:
-                garbage = discovered
-            
-            if garbage <= 10:
                 continue
             
             distance_score = 10000.0 / (my_distance + 100)
@@ -396,76 +495,34 @@ class AIModel:
             candidates.sort(key=lambda x: x['score'], reverse=True)
             print(f"\n[AIModel] {vehicle.id} TPS candidates (top 3):")
             for i, c in enumerate(candidates[:3]):
-                print(f"  {i+1}. TPS {c['tps_id']}: dist={c['distance']:.0f}m, garbage={c['garbage']:.0f}kg, score={c['score']:.3f}")
+                discovered = self.knowledge.get_discovered_garbage(c['tps_id'])
+                status = "known" if discovered is not None else "estimated"
+                print(f"  {i+1}. TPS {c['tps_id']}: dist={c['distance']:.0f}m, garbage={c['garbage']:.0f}kg ({status}), score={c['score']:.3f}")
 
         return best_tps
 
-
-
-    # ================== PREVENTIVE REROUTE ==================
-    def _preventive_reroute(self, vehicle):
-        # if not vehicle.path or len(vehicle.path) < 2:
-            return
-
-        # next_node = vehicle.path[1]
-        # edge_id = self._edge_id(vehicle.current, next_node)
-
-        # slowdown = self.knowledge.get_slowdown(
-        #     edge_id, hour=self.shared.get_effective_hour()
-        # )
-
-        # if slowdown is not None and slowdown <= 0:
-        #     new_path = self._safe_path(vehicle.current, vehicle.path[-1], vehicle.G)
-
-        #     if new_path and new_path != vehicle.path:
-        #         vehicle.set_path(new_path)
-        #         self.reschedule_count += 1
-        #         print(f"[AIModel] Preventively rerouted {vehicle.id} (blocked edge {edge_id})")
-
-
     # ================== SAFE PATH ==================
     def _safe_path(self, start, end, G):
-        # current_hour = self.shared.get_effective_hour()
-
-        # def weight(u, v, d):
-        #     edge_id = self._edge_id(u, v)
-        #     length = d.get("length", 1)
-
-        #     slowdown = self.knowledge.get_slowdown(edge_id, hour=current_hour)
-
-        #     if slowdown is not None and slowdown <= 0:
-        #         return float("inf")
-
-        #     if slowdown is not None and slowdown < VEHICLE_SPEED:
-        #         return length * (VEHICLE_SPEED / slowdown)
-
-        #     return length
-
         try:
             return nx.shortest_path(G, start, end, weight="length")
         except Exception:
             return None
 
-
     def _cancel_assignment(self, vehicle, tps_id):
         """Batalkan assignment TPS dari kendaraan tertentu"""
-        # Hapus dari tps_assignments
         if tps_id in self.tps_assignments:
             if vehicle.id in self.tps_assignments[tps_id]:
                 self.tps_assignments[tps_id].remove(vehicle.id)
-            # Hapus juga reserved
             reserved_id = vehicle.id + "_reserved"
             if reserved_id in self.tps_assignments[tps_id]:
                 self.tps_assignments[tps_id].remove(reserved_id)
         
-        # Hapus dari assigned_tasks jika TPS-nya cocok
         if vehicle.id in self.assigned_tasks:
             task = self.assigned_tasks[vehicle.id]
             if task.get("tps_id") == tps_id:
                 del self.assigned_tasks[vehicle.id]
         
-        print(f"[AIModel] Cancelled TPS {tps_id} assignment from {vehicle.id}")
-
+        print(f"[AIModel] ✗ CANCELLED TPS {tps_id} assignment from {vehicle.id}")
 
     # ================== REASSIGN ==================
     def _reassign(self, vehicle):
@@ -478,6 +535,18 @@ class AIModel:
         if next_tps:
             path = self._safe_path(vehicle.current, next_tps, vehicle.G)
             if path:
+                discovered = self.knowledge.get_discovered_garbage(next_tps)
+                if discovered is None:
+                    tps_info = self.knowledge.known_tps.get(next_tps, {})
+                    garbage = tps_info.get("sampah_per_hari", 0)
+                    garbage_info = f"~{garbage:.0f}kg (estimated)"
+                else:
+                    garbage = discovered
+                    garbage_info = f"{garbage:.2f}kg (known)"
+                
+                dist = self._path_distance(path, vehicle.G)
+                print(f"[AIModel] ✓ REASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                
                 task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"}
                 self._assign_task(vehicle, task)
                 vehicle.set_path(path)
@@ -495,7 +564,7 @@ class AIModel:
                 continue
             
             if vehicle.load > 0 and vehicle.state not in ["to_tpa", "at_tpa"]:
-                self._route_to_tpa(vehicle)
+                self._force_to_tpa()
                 continue
             
             if vehicle.state == "at_tpa":
@@ -525,6 +594,11 @@ class AIModel:
         vehicle.state = "to_tpa"
         return True
     
+    def _force_to_tpa(self):
+        for vehicle in self.shared.vehicles:
+            self._route_to_tpa(vehicle)
+        print("[AIModel] Forcing all vehicle to TPA")
+
     def _route_to_garage(self, vehicle):
         if vehicle.current == vehicle.garage_node:
             vehicle.state = "idle"
@@ -562,7 +636,6 @@ class AIModel:
             return 0
         return sum(G[path[i]][path[i+1]][0]['length'] for i in range(len(path)-1))
 
-
     def _vehicle_distance_to_tps(self, vehicle, tps_id):
         key = ("veh", vehicle.id, tps_id)
         if key in self._distance_cache:
@@ -577,42 +650,11 @@ class AIModel:
         self._distance_cache[key] = dist
         return dist
 
-
-    def _is_tps_locked_by_other_vehicle(self, vehicle, tps_id, vehicles):
-        my_dist = self._vehicle_distance_to_tps(vehicle, tps_id)
-
-        if my_dist == float("inf"):
-            return True
-
-        for other in vehicles:
-            if other.id == vehicle.id:
-                continue
-
-            if other.load >= VEHICLE_CAP:
-                continue
-
-            if getattr(other, "state", "") not in ["idle", "to_tps", "at_tps"]:
-                continue
-
-            other_dist = self._vehicle_distance_to_tps(other, tps_id)
-
-            if other_dist == float("inf"):
-                continue
-
-            if my_dist - other_dist >= self.DISTANCE_DOMINANCE_ABS:
-                return True
-
-            if other_dist <= my_dist * self.DISTANCE_DOMINANCE_RATIO:
-                return True
-
-        return False
-
-
     # ================== STATISTICS ==================
     def get_statistics(self):
         total_garbage = sum(
             data["tpa_data"]["total_sampah"]
-            for n, data in self.node_type.items()
+            for n, data in self.shared.node_type.items()
             if data["tpa"]
         )
 
@@ -632,7 +674,6 @@ class AIModel:
         self.tps_assignments.clear()
         self._distance_cache.clear()
         print(f"[AIModel] Daily reset - Day {self.shared.sim_day}")
-
 
     def _edge_id(self, u, v):
         return f"{min(u,v)}-{max(u,v)}"
