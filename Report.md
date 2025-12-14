@@ -54,22 +54,33 @@ NOTE: Dikarenakan terdapat 73 TPS, kami menghomogenkan seluruh data dengan menga
 ## 1. Matheuristic Rollout
 Metode rollout dengan teknik matheuristic yang bertujuan untuk meningkatkan kualitas keputusan dalam masalah sequential decision-making di lingkungan yang stochastic. Rollout ini bekerja dengan memanfaatkan base policy atau keputusan cepat dan sederhana sebagai kebijakan awal, lalu melakukan evaluasi ke depan (look-ahead) untuk memilih tindakan yang lebih baik daripada keputusan dasar sebelumnya. Setiap aksi yang dihitung nilai minimum berdasarkan objective function yang ada kemudian aksi dengan nilai minimum tersebut akan di eksekusi langsung.
 
-Peningkatan keputusan terjadi karena Rollout tidak hanya berusaha melihat kondisi saat ini, tetapi juga memprediksi dampak tindakan pada beberapa langkah ke depan terutama pada kondisi yang berubah-ubah mulai dari kemacetan jalan dan fluktuasi volume sampah yang tidak selalu diketahui
+Peningkatan keputusan terjadi karena Rollout tidak hanya berusaha melihat kondisi saat ini, tetapi juga memprediksi dampak tindakan pada beberapa langkah ke depan terutama pada kondisi yang berubah-ubah dari fluktuasi volume sampah yang tidak selalu diketahui
 
-Kemudian di tahap eksekusi rute, sistem menggunakan ```shortest path``` dari ```OSMnx``` untuk menentukan jalur perjalanan truk pada jaringan jalan yang dapat diberikan pengecualian. Namun, aspek ini tidak menjadi fokus utama penelitian karena pathfinding hanya berfungsi sebagai komponen teknis pendukung. Fokus utama simulasi adalah pada multi-target, multi-instance decision-making, yaitu bagaimana agen truk mengambil keputusan rute dan prioritas TPS secara adaptif melalui mekanisme Rollout, serta mengecualikan jalan yang diketahui macet karena ada truk lain yang stuck atau terjebak macet disitu.
+Kemudian di tahap eksekusi rute, sistem menggunakan ```shortest path``` dari ```OSMnx``` untuk menentukan jalur perjalanan truk pada jaringan jalan yang dapat diberikan pengecualian. Namun, aspek ini tidak menjadi fokus utama penelitian karena pathfinding hanya berfungsi sebagai komponen teknis pendukung. Fokus utama simulasi adalah pada multi-target, multi-instance decision-making, yaitu bagaimana agen truk mengambil keputusan rute dan prioritas TPS secara adaptif melalui mekanisme Rollout dan tidak melakukan tabrakan tugas kecuali dibutuhkan.
 
 <br> 
 
 ## 2. Objective Function
+Untuk setiap TPS \( t \), skor dihitung sebagai:
 
-Komponen fungsi objektif mencakup:
+\[
+\text{Skor}(t)
+=
+W_d \cdot \frac{1}{d(t) + 100}
++
+W_g \cdot \frac{g(t)}{1000}
+\]
 
-* minimisasi waktu tempuh
-* minimisasi total perjalanan
-* reduksi tingkat penumpukan TPS
-* optimasi energi atau biaya operasional
+- \( d(t) \): jarak kendaraan ke TPS  
+- \( g(t) \): jumlah sampah di TPS  
+- \( W_d \): bobot jarak (`DISTANCE_WEIGHT`)  
+- \( W_g \): bobot sampah (`GARBAGE_WEIGHT`)
 
-Sertakan formulasi matematika dalam bentuk persamaan.
+- TPS dengan skor terbesar akan dipilih  
+- TPS dengan sampah ≤ 10 kg tidak dipertimbangkan  
+- TPS yang terlalu jauh atau tidak memiliki jalur aman diabaikan
+
+Hal ini bertujuan untuk memaksimalkan jumlah pengambilan sampah dengan jarak tempuh sekecil mungkin
 
 <br> 
 
@@ -207,23 +218,25 @@ node_id: {
 ```python
 # ================== WINDOW ==================
 APP_NAME = "Simulasi Truk Sampah Balikpapan"
-WIDTH = 800
+WIDTH = 1000
 HEIGHT = 600
 CAM_SPEED = 10
 MAX_FPS = 60
 
 # ================== TEST SETUP ==================
-GRAPH_FILE = "./data/simpl_balikpapan_drive.graphml"
+GRAPH_FILE = "./data/simpl_balikpapan_timur_drive.graphml"
 
 
 # ================== VEHICLE ==================
-VEHICLE_SPEED = 48 
-VEHICLE_CAP = 20000
+VEHICLE_SPEED = 600
+VEHICLE_CAP = 30000
 
 
 # ================== SHIFT SETTINGS (00:00 WITH INTEGER 0) ==================
-SHIFT_START = 6
-SHIFT_END = 22
+SIM_START = 1
+SHIFT_START = 1
+SHIFT_END = 13
+TIME_OFFSET = 17
 
 # ================== SPRITES ==================
 NODE_COL = (255,120,120) # Node kuning
