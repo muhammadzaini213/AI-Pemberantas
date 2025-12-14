@@ -3,7 +3,7 @@ from collections import defaultdict
 from ..environment import SHIFT_START, SHIFT_END, VEHICLE_CAP
 
 class AIModel:
-    def __init__(self, knowledge_model, shared):
+    def __init__(self, knowledge_model, shared, lookahead=3):
         self.knowledge = knowledge_model
         self.shared = shared
         
@@ -32,7 +32,9 @@ class AIModel:
         self.STEAL_DISTANCE_RATIO = 0.2
         self.STEAL_MIN_ADVANTAGE = 5000
 
-        print("[AIModel] Initialized")
+        self.lookahead = lookahead
+
+        print("[AIModel] Initialized (Matheuristic Rollout Enabled)")
 
     # ================== MAIN LOOP ==================
     def update(self, dt, vehicles):
@@ -75,7 +77,7 @@ class AIModel:
         
         count = 0
         for vehicle in idle_vehicles:
-            next_tps = self._find_nearest_unassigned_tps_for_dispatch(vehicle)
+            next_tps = self._find_next_tps(vehicle)
             
             if not next_tps:
                 print(f"[AIModel] No suitable TPS for {vehicle.id}")
@@ -109,21 +111,47 @@ class AIModel:
             vehicle.state = "to_tps"
             count += 1
             
-            print(f"[AIModel] ✓ ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={my_distance:.0f}m, garbage={garbage_info})")
+            print(f"[AIModel] ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={my_distance:.0f}m, garbage={garbage_info})")
         
         print(f"[AIModel] Dispatched: {count}/{len(idle_vehicles)}")
 
-    def _find_nearest_unassigned_tps_for_dispatch(self, vehicle):
-        best_tps = None
-        best_score = -float('inf')
+    # ================== FIND NEXT TPS (Matheuristic Rollout) ==================
+    def _find_next_tps(self, vehicle):
+        if self._all_tps_exhausted():
+            return None
+
+        candidates = self._get_tps_candidates(vehicle)
+        if not candidates:
+            return None
+
+        best_sequence = None
+        best_reward = -float('inf')
+
+        for tps_id in candidates:
+            reward, sequence = self._simulate_sequence(vehicle.current, tps_id, self.lookahead)
+            if reward > best_reward:
+                best_reward = reward
+                best_sequence = sequence
+
+        if best_sequence:
+            return best_sequence[0]
+        return None
+
+    def _get_tps_candidates(self, vehicle):
         current_hour = self.shared.get_effective_hour()
-        
         candidates = []
 
         for tps_id in self.knowledge.TPS_nodes:
-            if len(self.tps_assignments[tps_id]) > 0:
+            discovered = self.knowledge.get_discovered_garbage(tps_id)
+            if discovered is None:
+                tps_info = self.knowledge.known_tps.get(tps_id, {})
+                garbage = tps_info.get("sampah_per_hari", 0)
+            else:
+                garbage = discovered
+
+            if garbage <= 10:
                 continue
-            
+
             key = (vehicle.current, tps_id, current_hour)
             if key in self._distance_cache:
                 my_distance = self._distance_cache[key]
@@ -134,44 +162,76 @@ class AIModel:
                 else:
                     my_distance = self._path_distance(path, vehicle.G)
                 self._distance_cache[key] = my_distance
-            
+
             if my_distance == float('inf') or my_distance == 0:
                 continue
-            
-            tps_info = self.knowledge.known_tps.get(tps_id, {})
-            base_garbage = tps_info.get("sampah_per_hari", 0)
-            discovered = self.knowledge.get_discovered_garbage(tps_id)
-            garbage = discovered if discovered is not None else base_garbage
-            
-            if garbage <= 100:
-                continue
-            
-            distance_score = 10000.0 / (my_distance + 100)
-            garbage_score = garbage / 1000.0
-            
-            score = (
-                self.DISTANCE_WEIGHT * 2.0 * distance_score + 
-                self.GARBAGE_WEIGHT * garbage_score
-            )
-            
-            candidates.append({
-                'tps_id': tps_id,
-                'distance': my_distance,
-                'garbage': garbage,
-                'score': score
-            })
-            
-            if score > best_score:
-                best_score = score
-                best_tps = tps_id
-        
-        if candidates:
-            candidates.sort(key=lambda x: x['score'], reverse=True)
-            print(f"\n[AIModel] {vehicle.id} dispatch candidates (top 3):")
-            for i, c in enumerate(candidates[:3]):
-                print(f"  {i+1}. TPS {c['tps_id']}: dist={c['distance']:.0f}m, garbage={c['garbage']:.0f}kg, score={c['score']:.3f}")
 
-        return best_tps
+            candidates.append(tps_id)
+        return candidates
+
+    def _simulate_sequence(self, start_node, first_tps, steps):
+        sequence = [first_tps]
+        total_reward = 0
+        current_node = start_node
+        remaining_steps = steps
+
+        visited = set()
+        visited.add(first_tps)
+
+        reward = self._tps_score(current_node, first_tps)
+        total_reward += reward
+        current_node = first_tps
+        remaining_steps -= 1
+
+        while remaining_steps > 0:
+            candidates = []
+            for tps_id in self.knowledge.TPS_nodes:
+                if tps_id in visited:
+                    continue
+                discovered = self.knowledge.get_discovered_garbage(tps_id)
+                if discovered is None:
+                    tps_info = self.knowledge.known_tps.get(tps_id, {})
+                    garbage = tps_info.get("sampah_per_hari", 0)
+                else:
+                    garbage = discovered
+                if garbage <= 10:
+                    continue
+                candidates.append(tps_id)
+
+            if not candidates:
+                break
+
+            best_tps = max(candidates, key=lambda t: self._tps_score(current_node, t))
+            total_reward += self._tps_score(current_node, best_tps)
+            sequence.append(best_tps)
+            visited.add(best_tps)
+            current_node = best_tps
+            remaining_steps -= 1
+
+        return total_reward, sequence
+
+    def _tps_score(self, from_node, tps_id):
+        key = (from_node, tps_id, self.shared.get_effective_hour())
+        if key in self._distance_cache:
+            my_distance = self._distance_cache[key]
+        else:
+            path = self._safe_path(from_node, tps_id, self.shared.G)
+            if path is None:
+                return -float('inf')
+            my_distance = self._path_distance(path, self.shared.G)
+            self._distance_cache[key] = my_distance
+
+        tps_info = self.knowledge.known_tps.get(tps_id, {})
+        discovered = self.knowledge.get_discovered_garbage(tps_id)
+        garbage = discovered if discovered is not None else tps_info.get("sampah_per_hari", 0)
+        if garbage <= 10:
+            return -float('inf')
+
+        distance_score = 10000.0 / (my_distance + 100)
+        garbage_score = garbage / 1000.0
+        score = self.DISTANCE_WEIGHT * distance_score + self.GARBAGE_WEIGHT * garbage_score
+        return score
+
 
     # ================== GATHERING ==================
     def phase_gathering(self, vehicles):
@@ -234,7 +294,7 @@ class AIModel:
                             garbage_info = f"{garbage:.2f}kg (known)"
                         
                         dist = self._path_distance(path, vehicle.G)
-                        print(f"[AIModel] ✓ REDIRECTED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                        print(f"[AIModel] REDIRECTED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
                         
                         new_task = {
                             "type": "collect",
@@ -372,7 +432,7 @@ class AIModel:
                     garbage_info = f"{garbage:.2f}kg (known)"
                 
                 dist = self._path_distance(path, vehicle.G)
-                print(f"[AIModel] ✓ ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                print(f"[AIModel] ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
                 
                 task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"}
                 self._assign_task(vehicle, task)
@@ -528,7 +588,7 @@ class AIModel:
                     garbage_info = f"{garbage:.2f}kg (known)"
                 
                 dist = self._path_distance(path, vehicle.G)
-                print(f"[AIModel] ✓ REASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                print(f"[AIModel] REASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
                 
                 task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"}
                 self._assign_task(vehicle, task)
