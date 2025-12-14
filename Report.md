@@ -212,7 +212,7 @@ node_id: {
     }
 ```
 
-##### d) Environment
+##### c) Environment
 ```python
 # ================== WINDOW ==================
 APP_NAME = "Simulasi Truk Sampah Balikpapan"
