@@ -26,6 +26,8 @@ class PerformanceMeasure:
             "total_generated": 0
         })
 
+        self.daily_performance = []
+
         
 
     def update_from_snapshot(self, ai_model, vehicles, tps_nodes, shared):
@@ -47,7 +49,6 @@ class PerformanceMeasure:
 
             self.tps_metrics[tps_id]["remaining_garbage"] = remaining_garbage
             self.tps_metrics[tps_id]["total_generated"] = total_generated
-
 
     def calculate_kpis(self):
         total_generated = sum(m["total_generated"] for m in self.tps_metrics.values())
@@ -186,7 +187,7 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
                     "total_dist": v.total_dist,
                     "state": v.state,
                     "load": v.load,
-                    "nodes_traversed": v.nodes_traversed.copy()
+                    "nodes_traversed": v.nodes_traversed.copy()  # salin path
                 }
 
                 v.daily_dist = 0
