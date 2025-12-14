@@ -11,7 +11,7 @@ def controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running, dt):
             break
         
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if shared.paused:  # Only handle clicks when paused
+            if shared.paused:
                 viewer.handle_mouse_click(event.pos, GRAPH, vehicles)
         
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
@@ -20,7 +20,6 @@ def controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running, dt):
             viewer.offset_y = viewer.HEIGHT/2 - ((viewer.max_y+viewer.min_y)/2 - viewer.min_y)*viewer.scale
         
     
-    # ===== CAMERA CONTROLS (continuous key press) =====
     cam_speed = CAM_SPEED * 100 * 0.7
     fast_cam_speed = CAM_SPEED * 300 * 0.7
     keys = pygame.key.get_pressed()

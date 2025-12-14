@@ -5,7 +5,6 @@ from ..utils.nodes import initNodes, generate_daily_garbage, generate_car_in_gar
 from ..classes.knowledge import KnowledgeModel
 from ..classes.ai_model import AIModel
 from ..environment import SHIFT_START, SHIFT_END
-from ..utils.preprocessing import preprocess_graph
 
 class PerformanceMeasure:
     def __init__(self, num_vehicles, shift_duration):
@@ -104,7 +103,6 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
 
     # ================== INIT ==================
     TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
-    GRAPH = preprocess_graph(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes)
 
     vehicles = []
     generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA_nodes)

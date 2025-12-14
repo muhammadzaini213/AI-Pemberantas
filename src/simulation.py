@@ -6,7 +6,6 @@ from .utils.controls import controls
 from .utils.nodes import initNodes, generate_daily_garbage, generate_car_in_garage
 from .classes.knowledge import KnowledgeModel
 from .classes.ai_model import AIModel
-from .utils.preprocessing import preprocess_graph
 import time
 
 def run_simulation(GRAPH, shared, isSingleRender):
@@ -84,7 +83,7 @@ def run_simulation_editor(GRAPH, shared):
 
         dt, last_time = getDt(time, last_time)
         
-        controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running, dt)
+        controls(viewer, shared, GRAPH, range_x, range_y, vehicles, running, dt, True)
 
 
         if not shared.paused:
@@ -131,7 +130,6 @@ def run_simulation_single_render(GRAPH, shared):
     last_time = time.time()
 
     TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
-    # GRAPH = preprocess_graph(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes)
 
     SCALE_DIV = 1000.0
     pos = {n: (data['x'] / SCALE_DIV, data['y'] / SCALE_DIV)
