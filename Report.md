@@ -2,7 +2,7 @@
 
 ---
 
-<img width="1600" height="1005" alt="image" src="https://github.com/user-attachments/assets/0c2b3193-f3db-42ff-bab2-ceab704daffb" />
+<img width="561" height="594" alt="image" src="https://github.com/user-attachments/assets/10cf8615-dd3a-4a1e-b4dc-1877612061b0" />
 
 
 ## Kelompok 10
@@ -28,8 +28,8 @@ Nanti abstract belakangan
 # B. Data Used
 ## 1. Total TPS, sebaran, dan jumlah sampah per hari
 Data diambil dari KAJIAN POOL KENDARAAN PENGANGKUTAN SAMPAH DI KOTA BALIKPAPAN TAHUN 2022
-<img width="407" height="875" alt="image" src="https://github.com/user-attachments/assets/97fa218e-26c6-4d06-a2e5-dc350d684d47" />
-<img width="890" height="686" alt="image" src="https://github.com/user-attachments/assets/26705395-f821-454d-80bf-c1e1bfbd3592" />
+<img width="356" height="339" alt="image" src="https://github.com/user-attachments/assets/c7a2211f-970c-46d1-80cf-3a46c234951c" />
+<img width="757" height="922" alt="image" src="https://github.com/user-attachments/assets/5cac2fc1-c741-4c3c-a53c-f5077c973d3c" />
 
 NOTE: Dikarenakan terdapat 417 TPS, kami menghomogenkan seluruh data dengan mengambil rata-rata dari seluruh TPS dan memberikannya interval ±30% randomisasi agar dapat lebih fokus ke proses pengembangan AI.
 
@@ -110,35 +110,7 @@ Artinya model sudah mengetahui semua rute serta lokasi TPS, TPA, dan Garasi seca
 
 <br> 
 
-#### b) Delay & Kemacetan Tidak Diketahui Sebelum Dialami
-
-Model waktu tempuh:
-
-```
-T_e = T_e_base × S_e
-```
-
-**Makna variabel:**
-
-| Variabel   | Penjelasan                                         |
-| ---------- | -------------------------------------------------- |
-| `T_e`      | Waktu tempuh aktual pada edge `e`                  |
-| `T_e_base` | Waktu tempuh tanpa hambatan (baseline)             |
-| `S_e`      | Faktor slowdown (kemacetan, hambatan, delay)       |
-| `f_e(t)`   | Distribusi probabilitas untuk slowdown di edge `e` |
-
-Sifat pengetahuan:
-
-```
-S_e = unknown        jika truk belum melewati edge e
-S_e = observed value jika truk telah melewati edge e
-```
-
-Artinya model hanya mengetahui kondisi kemacetan setelah truk mengalaminya.
-
-<br> 
-
-#### c) Volume Sampah TPS Tidak Diketahui Sebelum Truk Tiba
+#### b) Volume Sampah TPS Tidak Diketahui Sebelum Truk Tiba
 
 Model volume sampah:
 
