@@ -387,6 +387,8 @@ def _handle_at_tps(self, vehicle):
         vehicle.state = "to_tps"
 ```
 
+<br>
+
 Untuk mencegah truk idle mengambil tugas yang sangat jauh, maka diterapkan mekanisme ```STEAL```, atau AI akan mengarahkan truk terdekat yang tersedia untuk "Mencuri" target dari truk yang jauh tersebut selama jaraknya masih masuk akal.
 ```python
 if (my_distance < assigned_dist * self.STEAL_DISTANCE_RATIO and 
@@ -396,6 +398,8 @@ if (my_distance < assigned_dist * self.STEAL_DISTANCE_RATIO and
     can_take = True
 ```
 
+<br>
+
 Untuk masalah routing disederhanakan menggunakan ```nx.shortest_path```
 ```python
 def _safe_path(self, start, end, G):
@@ -404,6 +408,8 @@ def _safe_path(self, start, end, G):
     except Exception:
         return None
 ```
+
+<br>
 
 ###### 5) Ending Phase
 Kendaraan yang sudah menyelesaikan shift akan diarahkan kembali ke garasi selama mereka tidak membawa sampah lagi, jika tidak, mereka harus membuang sampah tersebut ke TPA sebelum kembali.
