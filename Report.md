@@ -2,7 +2,7 @@
 
 ---
 
-<img width="561" height="594" alt="image" src="https://github.com/user-attachments/assets/10cf8615-dd3a-4a1e-b4dc-1877612061b0" />
+<img width="1565" height="1013" alt="image" src="https://github.com/user-attachments/assets/65c38663-bd58-43cf-a700-5cd2230cbd2e" />
 
 
 ## Kelompok 10
@@ -294,7 +294,127 @@ root/
 
 <br>
 
-##### b). Implementation Flow
+##### b). AIModel Implementation Flow
+
+###### 1) Main Loop
+Bagian ini akan dipanggil tiap frame atau iterasi dari simulasi yang akan mengambil keputusan tiap decision interval, ini juga menyebabkan hasil simulasi tidak efektif di kecepatan tinggi karena perongram tidak sempat "berpikir" untuk rencana selanjutnya
+```python
+def update(self, dt, vehicles):
+    if self.shared.paused:
+        return
+    
+    self.last_decision_time += dt
+    
+    if self.last_decision_time >= self.decision_interval:
+        self.last_decision_time = 0
+        self.make_decisions(vehicles)
+```
+
+<br>
+
+###### 2) Decision Making
+Fase AI akan dikontrol berdasarkan jam simulasi dan dipisah dalam 3 tahap, yaitu ```DISPATCH```, ```GATHERING```, dan ```ENDING```
+```python
+def make_decisions(self, vehicles):
+    current_hour = self.shared.sim_hour
+    
+    if current_hour >= self.SHIFT_START and not self.dispatch_done:
+        self.phase_dispatch(vehicles)
+        self.current_phase = "GATHERING"
+        self.dispatch_done = True
+        return
+    
+    if current_hour >= (self.SHIFT_END - self.OVERTIME_BUFFER):
+        if self.current_phase != "ENDING":
+            self.phase_ending(vehicles)
+            self.current_phase = "ENDING"
+        return
+    
+    if self.current_phase == "GATHERING":
+        self.phase_gathering(vehicles)
+```
+
+<br>
+
+###### 3) Dispatch Phase
+Pada fase ini AI akan dikeluarkan dari Garasi saat ```SHIFT_START``, disini juga digunakan fungsi ```_find_nearest_unassigned_tps_for_dispatch``` untuk melakukan scoring.
+```python
+def phase_dispatch(self, vehicles):
+    idle_vehicles = [v for v in vehicles if getattr(v, "state", "").lower() == "idle"]
+    
+    for vehicle in idle_vehicles:
+        next_tps = self._find_nearest_unassigned_tps_for_dispatch(vehicle)
+        path = self._safe_path(vehicle.current, next_tps, vehicle.G)
+        
+        task = {
+            "type": "collect",
+            "tps_id": next_tps,
+            "assigned_at": f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"
+        }
+        
+        self._assign_task(vehicle, task)
+        vehicle.set_path(path)
+        vehicle.state = "to_tps"
+```
+
+Scoring dilakukan berdasarkan jarak dan jumlah sampah (jika sudah diketahui)
+```python
+distance_score = 10000.0 / (my_distance + 100)
+garbage_score = garbage / 1000.0
+
+score = (
+    self.DISTANCE_WEIGHT * distance_score +
+    self.GARBAGE_WEIGHT * garbage_score
+)
+```
+
+<br>
+
+###### 4) Gathering Phase
+Pada tahap ini, kendaraan akan mengambil sampah di TPS sembari melihat kapasitas truk yang tersisa, jika truk sudah benar benar penuh, maka kendaraan akan dipaksa pergi ke TPA untuk unload muatan
+```python
+def _handle_at_tps(self, vehicle):
+    if vehicle.actuator_is_full():
+        self._route_to_tpa(vehicle)
+        return
+    
+    loaded = vehicle.actuator_load_from_tps()
+    if vehicle.actuator_is_full():
+        self._route_to_tpa(vehicle)
+    else:
+        next_tps = self._find_next_tps(vehicle)
+        vehicle.set_path(self._safe_path(vehicle.current, next_tps, vehicle.G))
+        vehicle.state = "to_tps"
+```
+
+Untuk mencegah truk idle mengambil tugas yang sangat jauh, maka diterapkan mekanisme ```STEAL```, atau AI akan mengarahkan truk terdekat yang tersedia untuk "Mencuri" target dari truk yang jauh tersebut selama jaraknya masih masuk akal.
+```python
+if (my_distance < assigned_dist * self.STEAL_DISTANCE_RATIO and 
+    distance_advantage >= self.STEAL_MIN_ADVANTAGE):
+    
+    self._cancel_assignment(assigned_vehicle, tps_id)
+    can_take = True
+```
+
+Untuk masalah routing disederhanakan menggunakan ```nx.shortest_path```
+```python
+def _safe_path(self, start, end, G):
+    try:
+        return nx.shortest_path(G, start, end, weight="length")
+    except Exception:
+        return None
+```
+
+###### 5) Ending Phase
+Kendaraan yang sudah menyelesaikan shift akan diarahkan kembali ke garasi selama mereka tidak membawa sampah lagi, jika tidak, mereka harus membuang sampah tersebut ke TPA sebelum kembali.
+```python
+def phase_ending(self, vehicles):
+    for vehicle in vehicles:
+        if vehicle.load > 0:
+            self._force_to_tpa()
+        else:
+            self._route_to_garage(vehicle)
+```
 
 ---
 
