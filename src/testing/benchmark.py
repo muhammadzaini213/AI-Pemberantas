@@ -40,9 +40,14 @@ class PerformanceMeasure:
             self.total_distance += v.total_dist
 
         for tps_id in tps_nodes:
-            tps = shared.node_type[tps_id]["tps_data"]
-            self.tps_metrics[tps_id]["remaining_garbage"] = tps["sampah_kg"]
-            self.tps_metrics[tps_id]["total_generated"] = tps["sampah_per_hari"]
+            node = shared.node_type.get(tps_id, {})
+            tps_data = node.get("tps_data", {})
+            remaining_garbage = tps_data.get("sampah_kg", 0)
+            total_generated = tps_data.get("sampah_per_hari", 0)
+
+            self.tps_metrics[tps_id]["remaining_garbage"] = remaining_garbage
+            self.tps_metrics[tps_id]["total_generated"] = total_generated
+
 
     def calculate_kpis(self):
         total_generated = sum(m["total_generated"] for m in self.tps_metrics.values())
@@ -181,7 +186,7 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
                     "total_dist": v.total_dist,
                     "state": v.state,
                     "load": v.load,
-                    "nodes_traversed": v.path_traversed.copy()  # salin path
+                    "nodes_traversed": v.nodes_traversed.copy()
                 }
 
                 v.daily_dist = 0
