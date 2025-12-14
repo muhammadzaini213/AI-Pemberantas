@@ -226,7 +226,7 @@ GRAPH_FILE = "./data/simpl_balikpapan_timur_drive.graphml"
 
 
 # ================== VEHICLE ==================
-VEHICLE_SPEED = 600
+VEHICLE_SPEED = 60
 VEHICLE_CAP = 30000
 
 
@@ -250,13 +250,13 @@ GARAGE_COL = (139, 69, 19) # Garasi coklat
 
 ### 3. Rollout Algorithm Integration
 #### a) Dispatch
-Pada awal jam kerja, truk yang tersedia akan dikeluarkan dari garasi dan pergi menuju TPS yang tersedia, pada proses ini dilakukan base policy untuk menentukan rute tercepat secara deterministik, kemudian dilakukan proses look ahead berdasarkan pengalaman dari truk sebelumnya (kemacetan, jumlah sampah terakhir).
+Pada awal jam kerja, truk yang tersedia akan dikeluarkan dari garasi dan pergi menuju TPS yang tersedia, pada proses ini dilakukan base policy untuk menentukan rute tercepat secara deterministik, kemudian dilakukan proses look ahead berdasarkan pengalaman dari truk sebelumnya (jumlah sampah terakhir).
 
 #### b) Gathering
 Setelah truk mencapai TPS, sampah akan diambil berdasarkan kapasitas maksimal truk, kemudian diantarkan ke TPA, proses ini akan dilakukan selama jam kerja dan akan diakhiri jika jam kerja selesai ataupun semua sampah harian di TPS telah dikosongkan.
 
 #### c) Reschedule/Rerouting
-Jika truk mendapat pengetahuan baru seperti jalan macet serta jumlah sampah di TPS, modal akan melakukan reschedule ulang untuk memastikan apakah rute sekarang masih efektif atau tidak dan menyesuaikan dengan meminimalkan perubahan rute pada truk lain yang tidak relevan dengan kondisi yang terjadi.
+Jika truk mendapat pengetahuan tentang jumlah sampah di TPS, modal akan melakukan reschedule ulang maupun stealing untuk memastikan apakah rute sekarang masih efektif atau tidak dan menyesuaikan dengan meminimalkan perubahan rute pada truk lain yang tidak relevan dengan kondisi yang terjadi.
 
 #### d) Ending
 Jika sampah sudah habis atau jam kerja sudah selesai, semua truk akan kembali dan model akan melakukan evaluasi untuk menentukan mekanisme saat dispatch di jam kerja selanjutnya agar lebih efektif.
@@ -275,6 +275,8 @@ root/
         ├── ai_model.py           # AIModel dimana semua keputusan diambil
         ├── knowledge.py          # KnowledgeModel tempat menyimpan informasi yang dimiliki
         └── vehicle.py            # Actuator dan Sensor dari truk sampah
+    ├── testing/
+        └── benchmark.py          # Mengetes benchmark
     ├── utils/
         ├── controls.py           # Controller kamera di simulation
         ├── nodes.py              # Node Generator berdasarkan data yang ada
@@ -293,33 +295,6 @@ root/
 <br>
 
 ##### b). Implementation Flow
-Sebelum simulasi dijalankan, akan dilakukan persiapan visual, nodes, vehicle(sensor & actuator), dan model yang digunakan 
-```python
-    viewer = GraphViewer(pos, shared)
-    range_x = viewer.max_x - viewer.min_x
-    range_y = viewer.max_y - viewer.min_y
-
-    viewer.scale = min(viewer.WIDTH / range_x, viewer.HEIGHT / range_y) * 0.95
-    viewer.offset_x = viewer.WIDTH/2 - ((viewer.min_x+viewer.max_x)/2 - viewer.min_x)*viewer.scale
-    viewer.offset_y = viewer.HEIGHT/2 - ((viewer.max_y+viewer.min_y)/2 - viewer.min_y)*viewer.scale
-
-    TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
-    
-    vehicles = []
-    generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA_nodes)
-
-    last_garbage_generation_day = shared.sim_day
-
-    knowledge_model = KnowledgeModel(GRAPH, shared, TPS_nodes, TPA_nodes, GARAGE_nodes)
-    shared.knowledge_model = knowledge_model
-
-    ai_model = AIModel(knowledge_model, shared)
-    shared.ai_model = ai_model
-        
-    running = True
-    shared.paused = True
-```
-
 
 ---
 
@@ -373,20 +348,40 @@ python -m src.start
 ## 2. Ilustration
 
 
-https://github.com/user-attachments/assets/0b51bb76-1750-4d9b-bdc2-7cc09d0e203e
+https://github.com/user-attachments/assets/b3aa68ec-3a79-4587-9721-16b73aa5100a
+
 
 
 <br>
 
 ## 3. Result
+```text
+======================================================================
+SIMULATION SUMMARY
+======================================================================
+Days Simulated:           1
+Simulation Time:          71.85s
 
+Total Distance:           320.13 km
+Total Garbage Collected:  67,941 kg
+Collection Rate:          100.0%
+Efficiency:               212.2 kg/km
+Vehicle Utilization:      100.0%
+TPS Coverage:             100.0%
+======================================================================
+
+Quick test complete!
+  Garbage: 67940.54 kg
+  Trips: 0
+  Time: 71.85s
+```
 ---
 
 <br> 
 
 
 # F. Summary
-Pada simulasi dan benchmark yang kami buat, meskipun lokasi serta data hanya mendekati dan tidak 100% sama dengan kondisi nyata. Program ini dapat mempermudah menentukan apakah sebuah rute pengambilan sampah sudah efisien atau tidak dengan cepat dan mudah jikalau ada perubahan kondisi karena simulasi menyiapkan cara yang mudah untuk mengedit environment jika dibutuhkan. Selain itu, simulasi ini juga dapat dilakukan tidak hanya di balikpapan, namun juga dapat menggunakan rute kota lain jika dibutuhkan dikarenakan adanya scrapper map yang dapat dengan mudah digunakan.
+Pada simulasi dan benchmark yang kami buat, meskipun lokasi serta data hanya mendekati dan tidak 100% sama dengan kondisi nyata. Program ini dapat mempermudah menentukan apakah sebuah rute pengambilan sampah sudah efisien atau tidak dengan cepat dan mudah jikalau ada perubahan kondisi seperti penempatan TPS atau TPA baru serta peningkatan jumlah kendaraan karena simulasi menyiapkan cara yang mudah untuk mengedit environment jika dibutuhkan. Selain itu, simulasi ini juga dapat dilakukan tidak hanya di balikpapan, namun juga dapat menggunakan rute kota lain jika dibutuhkan dikarenakan adanya scrapper map yang dapat dengan mudah digunakan.
 
 ---
 
