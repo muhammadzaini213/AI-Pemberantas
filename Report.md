@@ -389,7 +389,7 @@ def _handle_at_tps(self, vehicle):
         self._route_to_tpa(vehicle)
         return
 
-    next_tps = self._find_next_tps(vehicle)  # rollout evaluation
+    next_tps = self._find_next_tps(vehicle)
     if next_tps:
         path = self._safe_path(vehicle.current, next_tps, vehicle.G)
         task = {"type": "collect", "tps_id": next_tps, "assigned_at": current_time}
