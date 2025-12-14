@@ -314,7 +314,6 @@ def update(self, dt, vehicles):
         return
     
     self.last_decision_time += dt
-    
     if self.last_decision_time >= self.decision_interval:
         self.last_decision_time = 0
         self.make_decisions(vehicles)
@@ -347,21 +346,18 @@ def make_decisions(self, vehicles):
 <br>
 
 ###### 3) Dispatch Phase
-Pada fase ini AI akan dikeluarkan dari Garasi saat ```SHIFT_START``, disini juga digunakan fungsi ```_find_nearest_unassigned_tps_for_dispatch``` untuk melakukan scoring.
+Pada fase ini AI akan dikeluarkan dari Garasi saat ```SHIFT_START``, disini juga digunakan fungsi ```_find_next_tps``` untuk melakukan scoring dan lookahead beberapa langkah kedepan
 ```python
 def phase_dispatch(self, vehicles):
-    idle_vehicles = [v for v in vehicles if getattr(v, "state", "").lower() == "idle"]
-    
+    idle_vehicles = [v for v in vehicles if v.state.lower() == "idle"]
+
     for vehicle in idle_vehicles:
-        next_tps = self._find_nearest_unassigned_tps_for_dispatch(vehicle)
+        next_tps = self._find_next_tps(vehicle)
+        if not next_tps:
+            continue
+        
         path = self._safe_path(vehicle.current, next_tps, vehicle.G)
-        
-        task = {
-            "type": "collect",
-            "tps_id": next_tps,
-            "assigned_at": f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"
-        }
-        
+        task = {"type": "collect", "tps_id": next_tps, "assigned_at": current_time}
         self._assign_task(vehicle, task)
         vehicle.set_path(path)
         vehicle.state = "to_tps"
@@ -381,7 +377,7 @@ score = (
 <br>
 
 ###### 4) Gathering Phase
-Pada tahap ini, kendaraan akan mengambil sampah di TPS sembari melihat kapasitas truk yang tersisa, jika truk sudah benar benar penuh, maka kendaraan akan dipaksa pergi ke TPA untuk unload muatan
+Pada tahap ini, kendaraan akan mengambil sampah di TPS sembari melihat kapasitas truk yang tersisa, jika truk sudah benar benar penuh, maka kendaraan akan dipaksa pergi ke TPA untuk unload muatan, pada bagian ini juga digunakan look ahead untuk menentukan pilihan selanjutnya.
 ```python
 def _handle_at_tps(self, vehicle):
     if vehicle.actuator_is_full():
@@ -391,19 +387,25 @@ def _handle_at_tps(self, vehicle):
     loaded = vehicle.actuator_load_from_tps()
     if vehicle.actuator_is_full():
         self._route_to_tpa(vehicle)
-    else:
-        next_tps = self._find_next_tps(vehicle)
-        vehicle.set_path(self._safe_path(vehicle.current, next_tps, vehicle.G))
+        return
+
+    next_tps = self._find_next_tps(vehicle)  # rollout evaluation
+    if next_tps:
+        path = self._safe_path(vehicle.current, next_tps, vehicle.G)
+        task = {"type": "collect", "tps_id": next_tps, "assigned_at": current_time}
+        self._assign_task(vehicle, task)
+        vehicle.set_path(path)
         vehicle.state = "to_tps"
+    else:
+        self._route_to_tpa(vehicle)
 ```
 
 <br>
 
 Untuk mencegah truk idle mengambil tugas yang sangat jauh, maka diterapkan mekanisme ```STEAL```, atau AI akan mengarahkan truk terdekat yang tersedia untuk "Mencuri" target dari truk yang jauh tersebut selama jaraknya masih masuk akal.
 ```python
-if (my_distance < assigned_dist * self.STEAL_DISTANCE_RATIO and 
+if (my_distance < assigned_dist * self.STEAL_DISTANCE_RATIO and
     distance_advantage >= self.STEAL_MIN_ADVANTAGE):
-    
     self._cancel_assignment(assigned_vehicle, tps_id)
     can_take = True
 ```
