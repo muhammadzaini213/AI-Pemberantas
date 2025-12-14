@@ -27,6 +27,7 @@ class Vehicle:
         self.max_load = VEHICLE_CAP
         self.route = []
         
+        self.nodes_traversed = [] 
         self._slowdown_reported = set()
     
 
@@ -419,6 +420,9 @@ class Vehicle:
                 self.progress = 0.0
                 return
             
+            if self.current not in self.nodes_traversed:
+                self.nodes_traversed.append(self.current)
+                
             if idx + 1 < len(self.path):
                 self.current = self.target_node
                 self.target_node = self.path[idx + 1]

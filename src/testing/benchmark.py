@@ -17,13 +17,16 @@ class PerformanceMeasure:
         self.reschedules = 0
 
         self.vehicle_metrics = defaultdict(lambda: {
-            "distance": 0
+            "distance": 0,
+            "nodes_traversed": []
         })
 
         self.tps_metrics = defaultdict(lambda: {
             "remaining_garbage": 0,
             "total_generated": 0
         })
+
+        
 
     def update_from_snapshot(self, ai_model, vehicles, tps_nodes, shared):
         self.total_garbage_collected = ai_model.total_garbage_collected
@@ -33,6 +36,7 @@ class PerformanceMeasure:
         self.total_distance = 0
         for v in vehicles:
             self.vehicle_metrics[v.id]["distance"] = v.total_dist
+            self.vehicle_metrics[v.id]["nodes_traversed"].extend(v.nodes_traversed)
             self.total_distance += v.total_dist
 
         for tps_id in tps_nodes:
@@ -176,8 +180,10 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
                     "daily_dist": v.daily_dist,
                     "total_dist": v.total_dist,
                     "state": v.state,
-                    "load": v.load
+                    "load": v.load,
+                    "nodes_traversed": v.path_traversed.copy()  # salin path
                 }
+
                 v.daily_dist = 0
 
             metrics["daily_metrics"].append(daily_data)
@@ -220,6 +226,13 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
     print(f"Vehicle Utilization:      {final_kpis['vehicle_utilization']:.1f}%")
     print(f"TPS Coverage:             {final_kpis['tps_coverage']:.1f}%")
     print("=" * 70)
+
+    print("\n" + "=" * 70)
+    print("VEHICLE ROUTES")
+    for v in vehicles:
+        print(f"\nVehicle {v.id} Nodes Traversed ({len(v.nodes_traversed)} nodes):")
+        print(" -> ".join(map(str, v.nodes_traversed)))
+
 
     return metrics
 

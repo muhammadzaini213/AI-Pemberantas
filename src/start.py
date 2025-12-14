@@ -135,7 +135,6 @@ def run_quick_test(GRAPH, shared):
     
     print("\nQuick test complete!")
     print(f"  Garbage: {metrics['total_garbage_collected']:.2f} kg")
-    print(f"  Trips: {metrics['total_trips']}")
     print(f"  Time: {metrics['simulation_time_seconds']:.2f}s")
 
 def show_benchmark_menu(GRAPH, shared):

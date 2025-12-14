@@ -657,7 +657,12 @@ class AIModel:
         self.tps_assignments.clear()
         self._distance_cache.clear()
         self.knowledge.discovered_garbage.clear()
+        for vehicle in self.shared.vehicles:
+            vehicle.nodes_traversed = []
+            
         print(f"[AIModel] Daily reset - Day {self.shared.sim_day}")
+
+
 
     def _edge_id(self, u, v):
         return f"{min(u,v)}-{max(u,v)}"
