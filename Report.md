@@ -31,7 +31,7 @@ Data diambil dari KAJIAN POOL KENDARAAN PENGANGKUTAN SAMPAH DI KOTA BALIKPAPAN T
 <img width="356" height="339" alt="image" src="https://github.com/user-attachments/assets/c7a2211f-970c-46d1-80cf-3a46c234951c" />
 <img width="757" height="922" alt="image" src="https://github.com/user-attachments/assets/5cac2fc1-c741-4c3c-a53c-f5077c973d3c" />
 
-NOTE: Dikarenakan terdapat 417 TPS, kami menghomogenkan seluruh data dengan mengambil rata-rata dari seluruh TPS dan memberikannya interval ±30% randomisasi agar dapat lebih fokus ke proses pengembangan AI.
+NOTE: Dikarenakan terdapat 73 TPS, kami menghomogenkan seluruh data dengan mengambil rata-rata dari seluruh TPS dan memberikannya interval ±30% randomisasi agar dapat lebih fokus ke proses pengembangan AI.
 
 <br>
 
@@ -188,17 +188,7 @@ node_id: {
 
 <br> 
 
-##### b) Edges data model
-
-```text
-    edge_id: {
-    "slowdown": float,
-    "slowdown_start": int,
-    "slowdown_end": int
-    },
-```
-
-##### c) Truck data model
+##### b) Truck data model
 
 ```text
     truck_id: {
