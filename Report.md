@@ -5,7 +5,7 @@
 <img width="1565" height="1013" alt="image" src="https://github.com/user-attachments/assets/65c38663-bd58-43cf-a700-5cd2230cbd2e" />
 
 
-## Kelompok 10
+## Kelompok 11
 
 | Nama              | NIM      |
 | ----------------- | -------- |
@@ -531,5 +531,6 @@ Pada simulasi dan benchmark yang kami buat, meskipun lokasi serta data hanya men
 * RRI. (2024, Januari 31). DLH Balikpapan atur ulang jadwal angkut sampah. rri.co.id. Diakses 13 Desember 2025, dari https://rri.co.id/lain-lain/537534/dlh-balikpapan-atur-ulang-jadwal-angkut-sampah
 * Kementerian Pekerjaan Umum dan Perumahan Rakyat. (2019, Desember 19). Diresmikan Presiden, pembangunan TPA Sampah Manggar di Balikpapan terbaik di Indonesia. pu.go.id. Diakses 13 Desember 2025, dari https://pu.go.id/berita/diresmikan-presiden-pembangunan-tpa-sampah-manggar-di-balikpapan-terbaik-di-indonesia
 * Hidayat, R.. Kajian Pengangkutan Sampah di Kota Balikpapan. Diperoleh dari https://repository.itk.ac.id/17715/16/13171008_presentation.pdf
+  
 ---
 
