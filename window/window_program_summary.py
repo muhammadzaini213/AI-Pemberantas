@@ -100,9 +100,6 @@ class ProgramSummaryWindow:
         button_frame = ttk.Frame(content)
         button_frame.grid(row=5, column=0, columnspan=2, pady=10)
 
-        refresh_btn = ttk.Button(button_frame, text="🔄 Refresh Simulasi", command=self.on_refresh)
-        refresh_btn.pack(side="left", padx=5)
-
         save_btn = ttk.Button(button_frame, text="💾 Hard Save", command=self.on_hard_save)
         save_btn.pack(side="left", padx=5)
 

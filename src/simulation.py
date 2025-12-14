@@ -16,7 +16,6 @@ def run_simulation(GRAPH, shared, isSingleRender):
         run_simulation_editor(GRAPH, shared)
 
 def run_simulation_editor(GRAPH, shared):
-    GRAPH.remove_nodes_from([5441776594])
     # ======================== CLEAR EXISTING VEHICLES ========================
     print(f"\n{'='*60}")
     print(f"[Simulation] Starting simulation...")
@@ -121,8 +120,6 @@ def run_simulation_editor(GRAPH, shared):
 
 
 def run_simulation_single_render(GRAPH, shared):
-
-    GRAPH.remove_nodes_from([5441776594])
     print(f"\n{'='*60}")
     print(f"[Simulation] Starting simulation...")
     print(f"{'='*60}")

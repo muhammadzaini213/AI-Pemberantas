@@ -6,17 +6,17 @@ CAM_SPEED = 10
 MAX_FPS = 60
 
 # ================== TEST SETUP ==================
-GRAPH_FILE = "./data/simpl_balikpapan_drive.graphml"
+GRAPH_FILE = "./data/simpl_balikpapan_timur_drive.graphml"
 
 
 # ================== VEHICLE ==================
-VEHICLE_SPEED = 260
+VEHICLE_SPEED = 280
 VEHICLE_CAP = 25000
 
 
 # ================== SHIFT SETTINGS (00:00 WITH INTEGER 0) ==================
 SHIFT_START = 6
-SHIFT_END = 23
+SHIFT_END = 20
 
 # ================== SPRITES ==================
 NODE_COL = (255,120,120) # Node kuning

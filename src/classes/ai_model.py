@@ -11,7 +11,7 @@ class AIModel:
         self.SHIFT_END = SHIFT_END
         self.OVERTIME_BUFFER = 1
         
-        self.decision_interval = 1.0
+        self.decision_interval = 0.1
         self.last_decision_time = 0
         
         self.current_phase = "IDLE"
@@ -192,7 +192,13 @@ class AIModel:
             elif state == "at_tpa":
                 self._handle_at_tpa(vehicle)
             elif state == "idle" and vehicle.current != vehicle.garage_node:
-                self._reassign(vehicle)
+                if self._all_tps_exhausted():
+                    if vehicle.load > 0:
+                        self._route_to_tpa(vehicle)
+                    else:
+                        self._route_to_garage(vehicle)
+                else:
+                    self._reassign(vehicle)
             else:
                 # preventive reroute saat perjalanan
                 self._preventive_reroute(vehicle)
@@ -205,7 +211,7 @@ class AIModel:
         
         current_hour = self.shared.sim_hour
         if current_hour >= (self.SHIFT_END - self.OVERTIME_BUFFER):
-            if vehicle.load > VEHICLE_CAP * (1 - 0.1):
+            if vehicle.load > VEHICLE_CAP * (1 - 0.01):
                 print(f"[AIModel] {vehicle.id} shift ending with load -> TPA")
                 self._route_to_tpa(vehicle)
             else:
@@ -226,26 +232,52 @@ class AIModel:
                 print(f"[AIModel] {vehicle.id} full - to TPA")
                 self._route_to_tpa(vehicle)
         else:
-            if vehicle.load > VEHICLE_CAP * (1-0.9):
-                print(f"[AIModel] {vehicle.id} has {vehicle.load:.2f}kg - to TPA")
-                self._route_to_tpa(vehicle)
-            else:
-                next_tps = self._find_next_tps(vehicle)
-                if next_tps:
-                    path = self._safe_path(vehicle.current, next_tps, vehicle.G)
-                    if path:
-                        print(f"[AIModel] {vehicle.id} -> TPS {next_tps}")
-                        task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"}
-                        self._assign_task(vehicle, task)
-                        vehicle.set_path(path)
-                        vehicle.state = "to_tps"
-                    else:
-                        print(f"[AIModel] {vehicle.id} no safe path -> garage")
-                        self._route_to_garage(vehicle)
+            # 1. Jika semua TPS global habis
+            if self._all_tps_exhausted():
+                if vehicle.load > 0:
+                    print(f"[AIModel] All TPS exhausted, {vehicle.id} carrying {vehicle.load:.2f}kg -> TPA")
+                    self._route_to_tpa(vehicle)
                 else:
-                    print(f"[AIModel] {vehicle.id} no TPS -> garage")
+                    print(f"[AIModel] All TPS exhausted, {vehicle.id} empty -> garage")
                     self._route_to_garage(vehicle)
+                return
+
+            # 2. Masih ada TPS lain, cari TPS berikutnya
+            next_tps = self._find_next_tps(vehicle)
+            if next_tps:
+                path = self._safe_path(vehicle.current, next_tps, vehicle.G)
+                if path:
+                    print(f"[AIModel] {vehicle.id} -> TPS {next_tps}")
+                    task = {
+                        "type": "collect",
+                        "tps_id": next_tps,
+                        "assigned_at": f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"
+                    }
+                    self._assign_task(vehicle, task)
+                    vehicle.set_path(path)
+                    vehicle.state = "to_tps"
+                else:
+                    print(f"[AIModel] {vehicle.id} no safe path -> TPA")
+                    self._route_to_tpa(vehicle)
+            else:
+                if vehicle.load > 0:
+                    self._route_to_tpa(vehicle)
+                else:
+                    self._route_to_garage(vehicle)
+
+
     
+
+    def _all_tps_exhausted(self):
+        for tps_id in self.knowledge.TPS_nodes:
+            discovered = self.knowledge.get_discovered_garbage(tps_id)
+            if discovered is None:
+                return False  # belum dikunjungi
+            if discovered > 10:
+                return False  # masih ada sampah
+        return True
+
+
     def _handle_at_tpa(self, vehicle):
         if vehicle.load > 0:
             unloaded = vehicle.actuator_unload_to_tpa()
@@ -274,9 +306,9 @@ class AIModel:
     
     # ============ FIND NEXT TPS (FIXED) ============
     def _find_next_tps(self, vehicle):
-        """
-        Cari TPS berikutnya dengan prioritas: JARAK TERDEKAT > Sampah > Assignment
-        """
+        if self._all_tps_exhausted():
+            return None
+
         best_tps = None
         best_score = -float('inf')
         current_hour = self.shared.sim_hour
