@@ -123,7 +123,7 @@ def run_benchmark_mode(GRAPH, shared):
 
 def run_quick_test(GRAPH, shared):
     print("\n" + "="*70)
-    print("QUICK TEST MODE (1 day, 50x speed)")
+    print("QUICK TEST MODE (1 day, 20x speed)")
     print("="*70)
     
     shared.sim_day = 1
@@ -131,7 +131,7 @@ def run_quick_test(GRAPH, shared):
     shared.sim_min = 0
     shared.simulation_running = False
     
-    metrics = run_benchmark(GRAPH, shared, num_days=1, speed_multiplier=50, verbose=True)
+    metrics = run_benchmark(GRAPH, shared, num_days=1, speed_multiplier=20, verbose=True)
     
     print("\nQuick test complete!")
     print(f"  Garbage: {metrics['total_garbage_collected']:.2f} kg")
@@ -143,7 +143,7 @@ def show_benchmark_menu(GRAPH, shared):
         print("\n" + "="*70)
         print("BENCHMARK MENU")
         print("="*70)
-        print("1. Quick Test (1 day, 50x speed)")
+        print("1. Quick Test (1 day, 20x speed)")
         print("2. Single Benchmark Run")
         print("3. Return to Normal Simulation")
         print("="*70)
@@ -185,7 +185,7 @@ def main():
     print("1. Normal Simulation")
     print("2. Simulation Editor")
     print("3. Benchmark Mode (no rendering)")
-    mode = input("\nChoice (1-2, default 1): ").strip() or "1"
+    mode = input("\nChoice (1-3, default 1): ").strip() or "1"
     
     if mode == "1":
         start_simulation_thread(GRAPH, shared, True)

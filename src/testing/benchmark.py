@@ -154,9 +154,9 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
             knowledge_model.update_vehicle_status(v.id, v.actuator_get_status())
 
         if (
-            shared.sim_hour == SHIFT_END
-            and shared.sim_min == 0
+            shared.sim_hour >= SHIFT_END
             and shared.sim_day - 1 > last_reported_day
+            and all_vehicles_idle(vehicles)
         ):
             day = shared.sim_day - 1
             last_reported_day = day
@@ -222,3 +222,10 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
     print("=" * 70)
 
     return metrics
+
+
+def all_vehicles_idle(vehicles):
+    for v in vehicles:
+        if v.state not in ["idle", "to_garage"] or v.load > 0:
+            return False
+    return True

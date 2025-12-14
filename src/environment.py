@@ -10,7 +10,7 @@ GRAPH_FILE = "./data/simpl_balikpapan_timur_drive.graphml"
 
 
 # ================== VEHICLE ==================
-VEHICLE_SPEED = 280
+VEHICLE_SPEED = 600
 VEHICLE_CAP = 30000
 
 

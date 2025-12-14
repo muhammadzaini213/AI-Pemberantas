@@ -11,7 +11,7 @@ class AIModel:
         self.SHIFT_END = SHIFT_END
         self.OVERTIME_BUFFER = 1
         
-        self.decision_interval = 0.1
+        self.decision_interval = 0.2
         self.last_decision_time = 0
         
         self.current_phase = "IDLE"
@@ -290,7 +290,7 @@ class AIModel:
                     if current_tps in self.tps_assignments:
                         if vehicle.id in self.tps_assignments[current_tps]:
                             self.tps_assignments[current_tps].remove(vehicle.id)
-                            print(f"[AIModel] ✗ REMOVED assignment of {vehicle.id} from empty TPS {current_tps} (remaining={remaining_before:.2f}kg)")
+                            print(f"[AIModel] REMOVED assignment of {vehicle.id} from empty TPS {current_tps} (remaining={remaining_before:.2f}kg)")
             
             if self._all_tps_exhausted():
                 print(f"[AIModel] All TPS exhausted, forcing {vehicle.id} to TPA (load: {vehicle.load:.2f}kg)")
@@ -353,7 +353,6 @@ class AIModel:
             self._route_to_garage(vehicle)
             return
         
-        # Jika exhausted, langsung ke garage
         if self._all_tps_exhausted():
             print(f"[AIModel] All TPS exhausted, {vehicle.id} -> garage")
             self._route_to_garage(vehicle)
@@ -506,7 +505,7 @@ class AIModel:
             if task.get("tps_id") == tps_id:
                 del self.assigned_tasks[vehicle.id]
         
-        print(f"[AIModel] ✗ CANCELLED TPS {tps_id} assignment from {vehicle.id}")
+        print(f"[AIModel] CANCELLED TPS {tps_id} assignment from {vehicle.id}")
 
     # ================== REASSIGN ==================
     def _reassign(self, vehicle):
