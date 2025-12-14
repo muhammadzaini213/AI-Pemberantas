@@ -10,22 +10,22 @@ class KnowledgeModel:
 
         self.graph = graph
         
-        # ===== Known information (static) =====
+        # ================== Known information (static) ==================
         self.known_garages = {node_id: self._get_garage_info(node_id) for node_id in garage_nodes}
         self.known_tps = {node_id: self._get_tps_static_info(node_id) for node_id in tps_nodes}
         self.known_tpa = {node_id: self._get_tpa_info(node_id) for node_id in tpa_nodes}
         
-        # ===== Discovered information (dynamic) =====
+        # ================== Discovered information (dynamic) ==================
         self.discovered_slowdowns = {}
         self.discovered_garbage = {}
         
-        # ===== Vehicle tracking =====
+        # ================== Vehicle tracking ==================
         self.vehicle_statuses = {}
         self.vehicle_assignments = {}
         self.all_vehicle_ids = set()
 
     
-    # ============== STATIC KNOWLEDGE ==============
+    # ================== STATIC KNOWLEDGE ==================
     def _get_garage_info(self, garage_id):
         if garage_id in self.shared.node_type:
             garage_data = self.shared.node_type[garage_id].get("garage_data", {})
@@ -101,7 +101,7 @@ class KnowledgeModel:
                 total_dist += edge_data[0].get('length', 0)
         return total_dist
 
-    # ============== DISCOVERED/DYNAMIC KNOWLEDGE ==============
+    # ================== DISCOVERED/DYNAMIC KNOWLEDGE ==================
     def discover_slowdown(self, edge_id, slowdown_value):
         current_hour = self.shared.sim_hour
         current_day = self.shared.sim_day
@@ -188,7 +188,7 @@ class KnowledgeModel:
             return self.discovered_garbage[tps_id]["history"]
         return []
 
-    # ============== VEHICLE TRACKER ==============
+    # ================== VEHICLE TRACKER ==================
     def update_vehicle_status(self, vehicle_id, status):
         self.all_vehicle_ids.add(vehicle_id)
         self.vehicle_statuses[vehicle_id] = {
@@ -214,7 +214,7 @@ class KnowledgeModel:
         if vehicle_id in self.vehicle_assignments:
             del self.vehicle_assignments[vehicle_id]
 
-    # ============== AGENT QUERIES (SENSOR) ==============    
+    # ================== AGENT QUERIES (SENSOR) ==================    
     def get_optimal_tps(self, current_pos, prefer_known=False):
         best_tps = None
         best_distance = float('inf')

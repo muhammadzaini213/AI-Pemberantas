@@ -26,14 +26,13 @@ class AIModel:
         
         self._distance_cache = {}
         
-        # Weight factors untuk scoring
-        self.DISTANCE_WEIGHT = 3.0  # Tingkatkan bobot jarak
+        self.DISTANCE_WEIGHT = 3.0
         self.GARBAGE_WEIGHT = 1.0
         self.ASSIGNMENT_WEIGHT = 0.5
         
         print("[AIModel] Initialized")
 
-    # ============ MAIN LOOP ============
+    # ================== MAIN LOOP ==================
     def update(self, dt, vehicles):
         if self.shared.paused:
             return
@@ -62,7 +61,7 @@ class AIModel:
         if self.current_phase == "GATHERING":
             self.phase_gathering(vehicles)
 
-    # ============ DISPATCH ============
+    # ================== DISPATCH ==================
     def phase_dispatch(self, vehicles):
         print(f"\n[AIModel] DISPATCH - Hour {self.shared.sim_hour:02d}:00")
         
@@ -70,12 +69,8 @@ class AIModel:
         if not idle_vehicles:
             return
         
-        # Sort vehicles by some criteria (optional)
-        # idle_vehicles.sort(key=lambda v: v.id)
-        
         count = 0
         for vehicle in idle_vehicles:
-            # Cari TPS terdekat yang belum diassign untuk vehicle ini
             next_tps = self._find_nearest_unassigned_tps(vehicle)
             
             if not next_tps:
@@ -87,7 +82,6 @@ class AIModel:
                 print(f"[AIModel] TPS {next_tps} skipped - no safe path")
                 continue
             
-            # Hitung prioritas untuk logging
             priorities = self._calc_tps_priority_for_vehicle(vehicle)
             priority = priorities.get(next_tps, 0)
             
@@ -110,9 +104,6 @@ class AIModel:
         print(f"[AIModel] Dispatched: {count}/{len(idle_vehicles)}")
     
     def _calc_tps_priority_for_vehicle(self, vehicle):
-        """
-        Hitung prioritas TPS untuk vehicle tertentu dengan fokus pada jarak
-        """
         priorities = {}
         current_hour = self.shared.sim_hour
         
@@ -120,21 +111,17 @@ class AIModel:
             if tps_id == vehicle.current:
                 continue
             
-            # Skip TPS yang sudah diassign
             if len(self.tps_assignments[tps_id]) > 0:
                 continue
             
-            # Ambil info sampah
             tps_info = self.knowledge.known_tps.get(tps_id, {})
             base_garbage = tps_info.get("sampah_per_hari", 0)
             discovered = self.knowledge.get_discovered_garbage(tps_id)
             garbage = discovered if discovered is not None else base_garbage
             
-            # Skip TPS dengan sampah terlalu sedikit
-            if garbage <= 10:
+            if garbage <= 100:
                 continue
             
-            # Hitung jarak
             key = (vehicle.current, tps_id, current_hour)
             if key in self._distance_cache:
                 distance = self._distance_cache[key]
@@ -149,13 +136,10 @@ class AIModel:
             if distance == float('inf') or distance == 0:
                 continue
             
-            # SCORING BARU: Prioritaskan jarak terdekat
-            # Semakin dekat = semakin tinggi score
-            distance_score = 10000.0 / (distance + 100)  # Normalisasi dengan denominator
+            distance_score = 10000.0 / (distance + 100) 
             garbage_score = garbage / 1000.0
             assignment_penalty = 1.0 / (1 + len(self.tps_assignments[tps_id]))
             
-            # Kombinasi dengan bobot
             score = (
                 self.DISTANCE_WEIGHT * distance_score +
                 self.GARBAGE_WEIGHT * garbage_score
@@ -166,23 +150,18 @@ class AIModel:
         return priorities
     
     def _find_nearest_unassigned_tps(self, vehicle):
-        """
-        Cari TPS terdekat yang belum diassign
-        """
         priorities = self._calc_tps_priority_for_vehicle(vehicle)
         
         if not priorities:
             return None
         
-        # Sort by priority (highest first)
         sorted_tps = sorted(priorities.items(), key=lambda x: x[1], reverse=True)
         
-        # Return TPS dengan priority tertinggi (seharusnya terdekat)
         best_tps = sorted_tps[0][0]
         
         return best_tps
 
-    # ============ GATHERING ============
+    # ================== GATHERING ==================
     def phase_gathering(self, vehicles):
         for vehicle in vehicles:
             state = getattr(vehicle, "state", "").lower()
@@ -200,7 +179,6 @@ class AIModel:
                 else:
                     self._reassign(vehicle)
             else:
-                # preventive reroute saat perjalanan
                 self._preventive_reroute(vehicle)
     
     def _handle_at_tps(self, vehicle):
@@ -232,7 +210,6 @@ class AIModel:
                 print(f"[AIModel] {vehicle.id} full - to TPA")
                 self._route_to_tpa(vehicle)
         else:
-            # 1. Jika semua TPS global habis
             if self._all_tps_exhausted():
                 if vehicle.load > 0:
                     print(f"[AIModel] All TPS exhausted, {vehicle.id} carrying {vehicle.load:.2f}kg -> TPA")
@@ -242,7 +219,6 @@ class AIModel:
                     self._route_to_garage(vehicle)
                 return
 
-            # 2. Masih ada TPS lain, cari TPS berikutnya
             next_tps = self._find_next_tps(vehicle)
             if next_tps:
                 path = self._safe_path(vehicle.current, next_tps, vehicle.G)
@@ -272,9 +248,9 @@ class AIModel:
         for tps_id in self.knowledge.TPS_nodes:
             discovered = self.knowledge.get_discovered_garbage(tps_id)
             if discovered is None:
-                return False  # belum dikunjungi
-            if discovered > 10:
-                return False  # masih ada sampah
+                return False 
+            if discovered > 100:
+                return False
         return True
 
 
@@ -304,7 +280,7 @@ class AIModel:
         else:
             self._route_to_garage(vehicle)
     
-    # ============ FIND NEXT TPS (FIXED) ============
+    # ================== FIND NEXT TPS ==================
     def _find_next_tps(self, vehicle):
         if self._all_tps_exhausted():
             return None
@@ -313,18 +289,15 @@ class AIModel:
         best_score = -float('inf')
         current_hour = self.shared.sim_hour
         
-        # Debug: simpan semua kandidat
         candidates = []
 
         for tps_id in self.knowledge.TPS_nodes:
             if tps_id == vehicle.current:
                 continue
             
-            # Skip TPS yang sudah diassign ke vehicle lain
             if len(self.tps_assignments[tps_id]) > 0:
                 continue
             
-            # Ambil info sampah
             discovered = self.knowledge.get_discovered_garbage(tps_id)
             if discovered is None:
                 tps_info = self.knowledge.known_tps.get(tps_id, {})
@@ -335,7 +308,6 @@ class AIModel:
             if garbage <= 10:
                 continue
             
-            # Hitung jarak
             key = (vehicle.current, tps_id, current_hour)
             if key in self._distance_cache:
                 distance = self._distance_cache[key]
@@ -350,13 +322,10 @@ class AIModel:
             if distance == float('inf') or distance == 0:
                 continue
             
-            # SCORING: Prioritaskan jarak terdekat
-            # Formula: score tinggi untuk jarak dekat
-            distance_score = 10000.0 / (distance + 100)  # Semakin dekat = semakin tinggi
+            distance_score = 10000.0 / (distance + 100)
             garbage_score = garbage / 1000.0
             assignment_penalty = 1.0 / (1 + len(self.tps_assignments[tps_id]))
             
-            # Kombinasi dengan weight yang memprioritaskan jarak
             score = (
                 self.DISTANCE_WEIGHT * distance_score +
                 self.GARBAGE_WEIGHT * garbage_score
@@ -373,7 +342,6 @@ class AIModel:
                 best_score = score
                 best_tps = tps_id
         
-        # Debug: print top 3 candidates
         if candidates:
             candidates.sort(key=lambda x: x['score'], reverse=True)
             print(f"\n[AIModel] {vehicle.id} TPS candidates (top 3):")
@@ -382,7 +350,7 @@ class AIModel:
 
         return best_tps
 
-    # ============ PREVENTIVE REROUTE ============
+    # ================== PREVENTIVE REROUTE ==================
     def _preventive_reroute(self, vehicle):
         if not vehicle.path or len(vehicle.path) < 2:
             return
@@ -398,7 +366,7 @@ class AIModel:
                 self.reschedule_count += 1
                 print(f"[AIModel] Preventively rerouted {vehicle.id} from slow edge {edge_id}")
 
-    # ============ SAFE PATH ============
+    # ================== SAFE PATH ==================
     def _safe_path(self, start, end, G):
         current_hour = self.shared.sim_hour
         def weight(u, v, d):
@@ -412,7 +380,6 @@ class AIModel:
             return length
         try:
             path = nx.shortest_path(G, start, end, weight=weight)
-            # pastikan semua edge aman
             for i in range(len(path) - 1):
                 edge_id = f"{path[i]}-{path[i+1]}"
                 slowdown = self.knowledge.get_slowdown(edge_id, hour=current_hour)
@@ -422,7 +389,7 @@ class AIModel:
         except:
             return None
 
-    # ============ REASSIGN ============
+    # ================== REASSIGN ==================
     def _reassign(self, vehicle):
         if getattr(vehicle, "load", 0) > 0:
             self._route_to_tpa(vehicle)
@@ -442,7 +409,7 @@ class AIModel:
         else:
             self._route_to_garage(vehicle)
 
-    # ============ ENDING ============
+    # ================== ENDING ==================
     def phase_ending(self, vehicles):
         print(f"\n[AIModel] ENDING - Hour {self.shared.sim_hour:02d}:00")
         for vehicle in vehicles:
@@ -462,7 +429,7 @@ class AIModel:
             if vehicle.id in self.assigned_tasks:
                 del self.assigned_tasks[vehicle.id]
 
-    # ============ ROUTING ============
+    # ================== ROUTING ==================
     def _route_to_tpa(self, vehicle):
         tpa = vehicle.TPA_node
         if isinstance(tpa, (set, list)):
@@ -493,7 +460,7 @@ class AIModel:
         vehicle.state = "to_garage"
         return True
 
-    # ============ ASSIGN TASK ============
+    # ================== ASSIGN TASK ==================
     def _assign_task(self, vehicle, task):
         self.assigned_tasks[vehicle.id] = task
         if task.get("type") == "collect":
@@ -502,18 +469,18 @@ class AIModel:
                 self.tps_assignments[tps_id].append(vehicle.id)
         self.knowledge.assign_task(vehicle.id, task)
 
-    # ============ PATH UTILITIES ============
+    # ================== PATH UTILITIES ==================
     def _path_distance(self, path, G):
         if not path or len(path) < 2:
             return 0
         return sum(G[path[i]][path[i+1]][0]['length'] for i in range(len(path)-1))
 
-    # ============ STATISTICS ============
+    # ================== STATISTICS ==================
     def get_statistics(self):
         total_garbage = sum(
             data["tpa_data"]["total_sampah"]
             for n, data in self.node_type.items()
-            if data["tpa"]  # hanya node TPA
+            if data["tpa"]
         )
 
         return {

@@ -102,7 +102,7 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
     sim_time_acc = 0.0
     last_time = time.time()
 
-    # === INIT ===
+    # ================== INIT ==================
     TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
     GRAPH = preprocess_graph(GRAPH, TPS_nodes, TPA_nodes, GARAGE_nodes)
 
@@ -135,7 +135,7 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
 
     last_reported_day = 0
 
-    # === MAIN LOOP ===
+    # ================== MAIN LOOP ==================
     while shared.sim_day <= num_days:
         dt, last_time = getDt(time, last_time)
         sim_time_acc += dt * shared.speed * 60
@@ -156,7 +156,6 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
             v.update(dt, shared)
             knowledge_model.update_vehicle_status(v.id, v.actuator_get_status())
 
-        # === END OF DAY (AFTER SHIFT) ===
         if (
             shared.sim_hour == SHIFT_END
             and shared.sim_min == 0
@@ -165,7 +164,6 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
             day = shared.sim_day - 1
             last_reported_day = day
 
-            # Snapshot BEFORE reset
             performance.update_from_snapshot(ai_model, vehicles, TPS_nodes, shared)
 
             daily_data = {
@@ -197,12 +195,11 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
             if verbose:
                 print(f"\n[BENCHMARK] Day {day} Summary")
                 print(f"  Garbage: {ai_model.total_garbage_collected:,.0f} kg")
-                print(f"  Trips:   {ai_model.total_trips}")
                 print(f"  Rate:    {daily_kpis['collection_rate']:.1f}%")
 
             ai_model.reset_daily()
 
-    # === FINAL SNAPSHOT ===
+    # ================== FINAL SNAPSHOT ==================
     simulation_end = time.time()
     performance.update_from_snapshot(ai_model, vehicles, TPS_nodes, shared)
 
@@ -213,13 +210,11 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
     metrics["total_distance"] = performance.total_distance
     metrics["performance_kpis"] = final_kpis
 
-    # === REPORT ===
-    # performance.print_performance_report()
-
+    # ================== REPORT ==================
     print("\n" + "=" * 70)
     print("SIMULATION SUMMARY")
     print("=" * 70)
-    print(f"Days Simulated:           {metrics['days_simulated']}")
+    print(f"Days Simulated:           {metrics['days_simulated'] + 1}")
     print(f"Simulation Time:          {metrics['simulation_time_seconds']:.2f}s\n")
     print(f"Total Distance:           {metrics['total_distance']:.2f} km")
     print(f"Total Garbage Collected:  {metrics['total_garbage_collected']:,.0f} kg")

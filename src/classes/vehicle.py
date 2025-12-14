@@ -102,7 +102,7 @@ class Vehicle:
         else:
             return current_hour >= start_hour or current_hour <= end_hour
 
-    # ============ BASIC ACTUATORS ============
+    # ================== ACTUATORS ==================
     def actuator_set_path(self, path):
         self.set_path(path)
     
@@ -249,7 +249,6 @@ class Vehicle:
         
         print(f"[Vehicle {self.id}] Loaded {loaded:.2f}kg from TPS {self.current} (rem: {tps_data['sampah_kg']:.2f}kg) (current: {self.load}kg)")
         
-        # jangan langsung ke TPA, biarkan AI yang tentukan route selanjutnya
         return loaded
 
     
@@ -320,7 +319,7 @@ class Vehicle:
     def actuator_at_target(self):
         return self.target_node is None or self.progress >= 1.0
 
-    # ============ PATH MANAGEMENT ============
+    # ================== PATH MANAGEMENT ==================
     def set_path(self, path):
         if not path or len(path) == 0:
             self.path = []
@@ -347,7 +346,7 @@ class Vehicle:
         self._update_state_stats(old_state)
         print(f"[Vehicle {self.id}] Idle at garage {self.garage_node}")
 
-    # ============ UPDATE LOOP ============
+    # ================== UPDATE LOOP ==================
     def update(self, dt, shared):
         if shared.paused:
             return
