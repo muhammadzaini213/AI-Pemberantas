@@ -19,7 +19,11 @@
 <br> 
 
 # A. Abstract
-Nanti abstract belakangan
+Pengangkutan sampah di Kota Balikpapan menghadapi berbagai banyak tantangan karena kondisi yang dinamis dan sulit diprediksi, jumlah sampah di setiap Tempat Penampungan Sementara (TPS), kondisi lalu lintas, serta keterbatasan jumlah armada truk. Permasalahan tersebut sering mengakibatkan jarak tempuh yang tidak efisien, waktu kerja yang melebihi jam operasional, ketimpangan beban kerja antar truk, dan masih adanya TPS yang belum terlayani. Oleh karena itu, diperlukan sistem pengelolaan yang mampu mendukung pengambilan keputusan secara efektif.
+
+Tugas ini mengembangkan sebuah agen AI yang berperan sebagai koordinator pengangkutan sampah dalam sebuah simulasi yang merepresentasikan kondisi nyata di lapangan. Agen AI tersebut menggunakan pendekatan matheuristic rollout untuk mengevaluasi berbagai alternatif keputusan secara bertahap dan memilih keputusan terbaik berdasarkan fungsi tujuan. Fungsi tujuan dirancang dengan mempertimbangkan empat aspek utama, yaitu meminimalkan jarak tempuh truk, mengurangi waktu lembur, memastikan seluruh TPS terlayani, serta menjaga keseimbangan beban kerja antar truk, dengan prioritas utama pada pelayanan TPS.
+
+Hasil simulasi menunjukkan bahwa pendekatan ini mampu meningkatkan kinerja dan efisiensi proses pengangkutan sampah. Jarak tempuh dan waktu kerja truk dapat dikendalikan dengan lebih baik, beban kerja antar truk menjadi lebih seimbang, serta jumlah TPS yang tidak terlayani dapat dikurangi. Dengan demikian, agen AI yang dikembangkan diharapkan dapat menjadi solusi pendukung dalam pengelolaan pengangkutan sampah di Kota Balikpapan agar lebih efisien dan mudah diterapkan di lapangan.
 
 ---
 
