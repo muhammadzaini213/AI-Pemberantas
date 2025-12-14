@@ -175,7 +175,6 @@ class AIModel:
 
     # ================== GATHERING ==================
     def phase_gathering(self, vehicles):
-        # Cek dan cancel assignment ke TPS kosong
         self._cancel_invalid_assignments(vehicles)
         
         for vehicle in vehicles:
@@ -186,7 +185,6 @@ class AIModel:
             elif state == "at_tpa":
                 self._handle_at_tpa(vehicle)
             elif state == "idle" and vehicle.current != vehicle.garage_node:
-                # Jika exhausted, paksa ke TPA
                 if self._all_tps_exhausted():
                     print(f"[AIModel] All TPS exhausted, forcing idle {vehicle.id} to TPA (load: {vehicle.load:.2f}kg)")
                     self._route_to_tpa(vehicle)
@@ -194,15 +192,12 @@ class AIModel:
                     self._reassign(vehicle)
     
     def _cancel_invalid_assignments(self, vehicles):
-        """Cancel assignments untuk vehicle yang menuju TPS kosong"""
         all_exhausted = self._all_tps_exhausted()
         
         for vehicle in vehicles:
-            # Hanya cek vehicle yang sedang menuju TPS
             if vehicle.state != "to_tps":
                 continue
             
-            # Cek apakah ada assignment
             if vehicle.id not in self.assigned_tasks:
                 continue
             
@@ -212,24 +207,19 @@ class AIModel:
             if not tps_id:
                 continue
             
-            # Jika semua TPS exhausted, langsung paksa ke TPA
             if all_exhausted:
-                print(f"[AIModel] ⚠️ All TPS exhausted, forcing {vehicle.id} to TPA (was heading to TPS {tps_id})")
+                print(f"[AIModel] All TPS exhausted, forcing {vehicle.id} to TPA (was heading to TPS {tps_id})")
                 self._cancel_assignment(vehicle, tps_id)
                 self._route_to_tpa(vehicle)
                 continue
             
-            # Cek garbage di TPS tujuan
             discovered = self.knowledge.get_discovered_garbage(tps_id)
             
-            # Jika TPS sudah diketahui kosong, cancel dan redirect
             if discovered is not None and discovered <= 10:
-                print(f"[AIModel] ⚠️ {vehicle.id} heading to EMPTY TPS {tps_id} ({discovered:.2f}kg) - REDIRECTING")
+                print(f"[AIModel] {vehicle.id} heading to EMPTY TPS {tps_id} ({discovered:.2f}kg) - REDIRECTING")
                 
-                # Cancel assignment
                 self._cancel_assignment(vehicle, tps_id)
                 
-                # Cari TPS lain yang masih ada isinya
                 next_tps = self._find_next_tps(vehicle)
                 if next_tps:
                     path = self._safe_path(vehicle.current, next_tps, vehicle.G)
@@ -257,7 +247,6 @@ class AIModel:
                     else:
                         self._route_to_tpa(vehicle)
                 else:
-                    # Tidak ada TPS lain, ke TPA
                     print(f"[AIModel] No TPS available, forcing {vehicle.id} to TPA")
                     self._route_to_tpa(vehicle)
 
@@ -277,7 +266,6 @@ class AIModel:
                 self._route_to_garage(vehicle)
             return
         
-        # Ambil remaining SEBELUM load untuk pengecekan
         tps_data = self.shared.node_type.get(vehicle.current, {}).get("tps_data", {})
         remaining_before = tps_data.get("sampah_kg", 0)
         
@@ -286,7 +274,6 @@ class AIModel:
             if loaded > 0:
                 self.total_garbage_collected += loaded
                 
-                # Ambil remaining SETELAH load
                 tps_data = self.shared.node_type.get(vehicle.current, {}).get("tps_data", {})
                 remaining_after = tps_data.get("sampah_kg", 0)
                 
@@ -305,7 +292,6 @@ class AIModel:
                             self.tps_assignments[current_tps].remove(vehicle.id)
                             print(f"[AIModel] ✗ REMOVED assignment of {vehicle.id} from empty TPS {current_tps} (remaining={remaining_before:.2f}kg)")
             
-            # Jika exhausted, langsung ke TPA
             if self._all_tps_exhausted():
                 print(f"[AIModel] All TPS exhausted, forcing {vehicle.id} to TPA (load: {vehicle.load:.2f}kg)")
                 self._force_to_tpa()
@@ -419,10 +405,9 @@ class AIModel:
             else:
                 garbage = discovered
             
-            # Skip TPS kosong
             if garbage <= 10:
                 if discovered is not None:
-                    print(f"[AIModel] 🚫 Skipping TPS {tps_id} - known empty ({garbage:.2f}kg)")
+                    print(f"[AIModel] Skipping TPS {tps_id} - known empty ({garbage:.2f}kg)")
                 continue
             
             assigned_vehicles = self.tps_assignments[tps_id]
@@ -509,7 +494,6 @@ class AIModel:
             return None
 
     def _cancel_assignment(self, vehicle, tps_id):
-        """Batalkan assignment TPS dari kendaraan tertentu"""
         if tps_id in self.tps_assignments:
             if vehicle.id in self.tps_assignments[tps_id]:
                 self.tps_assignments[tps_id].remove(vehicle.id)
@@ -673,6 +657,7 @@ class AIModel:
         self.assigned_tasks.clear()
         self.tps_assignments.clear()
         self._distance_cache.clear()
+        self.knowledge.discovered_garbage.clear()
         print(f"[AIModel] Daily reset - Day {self.shared.sim_day}")
 
     def _edge_id(self, u, v):

@@ -248,7 +248,6 @@ class Vehicle:
         remaining = max(0, available - loaded)
         tps_data["sampah_kg"] = remaining
         
-        # Update knowledge model setiap kali load
         if hasattr(self.shared, 'knowledge_model'):
             self.shared.knowledge_model.discover_garbage(self.current, remaining)
         
