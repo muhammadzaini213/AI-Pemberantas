@@ -232,10 +232,10 @@ class SharedState:
         edge_success = self.load_edge_data()
         
         if node_success and edge_success:
-            print("[SharedState] ✓ All data loaded successfully!")
+            print("[SharedState] All data loaded successfully!")
             return True
         elif node_success or edge_success:
-            print("[SharedState] ⚠ Partial data loaded")
+            print("[SharedState] Partial data loaded")
             return True
         else:
             print("[SharedState] ℹ No saved data found, using defaults")

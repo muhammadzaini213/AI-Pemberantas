@@ -478,15 +478,21 @@ class AIModel:
 
     # ============ STATISTICS ============
     def get_statistics(self):
+        total_garbage = sum(
+            data["tpa_data"]["total_sampah"]
+            for n, data in self.node_type.items()
+            if data["tpa"]  # hanya node TPA
+        )
+
         return {
             "current_phase": self.current_phase,
             "total_trips": self.total_trips,
-            "total_garbage_collected": self.total_garbage_collected,
+            "total_garbage_collected": total_garbage,
             "reschedule_count": self.reschedule_count,
             "assigned_tasks": len(self.assigned_tasks),
             "dispatch_done": self.dispatch_done
         }
-    
+        
     def reset_daily(self):
         self.dispatch_done = False
         self.current_phase = "IDLE"
