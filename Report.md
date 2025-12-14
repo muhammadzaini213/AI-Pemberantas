@@ -63,13 +63,7 @@ Kemudian di tahap eksekusi rute, sistem menggunakan ```shortest path``` dari ```
 ## 2. Objective Function
 Untuk setiap TPS \( t \), skor dihitung sebagai:
 
-\[
-\text{Skor}(t)
-=
-W_d \cdot \frac{1}{d(t) + 100}
-+
-W_g \cdot \frac{g(t)}{1000}
-\]
+Skor(t) = W_d * (1 / (d(t) + 100)) + W_g * (g(t) / 1000)
 
 - \( d(t) \): jarak kendaraan ke TPS  
 - \( g(t) \): jumlah sampah di TPS  
