@@ -371,14 +371,32 @@ python -m src.start
 <br>
 
 ## 2. Ilustration
-
-
-https://github.com/user-attachments/assets/0b51bb76-1750-4d9b-bdc2-7cc09d0e203e
+https://github.com/user-attachments/assets/f3d37a22-aebc-4f9c-afbc-8bf7208aba9e
 
 
 <br>
 
 ## 3. Result
+```text
+======================================================================
+SIMULATION SUMMARY
+======================================================================
+Days Simulated:           1
+Simulation Time:          71.85s
+
+Total Distance:           320.13 km
+Total Garbage Collected:  67,941 kg
+Collection Rate:          100.0%
+Efficiency:               212.2 kg/km
+Vehicle Utilization:      100.0%
+TPS Coverage:             100.0%
+======================================================================
+
+Quick test complete!
+  Garbage: 67940.54 kg
+  Trips: 0
+  Time: 71.85s
+```
 
 ---
 
