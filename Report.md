@@ -53,6 +53,13 @@ NOTE: Dikarenakan terdapat 73 TPS, kami menghomogenkan seluruh data dengan menga
 
 <br>
 
+## 4. Jumlah Truk
+<img width="1128" height="436" alt="image" src="https://github.com/user-attachments/assets/62b321ab-cef8-4661-8636-3bbed4d93e4e" />
+
+<br>
+
+---
+
 # C. Methods
 
 ## 1. Matheuristic Rollout
@@ -518,6 +525,6 @@ Pada simulasi dan benchmark yang kami buat, meskipun lokasi serta data hanya men
 * Pemerintah Kota Balikpapan Dinas Lingkungan Hidup. (2022). Kajian pool kendaraan pengangkutan sampah di Kota Balikpapan, Tahun 2022 (Laporan Akhir). Pemerintah Kota Balikpapan Dinas Lingkungan Hidup.,
 * RRI. (2024, Januari 31). DLH Balikpapan atur ulang jadwal angkut sampah. rri.co.id. Diakses 13 Desember 2025, dari https://rri.co.id/lain-lain/537534/dlh-balikpapan-atur-ulang-jadwal-angkut-sampah
 * Kementerian Pekerjaan Umum dan Perumahan Rakyat. (2019, Desember 19). Diresmikan Presiden, pembangunan TPA Sampah Manggar di Balikpapan terbaik di Indonesia. pu.go.id. Diakses 13 Desember 2025, dari https://pu.go.id/berita/diresmikan-presiden-pembangunan-tpa-sampah-manggar-di-balikpapan-terbaik-di-indonesia
-
+* Hidayat, R.. Kajian Pengangkutan Sampah di Kota Balikpapan. Diperoleh dari https://repository.itk.ac.id/17715/16/13171008_presentation.pdf
 ---
 
