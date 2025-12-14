@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
-
+from src.environment import TIME_OFFSET
 
 class ProgramSummaryWindow:
     def __init__(self):
@@ -26,7 +26,7 @@ class ProgramSummaryWindow:
 
         time_frame = ttk.Frame(content)
 
-        self.hour_var = tk.StringVar(value="08")
+        self.hour_var = tk.StringVar(value="06")
         self.minute_var = tk.StringVar(value="00")
         self.day_var = tk.StringVar(value="1")
 
@@ -99,9 +99,6 @@ class ProgramSummaryWindow:
 
         button_frame = ttk.Frame(content)
         button_frame.grid(row=5, column=0, columnspan=2, pady=10)
-
-        refresh_btn = ttk.Button(button_frame, text="🔄 Refresh Simulasi", command=self.on_refresh)
-        refresh_btn.pack(side="left", padx=5)
 
         save_btn = ttk.Button(button_frame, text="💾 Hard Save", command=self.on_hard_save)
         save_btn.pack(side="left", padx=5)
@@ -187,7 +184,7 @@ class ProgramSummaryWindow:
         self.set_fps(self.shared.fps)
 
         self.set_simulation_time(
-            self.shared.sim_hour,
+            self.shared.get_effective_hour(),
             self.shared.sim_min,
             self.shared.sim_day
         )
@@ -261,8 +258,8 @@ class ProgramSummaryWindow:
                 messagebox.showinfo(
                     "Save Successful", 
                     f"Data berhasil disimpan ke:\n\n"
-                    f"📄 {self.shared.node_data_file}\n"
-                    f"📄 {self.shared.edge_data_file}"
+                    f"{self.shared.node_data_file}\n"
+                    f"{self.shared.edge_data_file}"
                 )
             else:
                 messagebox.showerror(

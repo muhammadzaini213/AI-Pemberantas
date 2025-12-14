@@ -1,0 +1,383 @@
+{
+  "days_simulated": 0,
+  "total_garbage_collected": 730468.8313755813,
+  "total_trips": 60,
+  "total_distance": 0,
+  "total_reschedules": 0,
+  "vehicles_used": 70,
+  "daily_metrics": [],
+  "hourly_slowdowns": {},
+  "tps_service_rates": {},
+  "simulation_time_seconds": 179.8834638595581,
+  "vehicle_utilization": {
+    "6449c39d": {
+      "total_distance_km": 2268.870164794906,
+      "final_state": "at_tpa",
+      "final_load": 3677.7490903182224
+    },
+    "cdd8397e": {
+      "total_distance_km": 2241.1631103515288,
+      "final_state": "at_tpa",
+      "final_load": 3699.026661525593
+    },
+    "ccfe2140": {
+      "total_distance_km": 2289.538743896461,
+      "final_state": "at_tpa",
+      "final_load": 3908.1374916884215
+    },
+    "83d043df": {
+      "total_distance_km": 2293.1010021972284,
+      "final_state": "at_tpa",
+      "final_load": 4364.73215059372
+    },
+    "c0f90fc4": {
+      "total_distance_km": 2289.5867614745885,
+      "final_state": "at_tpa",
+      "final_load": 3590.832205927152
+    },
+    "5f61cbba": {
+      "total_distance_km": 2286.9404260253714,
+      "final_state": "at_tpa",
+      "final_load": 2727.292219820785
+    },
+    "30652531": {
+      "total_distance_km": 2294.0672937011414,
+      "final_state": "at_tpa",
+      "final_load": 3299.3330488335114
+    },
+    "4ab06f43": {
+      "total_distance_km": 2285.0106152343515,
+      "final_state": "at_tpa",
+      "final_load": 5718.095380464971
+    },
+    "bdfa283a": {
+      "total_distance_km": 2273.549403076143,
+      "final_state": "at_tpa",
+      "final_load": 4085.228498606186
+    },
+    "f077850c": {
+      "total_distance_km": 2275.4041113281155,
+      "final_state": "at_tpa",
+      "final_load": 3787.2147447293014
+    },
+    "01dfe886": {
+      "total_distance_km": 2297.448914794899,
+      "final_state": "at_tpa",
+      "final_load": 3277.8546593243686
+    },
+    "38a1e8da": {
+      "total_distance_km": 2257.0670544433415,
+      "final_state": "at_tpa",
+      "final_load": 3184.80076929358
+    },
+    "bfe6e830": {
+      "total_distance_km": 2285.451994628887,
+      "final_state": "at_tpa",
+      "final_load": 5024.535023900932
+    },
+    "89aedced": {
+      "total_distance_km": 2269.896218261687,
+      "final_state": "at_tpa",
+      "final_load": 4419.416736560448
+    },
+    "7044132f": {
+      "total_distance_km": 2271.894587402313,
+      "final_state": "at_tpa",
+      "final_load": 2587.0987226402676
+    },
+    "355b859e": {
+      "total_distance_km": 2265.5414318847324,
+      "final_state": "at_tpa",
+      "final_load": 7915.963093289574
+    },
+    "69bcbd72": {
+      "total_distance_km": 2254.0216296386516,
+      "final_state": "at_tpa",
+      "final_load": 7988.927624806718
+    },
+    "75ade7a8": {
+      "total_distance_km": 2289.2432189941123,
+      "final_state": "at_tpa",
+      "final_load": 5299.105523292285
+    },
+    "8b88b30b": {
+      "total_distance_km": 2256.303977050751,
+      "final_state": "at_tpa",
+      "final_load": 10342.692286513802
+    },
+    "efe72ece": {
+      "total_distance_km": 2270.91342407223,
+      "final_state": "at_tpa",
+      "final_load": 8854.589011241038
+    },
+    "e2e7e7be": {
+      "total_distance_km": 2279.029683837854,
+      "final_state": "at_tpa",
+      "final_load": 12211.897444587563
+    },
+    "95c06b9d": {
+      "total_distance_km": 2273.4905895995785,
+      "final_state": "at_tpa",
+      "final_load": 9678.54817338017
+    },
+    "b4452425": {
+      "total_distance_km": 2286.483618164024,
+      "final_state": "at_tpa",
+      "final_load": 12957.910967773665
+    },
+    "3f734cfc": {
+      "total_distance_km": 2291.536274414035,
+      "final_state": "at_tpa",
+      "final_load": 9518.592057317122
+    },
+    "b801f0a0": {
+      "total_distance_km": 2290.7353198242017,
+      "final_state": "at_tpa",
+      "final_load": 9432.802976146024
+    },
+    "ec426a76": {
+      "total_distance_km": 2260.4552600097495,
+      "final_state": "at_tpa",
+      "final_load": 11243.802663570372
+    },
+    "0dc284a3": {
+      "total_distance_km": 2256.3991186523153,
+      "final_state": "at_tpa",
+      "final_load": 9062.755089278302
+    },
+    "ab89b297": {
+      "total_distance_km": 2302.576721191363,
+      "final_state": "at_tpa",
+      "final_load": 8139.485048467275
+    },
+    "7f2f3607": {
+      "total_distance_km": 2236.1565966796547,
+      "final_state": "at_tpa",
+      "final_load": 8459.036878996389
+    },
+    "7dda7cb8": {
+      "total_distance_km": 2298.5125708007513,
+      "final_state": "at_tpa",
+      "final_load": 9072.74045966803
+    },
+    "bf9bf97a": {
+      "total_distance_km": 2299.85789428706,
+      "final_state": "at_tpa",
+      "final_load": 8727.421144608932
+    },
+    "76190103": {
+      "total_distance_km": 2310.35313354488,
+      "final_state": "at_tpa",
+      "final_load": 10290.170297658526
+    },
+    "1101adc2": {
+      "total_distance_km": 2308.4044262695006,
+      "final_state": "at_tpa",
+      "final_load": 9633.532098542175
+    },
+    "9f0cffa9": {
+      "total_distance_km": 2305.552979736301,
+      "final_state": "at_tpa",
+      "final_load": 9641.782098352502
+    },
+    "78bdce4c": {
+      "total_distance_km": 2304.6805224609147,
+      "final_state": "at_tpa",
+      "final_load": 7777.575189775538
+    },
+    "81f5e77d": {
+      "total_distance_km": 2301.047563476541,
+      "final_state": "at_tpa",
+      "final_load": 10044.24801442524
+    },
+    "6a11158b": {
+      "total_distance_km": 2275.0148913573994,
+      "final_state": "at_tpa",
+      "final_load": 10876.802531113106
+    },
+    "959dd4e4": {
+      "total_distance_km": 2311.544600830055,
+      "final_state": "at_tpa",
+      "final_load": 10467.292207419066
+    },
+    "9f550d34": {
+      "total_distance_km": 2272.004132080046,
+      "final_state": "at_tpa",
+      "final_load": 13858.118406132617
+    },
+    "fa2b5891": {
+      "total_distance_km": 2277.792626953095,
+      "final_state": "at_tpa",
+      "final_load": 10090.526966022717
+    },
+    "b445a71a": {
+      "total_distance_km": 2277.0534851074067,
+      "final_state": "at_tpa",
+      "final_load": 7381.1492806380475
+    },
+    "ce06ce2c": {
+      "total_distance_km": 2313.97924438475,
+      "final_state": "at_tpa",
+      "final_load": 9529.740796059337
+    },
+    "34c30219": {
+      "total_distance_km": 2300.4708728027276,
+      "final_state": "at_tpa",
+      "final_load": 12910.773347625134
+    },
+    "c5f59468": {
+      "total_distance_km": 2296.2680969238045,
+      "final_state": "at_tpa",
+      "final_load": 10419.000191272577
+    },
+    "420e6899": {
+      "total_distance_km": 2284.056683349587,
+      "final_state": "at_tpa",
+      "final_load": 15140.841586142553
+    },
+    "19b0cd74": {
+      "total_distance_km": 2284.366959228487,
+      "final_state": "at_tpa",
+      "final_load": 10045.896904209796
+    },
+    "63839e19": {
+      "total_distance_km": 2292.15472778318,
+      "final_state": "at_tpa",
+      "final_load": 10919.470283295872
+    },
+    "e876f7fe": {
+      "total_distance_km": 2308.606849365233,
+      "final_state": "at_tpa",
+      "final_load": 11245.090965613072
+    },
+    "6ebe68e7": {
+      "total_distance_km": 2308.485882568327,
+      "final_state": "at_tpa",
+      "final_load": 12415.024342453371
+    },
+    "df71be76": {
+      "total_distance_km": 2282.046965332002,
+      "final_state": "at_tpa",
+      "final_load": 13251.830349369215
+    },
+    "2c619193": {
+      "total_distance_km": 2265.655268554691,
+      "final_state": "at_tpa",
+      "final_load": 8928.053124233893
+    },
+    "efc3191c": {
+      "total_distance_km": 2322.3322741699085,
+      "final_state": "at_tpa",
+      "final_load": 7764.971921501257
+    },
+    "5196bb81": {
+      "total_distance_km": 2330.9499938964304,
+      "final_state": "at_tpa",
+      "final_load": 4831.52381238323
+    },
+    "2117c1b6": {
+      "total_distance_km": 2322.2243627929206,
+      "final_state": "at_tpa",
+      "final_load": 10150.616619967495
+    },
+    "db9afcb3": {
+      "total_distance_km": 2311.787856445277,
+      "final_state": "at_tpa",
+      "final_load": 12985.146961969842
+    },
+    "07f6b820": {
+      "total_distance_km": 2313.912293701156,
+      "final_state": "at_tpa",
+      "final_load": 12200.32869366033
+    },
+    "15dfe922": {
+      "total_distance_km": 2316.9505151366943,
+      "final_state": "at_tpa",
+      "final_load": 13390.409720982703
+    },
+    "3c31f36e": {
+      "total_distance_km": 2240.3250878905947,
+      "final_state": "at_tpa",
+      "final_load": 9993.294722850329
+    },
+    "f8b195c3": {
+      "total_distance_km": 2255.229624023406,
+      "final_state": "at_tpa",
+      "final_load": 13746.570278708368
+    },
+    "2cef18d0": {
+      "total_distance_km": 2268.1280932617033,
+      "final_state": "at_tpa",
+      "final_load": 9269.041511419024
+    },
+    "258b60b9": {
+      "total_distance_km": 2293.990477294888,
+      "final_state": "at_tpa",
+      "final_load": 10400.445025509543
+    },
+    "22493a8c": {
+      "total_distance_km": 2275.880969238252,
+      "final_state": "at_tpa",
+      "final_load": 10409.659356039328
+    },
+    "f6a457e2": {
+      "total_distance_km": 2299.80210205076,
+      "final_state": "at_tpa",
+      "final_load": 12335.326435301075
+    },
+    "c6daa658": {
+      "total_distance_km": 2268.786046142552,
+      "final_state": "at_tpa",
+      "final_load": 12757.655634496143
+    },
+    "4c5dd3b2": {
+      "total_distance_km": 2290.770758056614,
+      "final_state": "at_tpa",
+      "final_load": 13831.097725019452
+    },
+    "682495ad": {
+      "total_distance_km": 2282.247044677689,
+      "final_state": "at_tpa",
+      "final_load": 13483.60131213878
+    },
+    "126b4c8b": {
+      "total_distance_km": 2289.7960876464635,
+      "final_state": "at_tpa",
+      "final_load": 14473.159949775789
+    },
+    "b97c5457": {
+      "total_distance_km": 2295.1767773437405,
+      "final_state": "at_tpa",
+      "final_load": 13619.279179399688
+    },
+    "b3869690": {
+      "total_distance_km": 2285.037535400359,
+      "final_state": "at_tpa",
+      "final_load": 10834.58016939138
+    },
+    "cd3baaa3": {
+      "total_distance_km": 2256.4835668944947,
+      "final_state": "at_tpa",
+      "final_load": 13941.96126422158
+    }
+  },
+  "objective_function": {
+    "total_distance_km": 0,
+    "avg_overtime_minutes": 0.0,
+    "unserved_tps_count": 0,
+    "workload_std_dev_km": 20.496956406412306,
+    "objective_value": 6.149086921923692,
+    "components": {
+      "distance_cost": 0.0,
+      "overtime_cost": 0.0,
+      "unserved_cost": 0.0,
+      "workload_cost": 6.149086921923692
+    },
+    "weights": {
+      "w1": 1.0,
+      "w2": 100.0,
+      "w3": 5000.0,
+      "w4": 0.3
+    }
+  }
+}

@@ -1,33 +1,36 @@
 import networkx as nx
+from ..environment import TIME_OFFSET
 
 class KnowledgeModel:
     
     def __init__(self, graph, shared, tps_nodes, tpa_nodes, garage_nodes):
-        self.graph = graph
         self.shared = shared
         self.TPS_nodes = tps_nodes
         self.TPA_nodes = tpa_nodes
         self.GARAGE_nodes = garage_nodes
+        self.TIME_OFFSET = TIME_OFFSET
+
+        self.graph = graph
         
-        # ===== Known information (statis) =====
+        # ================== Known information (static) ==================
         self.known_garages = {node_id: self._get_garage_info(node_id) for node_id in garage_nodes}
         self.known_tps = {node_id: self._get_tps_static_info(node_id) for node_id in tps_nodes}
         self.known_tpa = {node_id: self._get_tpa_info(node_id) for node_id in tpa_nodes}
         
-
-        # ===== Discovered information (dinamis) =====
+        # ================== Discovered information (dynamic) ==================
         self.discovered_slowdowns = {}
         self.discovered_garbage = {}
-
         
-        # ===== Vehicle tracking =====
+        # ================== Vehicle tracking ==================
         self.vehicle_statuses = {}
         self.vehicle_assignments = {}
         self.all_vehicle_ids = set()
-        
 
-
-    # ============== STATIC KNOWLEDGE ==============
+    
+    def _effective_hour(self):
+        return (self.shared.get_effective_hour() + self.TIME_OFFSET) % 24
+    
+    # ================== STATIC KNOWLEDGE ==================
     def _get_garage_info(self, garage_id):
         if garage_id in self.shared.node_type:
             garage_data = self.shared.node_type[garage_id].get("garage_data", {})
@@ -70,9 +73,25 @@ class KnowledgeModel:
     def get_all_tpa(self):
         return self.known_tpa
     
-    def get_shortest_path(self, start, end):
+    def get_shortest_path(self, start, end, avoid_current_slowdowns=True):
         try:
-            return nx.shortest_path(self.graph, start, end, weight="length")
+            if avoid_current_slowdowns:
+                temp_graph = self.graph.copy()
+                current_hour = self._effective_hour()
+                
+                for edge_id, hour_data in self.discovered_slowdowns.items():
+                    if current_hour in hour_data:
+                        edge_parts = edge_id.strip("()").split(", ")
+                        if len(edge_parts) == 2:
+                            u, v = int(edge_parts[0]), int(edge_parts[1])
+                            
+                            if temp_graph.has_edge(u, v):
+                                original_length = temp_graph[u][v][0].get('length', 1000)
+                                temp_graph[u][v][0]['length'] = original_length * 3
+                
+                return nx.shortest_path(temp_graph, start, end, weight="length")
+            else:
+                return nx.shortest_path(self.graph, start, end, weight="length")
         except:
             return None
     
@@ -86,43 +105,69 @@ class KnowledgeModel:
             if edge_data:
                 total_dist += edge_data[0].get('length', 0)
         return total_dist
-    
 
-
-
-
-
-    # ============== DISCOVERED/DYNAMIC KNOWLEDGE ==============
+    # ================== DISCOVERED/DYNAMIC KNOWLEDGE ==================
     def discover_slowdown(self, edge_id, slowdown_value):
+        current_hour = self._effective_hour()
+        current_day = self.shared.sim_day
+        
         if edge_id not in self.discovered_slowdowns:
-            self.discovered_slowdowns[edge_id] = {
+            self.discovered_slowdowns[edge_id] = {}
+        
+        if current_hour not in self.discovered_slowdowns[edge_id]:
+            self.discovered_slowdowns[edge_id][current_hour] = {
                 "slowdown": slowdown_value,
-                "discovered_at": f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}",
-                "times_encountered": 1
+                "count": 1,
+                "days_seen": {current_day},
+                "first_seen": f"Day {current_day} {current_hour:02d}:{self.shared.sim_min:02d}"
             }
-            print(f"[KnowledgeModel] 🚨 DISCOVERED slowdown at {edge_id}: {slowdown_value} km/jam")
+            print(f"[KnowledgeModel] DISCOVERED slowdown at {edge_id} on hour {current_hour}: {slowdown_value} km/h")
         else:
-            self.discovered_slowdowns[edge_id]["times_encountered"] += 1
+            data = self.discovered_slowdowns[edge_id][current_hour]
+            data["count"] += 1
+            data["days_seen"].add(current_day)
             
-            if self.discovered_slowdowns[edge_id]["slowdown"] != slowdown_value:
-                old_value = self.discovered_slowdowns[edge_id]["slowdown"]
-                self.discovered_slowdowns[edge_id]["slowdown"] = slowdown_value
-                self.discovered_slowdowns[edge_id]["updated_at"] = f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"
-                print(f"[KnowledgeModel] ⚠️ UPDATED slowdown at {edge_id}: {old_value} → {slowdown_value} km/jam")
+            if data["slowdown"] != slowdown_value:
+                old_value = data["slowdown"]
+                data["slowdown"] = slowdown_value
+                print(f"[KnowledgeModel] UPDATED slowdown at {edge_id} hour {current_hour}: {old_value} → {slowdown_value} km/h")
     
-    def get_slowdown(self, edge_id):
+    def get_slowdown(self, edge_id, hour=None):
+        if hour is None:
+            hour = self._effective_hour()
+        
         if edge_id in self.discovered_slowdowns:
-            return self.discovered_slowdowns[edge_id]["slowdown"]
+            if hour in self.discovered_slowdowns[edge_id]:
+                return self.discovered_slowdowns[edge_id][hour]["slowdown"]
         return None
+    
+    def is_edge_slow_now(self, edge_id):
+        return self.get_slowdown(edge_id) is not None
     
     def get_all_slowdowns(self):
         return self.discovered_slowdowns
     
     def get_slowdown_count(self):
-        return len(self.discovered_slowdowns)
+        total = 0
+        for edge_data in self.discovered_slowdowns.values():
+            total += len(edge_data)
+        return total
+    
+    def get_slowdown_summary(self):
+        summary = {}
+        for edge_id, hour_data in self.discovered_slowdowns.items():
+            for hour, data in hour_data.items():
+                if hour not in summary:
+                    summary[hour] = []
+                summary[hour].append({
+                    "edge": edge_id,
+                    "slowdown": data["slowdown"],
+                    "encounters": data["count"]
+                })
+        return summary
     
     def discover_garbage(self, tps_id, sampah_kg, sim_time=None):
-        current_time = f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}" if sim_time is None else sim_time
+        current_time = f"Day {self.shared.sim_day} {self._effective_hour():02d}:{self.shared.sim_min:02d}" if sim_time is None else sim_time
         
         if tps_id not in self.discovered_garbage:
             self.discovered_garbage[tps_id] = {
@@ -147,12 +192,8 @@ class KnowledgeModel:
         if tps_id in self.discovered_garbage:
             return self.discovered_garbage[tps_id]["history"]
         return []
-    
 
-
-
-
-    # ============== VEHICLE TRACKER ==============
+    # ================== VEHICLE TRACKER ==================
     def update_vehicle_status(self, vehicle_id, status):
         self.all_vehicle_ids.add(vehicle_id)
         self.vehicle_statuses[vehicle_id] = {
@@ -161,7 +202,7 @@ class KnowledgeModel:
             "load": status.get("load", 0),
             "load_percentage": status.get("load_percentage", 0),
             "state": status.get("state"),
-            "timestamp": f"Day {self.shared.sim_day} {self.shared.sim_hour:02d}:{self.shared.sim_min:02d}"
+            "timestamp": f"Day {self.shared.sim_day} {self._effective_hour():02d}:{self.shared.sim_min:02d}"
         }
     
     def get_vehicle_status(self, vehicle_id):
@@ -177,10 +218,8 @@ class KnowledgeModel:
     def clear_task(self, vehicle_id):
         if vehicle_id in self.vehicle_assignments:
             del self.vehicle_assignments[vehicle_id]
-    
 
-
-    # ============== AGENT QUERIES (SENSOR) ==============    
+    # ================== AGENT QUERIES (SENSOR) ==================    
     def get_optimal_tps(self, current_pos, prefer_known=False):
         best_tps = None
         best_distance = float('inf')
@@ -188,18 +227,16 @@ class KnowledgeModel:
         if prefer_known and self.discovered_garbage:
             for tps_id in self.discovered_garbage.keys():
                 if tps_id in self.known_tps:
-                    dist = self.get_route_distance(
-                        self.get_shortest_path(current_pos, tps_id)
-                    )
+                    path = self.get_shortest_path(current_pos, tps_id, avoid_current_slowdowns=True)
+                    dist = self.get_route_distance(path)
                     if dist < best_distance:
                         best_distance = dist
                         best_tps = tps_id
         
         if best_tps is None:
             for tps_id in self.TPS_nodes:
-                dist = self.get_route_distance(
-                    self.get_shortest_path(current_pos, tps_id)
-                )
+                path = self.get_shortest_path(current_pos, tps_id, avoid_current_slowdowns=True)
+                dist = self.get_route_distance(path)
                 if dist < best_distance:
                     best_distance = dist
                     best_tps = tps_id
@@ -213,16 +250,17 @@ class KnowledgeModel:
         ]
 
     def get_knowledge_summary(self):
-        total_encounters = sum(
-            data["times_encountered"] 
-            for data in self.discovered_slowdowns.values()
-        )
+        total_encounters = 0
+        for edge_data in self.discovered_slowdowns.values():
+            for hour_data in edge_data.values():
+                total_encounters += hour_data["count"]
         
         return {
             "known_garages": len(self.known_garages),
             "known_tps": len(self.known_tps),
             "known_tpa": len(self.known_tpa),
-            "discovered_slowdowns": len(self.discovered_slowdowns),
+            "discovered_slowdown_edges": len(self.discovered_slowdowns),
+            "discovered_slowdown_patterns": self.get_slowdown_count(),
             "total_slowdown_encounters": total_encounters,
             "discovered_garbage": len(self.discovered_garbage),
             "active_vehicles": len(self.all_vehicle_ids),

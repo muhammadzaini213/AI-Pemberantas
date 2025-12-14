@@ -63,7 +63,6 @@ class GraphViewer:
         ux = dx / length
         uy = dy / length
 
-        # arrow size proportional to width (already scaled)
         size = max(3, 4 + int(width))
         px = -uy
         py = ux
@@ -74,6 +73,27 @@ class GraphViewer:
 
         pygame.draw.polygon(screen, color, ( (int(p1[0]),int(p1[1])), (int(p2[0]),int(p2[1])), (int(p3[0]),int(p3[1])) ))
 
+    def _is_edge_slow_now(self, edge_data):
+
+        if not edge_data:
+            return False
+        
+        slowdown = edge_data.get("slowdown", 0)
+        if slowdown <= 0:
+            return False
+        
+        start_hour = edge_data.get("start_hour")
+        end_hour = edge_data.get("end_hour")
+        
+        if start_hour is None or end_hour is None:
+            return True
+        
+        current_hour = self.shared.sim_hour
+        
+        if start_hour <= end_hour:
+            return start_hour <= current_hour <= end_hour
+        else:
+            return current_hour >= start_hour or current_hour <= end_hour
 
     def draw_graph(self, screen, G, default_color, edge_color):
 
@@ -88,7 +108,6 @@ class GraphViewer:
         ARROW_MIN_SCALE = 3 
         ARROW_MIN_LEN_PX = 150   
 
-
         for u, v in G.edges():
             x1, y1 = self._coord_cache[u]
             x2, y2 = self._coord_cache[v]
@@ -102,13 +121,24 @@ class GraphViewer:
             onscreen_len = (dx*dx + dy*dy) ** 0.5
 
             edge_id = f"{u}-{v}"
-            e = self.shared.edge_type.get(edge_id)
-            is_slow = e and e.get("slowdown", 0) > 0
-            color = (255, 0, 0) if is_slow else edge_color
+            edge_data = self.shared.edge_type.get(edge_id)
+            
+            is_slow_now = self._is_edge_slow_now(edge_data)
+            
+            if is_slow_now:
+                color = (255, 0, 0)  # Merah - sedang macet
+            elif edge_data and edge_data.get("slowdown", 0) > 0:
+                color = (255, 165, 0)  # Orange - ada config slowdown tapi tidak aktif
+            else:
+                color = edge_color  # Default
 
-            base_width = 1 if not is_slow else 2
+            base_width = 1
+            if is_slow_now:
+                base_width = 2
+            elif edge_data and edge_data.get("slowdown", 0) > 0:
+                base_width = 1.5
+            
             width = max(1, int(base_width * min(1.0, scale * 1.4)))
-
 
             draw_head = (
                 scale >= ARROW_MIN_SCALE and
@@ -132,7 +162,6 @@ class GraphViewer:
                 pygame.draw.circle(screen, TPA_COL, (x, y), 4)
             elif flags.get("garage"):
                 pygame.draw.circle(screen, GARAGE_COL, (x, y), 5)
-
 
     def draw_dynamic_objects(self, screen, vehicles):
         for vehicle in vehicles:
@@ -271,7 +300,11 @@ class GraphViewer:
                     print(f"[DEBUG] Edge diklik: {u}-{v}")
                     edge_id = f"{u}-{v}"
                     if edge_id not in shared.edge_type:
-                        shared.edge_type[edge_id] = {"slowdown": 0}
+                        shared.edge_type[edge_id] = {
+                            "slowdown": 0,
+                            "start_hour": 0,
+                            "end_hour": 23
+                        }
                     if hasattr(shared, "edge_state_window") and shared.edge_state_window:
                         shared.edge_state_window.set_edge(edge_id, shared.edge_type[edge_id])
                     break

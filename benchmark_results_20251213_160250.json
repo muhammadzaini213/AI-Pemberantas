@@ -1,0 +1,51 @@
+{
+  "days_simulated": 0,
+  "total_garbage_collected": 0,
+  "total_trips": 0,
+  "total_distance": 0,
+  "total_reschedules": 0,
+  "slowdown_discoveries": 0,
+  "vehicles_used": 3,
+  "daily_metrics": [],
+  "hourly_slowdowns": {},
+  "edge_slowdown_patterns": {},
+  "vehicle_utilization": {
+    "47edc0eb": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "946667d9": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    },
+    "94d2d7ea": {
+      "total_distance_km": 0.0,
+      "final_state": "idle",
+      "final_load": 0
+    }
+  },
+  "tps_service_rates": {},
+  "simulation_time_seconds": 7.152557373046875e-07,
+  "slowdown_encounters": 0,
+  "objective_function": {
+    "total_distance_km": 0,
+    "avg_overtime_minutes": 0.0,
+    "unserved_tps_count": 0,
+    "workload_std_dev_km": 0.0,
+    "objective_value": 0.0,
+    "components": {
+      "distance_cost": 0.0,
+      "overtime_cost": 0.0,
+      "unserved_cost": 0.0,
+      "workload_cost": 0.0
+    },
+    "weights": {
+      "w1": 1.0,
+      "w2": 100.0,
+      "w3": 5000.0,
+      "w4": 0.3
+    }
+  }
+}

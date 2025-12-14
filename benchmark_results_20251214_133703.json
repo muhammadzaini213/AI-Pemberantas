@@ -1,0 +1,21 @@
+{
+  "days_simulated": 0,
+  "total_garbage_collected": 66819.60838180687,
+  "total_trips": 0,
+  "total_distance": 311.62595901547945,
+  "total_reschedules": 0,
+  "vehicles_used": 7,
+  "daily_metrics": [],
+  "simulation_time_seconds": 143.8423433303833,
+  "performance_kpis": {
+    "collection_rate": 100.0,
+    "total_distance_km": 311.62595901547945,
+    "total_trips": 0,
+    "total_garbage_kg": 66819.60838180687,
+    "avg_garbage_per_trip": 0,
+    "avg_distance_per_trip": 0,
+    "garbage_per_km": 214.4224717122739,
+    "vehicle_utilization": 100.0,
+    "tps_coverage": 100.0
+  }
+}

@@ -8,9 +8,14 @@ from .classes.knowledge import KnowledgeModel
 from .classes.ai_model import AIModel
 import time
 
-def run_simulation(GRAPH, shared):
-    
-    # ===== CLEAR EXISTING VEHICLES =====
+def run_simulation(GRAPH, shared, isSingleRender):
+    if (isSingleRender):
+        run_simulation_single_render(GRAPH, shared)
+    else:
+        run_simulation_editor(GRAPH, shared)
+
+def run_simulation_editor(GRAPH, shared):
+    # ======================== CLEAR EXISTING VEHICLES ========================
     print(f"\n{'='*60}")
     print(f"[Simulation] Starting simulation...")
     print(f"{'='*60}")
@@ -27,7 +32,7 @@ def run_simulation(GRAPH, shared):
     pos = {n: (data['x'] / SCALE_DIV, data['y'] / SCALE_DIV)
            for n, data in GRAPH.nodes(data=True)}
 
-    # ===== Viewer =====
+    # ======================== VIEWER ========================
     viewer = GraphViewer(pos, shared)
     range_x = viewer.max_x - viewer.min_x
     range_y = viewer.max_y - viewer.min_y
@@ -43,6 +48,7 @@ def run_simulation(GRAPH, shared):
 
     last_garbage_generation_day = shared.sim_day
 
+    # ======================== MODEL INITIALIZATION ========================
     knowledge_model = KnowledgeModel(GRAPH, shared, TPS_nodes, TPA_nodes, GARAGE_nodes)
     shared.knowledge_model = knowledge_model
     
@@ -61,7 +67,7 @@ def run_simulation(GRAPH, shared):
     print(f"[Simulation] simulation_running flag: {shared.simulation_running}")
     
 
-    # ============= INITIALIZE =============
+    # ======================== START SIMULATION ========================
     pygame.init()
     screen = pygame.display.set_mode((viewer.WIDTH, viewer.HEIGHT))
     pygame.display.set_caption(APP_NAME)
@@ -83,7 +89,7 @@ def run_simulation(GRAPH, shared):
         if not shared.paused:
             sim_time_acc += dt * shared.speed * (60 ** 1)
             total_minutes = int(sim_time_acc / 60)
-            shared.sim_hour = (8 + (total_minutes // 60)) % 24
+            shared.sim_hour = (SIM_START + (total_minutes // 60)) % 24
             shared.sim_min = total_minutes % 60
             shared.sim_day = 1 + (total_minutes // (24 * 60))
             
@@ -104,9 +110,116 @@ def run_simulation(GRAPH, shared):
         pygame.display.flip()
         clock.tick(MAX_FPS)
     
-    # ===== CLEANUP =====
+    # ======================== CLEANUP ========================
     print(f"\n{'='*60}")
     print(f"[Simulation] Main loop ended")
     print(f"[Simulation] Final vehicle count: {len(shared.vehicles)}")
     print(f"{'='*60}\n")
+    pygame.quit()
+
+
+def run_simulation_single_render(GRAPH, shared):
+    print(f"\n{'='*60}")
+    print(f"[Simulation] Starting simulation...")
+    print(f"{'='*60}")
+
+    shared.vehicles.clear()
+    shared.total_vehicles = 0
+
+    sim_time_acc = 0.0
+    last_time = time.time()
+
+    TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
+
+    SCALE_DIV = 1000.0
+    pos = {n: (data['x'] / SCALE_DIV, data['y'] / SCALE_DIV)
+           for n, data in GRAPH.nodes(data=True)}
+
+    # ======================== VIEWER ========================
+    viewer = GraphViewer(pos, shared)
+    range_x = viewer.max_x - viewer.min_x
+    range_y = viewer.max_y - viewer.min_y
+
+    viewer.scale = min(viewer.WIDTH / range_x, viewer.HEIGHT / range_y) * 0.95
+    viewer.offset_x = viewer.WIDTH / 2 - ((viewer.min_x + viewer.max_x) / 2 - viewer.min_x) * viewer.scale
+    viewer.offset_y = viewer.HEIGHT / 2 - ((viewer.max_y + viewer.min_y) / 2 - viewer.min_y) * viewer.scale
+
+
+    vehicles = []
+    generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA_nodes)
+
+    last_garbage_generation_day = shared.sim_day
+
+    # ======================== MODEL ========================
+    knowledge_model = KnowledgeModel(GRAPH, shared, TPS_nodes, TPA_nodes, GARAGE_nodes)
+    shared.knowledge_model = knowledge_model
+
+    ai_model = AIModel(knowledge_model, shared)
+    shared.ai_model = ai_model
+
+    running = True
+    shared.paused = True
+
+    # ======================== PYGAME INIT ========================
+    pygame.init()
+    screen = pygame.display.set_mode((viewer.WIDTH, viewer.HEIGHT))
+    pygame.display.set_caption(APP_NAME)
+    clock = pygame.time.Clock()
+
+    # ======================== GRAPH RENDER ONCE ========================
+    graph_rendered_once = False
+    graph_surface = None
+
+    # ======================== MAIN LOOP ========================
+    while running and shared.simulation_running:
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                shared.simulation_running = False
+                running = False
+
+        sim_time_acc = sync(shared, sim_time_acc)
+        shared.fps = int(clock.get_fps())
+        dt, last_time = getDt(time, last_time)
+
+        if not shared.paused:
+            sim_time_acc += dt * shared.speed * 60
+            total_minutes = int(sim_time_acc / 60)
+
+            shared.sim_hour = (SIM_START + (total_minutes // 60)) % 24
+            shared.sim_min = total_minutes % 60
+            shared.sim_day = 1 + (total_minutes // (24 * 60))
+
+            last_garbage_generation_day = generate_daily_garbage(
+                shared, TPS_nodes, ai_model, last_garbage_generation_day
+            )
+
+            ai_model.update(dt, vehicles)
+
+        # ======================== RENDER ========================
+
+        if not graph_rendered_once:
+            graph_surface = pygame.Surface((viewer.WIDTH, viewer.HEIGHT)).convert()
+            graph_surface.fill((20, 20, 20))
+            viewer.draw_graph(graph_surface, GRAPH, NODE_COL, LINE_COL)
+            graph_rendered_once = True
+            print("[Render] Graph rendered once")
+
+        screen.blit(graph_surface, (0, 0))
+
+        viewer.draw_dynamic_objects(screen, vehicles)
+
+        for v in vehicles:
+            v.update(dt, shared)
+            knowledge_model.update_vehicle_status(v.id, v.actuator_get_status())
+
+        pygame.display.flip()
+        clock.tick(MAX_FPS)
+
+    # ======================== CLEANUP ========================
+    print(f"\n{'='*60}")
+    print(f"[Simulation] Main loop ended")
+    print(f"[Simulation] Final vehicle count: {len(shared.vehicles)}")
+    print(f"{'='*60}\n")
+
     pygame.quit()
