@@ -78,10 +78,11 @@ $$
 \text{Skor}(t) = W_d \cdot \frac{1}{d(t) + 100} + W_g \cdot \frac{g(t)}{1000}
 $$
 
-- \( d(t) \): jarak kendaraan ke TPS  
-- \( g(t) \): jumlah sampah di TPS  
-- \( W_d \): bobot jarak (`DISTANCE_WEIGHT`)  
-- \( W_g \): bobot sampah (`GARBAGE_WEIGHT`)
+- $d(t)$: jarak kendaraan ke TPS  
+- $g(t)$: jumlah sampah di TPS  
+- $W_d$: bobot jarak (`DISTANCE_WEIGHT`)  
+- $W_g$: bobot sampah (`GARBAGE_WEIGHT`)
+
 
 - TPS dengan skor terbesar akan dipilih  
 - TPS dengan sampah ≤ 10 kg tidak dipertimbangkan  
