@@ -143,7 +143,7 @@ def show_benchmark_menu(GRAPH, shared):
         print("BENCHMARK MENU")
         print("="*70)
         print("1. Quick Test (1 day, 20x speed)")
-        print("2. Single Benchmark Run")
+        # print("2. Single Benchmark Run")
         print("3. Return to Normal Simulation")
         print("="*70)
 
@@ -151,8 +151,8 @@ def show_benchmark_menu(GRAPH, shared):
 
         if choice == "1":
             run_quick_test(GRAPH, shared)
-        elif choice == "2":
-            run_benchmark_mode(GRAPH, shared)
+        # elif choice == "2":
+        #     run_benchmark_mode(GRAPH, shared)
         elif choice == "3":
             break
         else:
