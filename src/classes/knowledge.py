@@ -18,7 +18,7 @@ class KnowledgeModel:
         self.known_tpa = {node_id: self._get_tpa_info(node_id) for node_id in tpa_nodes}
         
         # ================== Discovered information (dynamic) ==================
-        self.discovered_slowdowns = {}
+        self.discovered_slowdowns = {} # Unused
         self.discovered_garbage = {}
         
         # ================== Vehicle tracking ==================

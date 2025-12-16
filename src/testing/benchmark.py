@@ -101,8 +101,17 @@ class PerformanceMeasure:
         }
 
 
-def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
+def scale_graph_lengths(graph, factor=0.001):
+    G_scaled = graph.copy()
+    
+    for u, v, key, data in G_scaled.edges(keys=True, data=True):
+        if "length" in data:
+            data["length"] *= factor
+            
+    return G_scaled
 
+
+def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
     shared.vehicles.clear()
     shared.total_vehicles = 0
     shared.speed = speed_multiplier
@@ -113,6 +122,8 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
 
     # ================== INIT ==================
     TPS_nodes, TPA_nodes, GARAGE_nodes = initNodes(GRAPH, shared)
+
+    GRAPH = scale_graph_lengths(GRAPH, 0.001)
 
     vehicles = []
     generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA_nodes)
@@ -145,11 +156,13 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
 
     # ================== MAIN LOOP ==================
     while shared.sim_day <= num_days:
+        sim_time_acc = sync(shared, sim_time_acc)
         dt, last_time = getDt(time, last_time)
-        sim_time_acc += dt * shared.speed * 60
 
+        sim_time_acc += dt * shared.speed * 60
         total_minutes = int(sim_time_acc / 60)
-        shared.sim_hour = (SIM_START + total_minutes // 60) % 24
+
+        shared.sim_hour = (SIM_START + (total_minutes // 60)) % 24
         shared.sim_min = total_minutes % 60
         shared.sim_day = 1 + (total_minutes // (24 * 60))
 
@@ -164,7 +177,7 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
             knowledge_model.update_vehicle_status(v.id, v.actuator_get_status())
 
         if (
-            shared.sim_hour >= SHIFT_END
+            shared.sim_hour >= SHIFT_START
             and shared.sim_day - 1 > last_reported_day
             and all_vehicles_idle(vehicles)
         ):
@@ -187,7 +200,7 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
                     "total_dist": v.total_dist,
                     "state": v.state,
                     "load": v.load,
-                    "nodes_traversed": v.nodes_traversed.copy()  # salin path
+                    "nodes_traversed": v.nodes_traversed.copy()
                 }
 
                 v.daily_dist = 0
