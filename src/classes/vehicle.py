@@ -466,7 +466,6 @@ class Vehicle:
                             self.nodes_traversed.append({"Unload At TPA": self.current, "hour": self.get_time()})
                         print(f"[Vehicle {self.id}] At TPA {self.current}")
                         
-                        # Langsung unload dan route ke garage jika load = 0
                         if self.load > 0:
                             unloaded = self.actuator_unload_to_tpa()
                             if unloaded > 0:
