@@ -175,7 +175,7 @@ class KnowledgeModel:
                 "last_check_time": current_time,
                 "history": [sampah_kg]
             }
-            print(f"[KnowledgeModel] DISCOVERED garbage at TPS {tps_id}: {sampah_kg:.2f} kg (at {current_time})")
+            print(f"[KnowledgeModel] DISCOVERED garbage at TPS {tps_id}: {sampah_kg:.2f} kg (at {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d})")
         else:
             old_amount = self.discovered_garbage[tps_id]["sampah_kg"]
             self.discovered_garbage[tps_id]["sampah_kg"] = sampah_kg
