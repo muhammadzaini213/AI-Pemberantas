@@ -15,7 +15,6 @@ def generate_tps_garbage(TPS_nodes, shared):
                     actual_sampah = max(0, actual_sampah)
                     
                     tps_data["sampah_kg"] = actual_sampah
-                    print(f"[Simulation] TPS {tps_id}: Initial garbage {actual_sampah:.2f} kg")
 
 
 
@@ -87,10 +86,10 @@ def generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA
                         if total_vehicles_created % 10 == 0:
                             print(f"[Simulation]   Progress: {total_vehicles_created} vehicles created...")
                     
-                    print(f"[Simulation]   ✓ Garage {garage_id}: {armada_count} vehicles created")
+                    print(f"[Simulation]    Garage {garage_id}: {armada_count} vehicles created")
         
         print(f"\n{'='*60}")
-        print(f"[Simulation] ✓ Total vehicles created: {total_vehicles_created}")
+        print(f"[Simulation]  Total vehicles created: {total_vehicles_created}")
         print(f"{'='*60}")
         
         if total_vehicles_created == 0:
@@ -110,7 +109,7 @@ def generate_car_in_garage(GARAGE_nodes, shared, vehicles, GRAPH, TPS_nodes, TPA
     if len(shared.vehicles) != len(vehicles):
         print(f"[ERROR] Mismatch! Local: {len(vehicles)}, Shared: {len(shared.vehicles)}")
     else:
-        print(f"[Simulation] ✓ Vehicle assignment successful!")
+        print(f"[Simulation]  Vehicle assignment successful!")
     
     vehicle_ids = [v.id for v in shared.vehicles]
     unique_ids = set(vehicle_ids)
@@ -145,7 +144,7 @@ def initNodes(GRAPH, shared):
     if TPA_nodes:
         print(f"[Simulation] TPA nodes list: {list(TPA_nodes)}")
     else:
-        print(f"[Simulation] ⚠️ WARNING: NO TPA NODES CONFIGURED!")
+        print(f"[Simulation] WARNING: NO TPA NODES CONFIGURED!")
     
     shared.node_count = GRAPH.number_of_nodes()
     shared.edge_count = GRAPH.number_of_edges()

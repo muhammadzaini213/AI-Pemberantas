@@ -5,7 +5,6 @@ AI Pemberantas/
 ├── data/                 # Dataset AI
 ├── scrapper/             # Script untuk mengambil dataset graphml
 ├── src/                  # Program utama untuk simulasi (pygame)
-├── visualization/        # Program simulasi perhitungan (matplotlib)
 ├── window/               # Window Tkinter untuk editor
 └── README.md             # Dokumentasi utama proyek
 ```
@@ -98,6 +97,8 @@ Setelah environment aktif, jalankan:
 ```bash
 pip install numpy pandas scikit-learn matplotlib pygame osmnx
 ```
+
+NOTE: Untuk linux ubuntu gunakan pygame-ce
 
 ---
 

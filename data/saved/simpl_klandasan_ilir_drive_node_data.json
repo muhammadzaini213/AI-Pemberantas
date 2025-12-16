@@ -2069,7 +2069,9 @@
     "tpa": false,
     "garage": false,
     "tps_data": {
-      "sampah_kg": 0
+      "nama": "",
+      "sampah_per_hari": 1000.0,
+      "dilayanin": false
     },
     "tpa_data": {},
     "garage_data": {

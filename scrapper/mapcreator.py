@@ -6,7 +6,7 @@ place_name = "Balikpapan Timur, Balikpapan, Kalimantan Timur, Indonesia"
 G = ox.graph_from_place(
     place_name,
     network_type="drive",
-    simplify=False,
+    simplify=True,
     retain_all=False
 )
 

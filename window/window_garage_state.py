@@ -151,8 +151,8 @@ class GarageStateWindow:
         messagebox.showinfo(
             "Berhasil", 
             f"Garage {node_id} berhasil diupdate:\n"
-            f"• Nama: {updated_data['nama']}\n"
-            f"• Total Armada: {updated_data['total_armada']}"
+            f"Nama: {updated_data['nama']}\n"
+            f"Total Armada: {updated_data['total_armada']}"
         )
 
     def run(self):

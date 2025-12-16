@@ -1,6 +1,5 @@
 import pygame
 from ..environment import WIDTH, HEIGHT, TPA_COL, TPS_COL, GARAGE_COL
-import math
 
 class GraphViewer:
     def __init__(self, pos_dict, shared, width=WIDTH, height=HEIGHT, node_size=2):
@@ -48,73 +47,121 @@ class GraphViewer:
         self.last_offx = self.offset_x
         self.last_offy = self.offset_y
 
-    def draw_arrow(self, screen, color, start_pos, end_pos, width=2, arrow_size=8):
-        x1, y1 = start_pos
-        x2, y2 = end_pos
+    def draw_arrow_fast(self, screen, color, x1, y1, x2, y2, width, draw_head=True):
+
+        pygame.draw.line(screen, color, (x1, y1), (x2, y2), max(1, int(width)))
+
+        if not draw_head:
+            return
+
+        dx = x2 - x1
+        dy = y2 - y1
+        length = (dx*dx + dy*dy) ** 0.5
+        if length < 1:
+            return
+
+        ux = dx / length
+        uy = dy / length
+
+        size = max(3, 4 + int(width))
+        px = -uy
+        py = ux
+
+        p1 = (x2, y2)
+        p2 = (x2 - ux*size + px*size*0.5, y2 - uy*size + py*size*0.5)
+        p3 = (x2 - ux*size - px*size*0.5, y2 - uy*size - py*size*0.5)
+
+        pygame.draw.polygon(screen, color, ( (int(p1[0]),int(p1[1])), (int(p2[0]),int(p2[1])), (int(p3[0]),int(p3[1])) ))
+
+    def _is_edge_slow_now(self, edge_data):
+
+        if not edge_data:
+            return False
         
-        pygame.draw.line(screen, color, start_pos, end_pos, width)
+        slowdown = edge_data.get("slowdown", 0)
+        if slowdown <= 0:
+            return False
         
-        angle = math.atan2(y2 - y1, x2 - x1)
+        start_hour = edge_data.get("start_hour")
+        end_hour = edge_data.get("end_hour")
         
-        arrow_length = arrow_size
-        arrow_angle = math.pi / 6
+        if start_hour is None or end_hour is None:
+            return True
         
-        left_x = x2 - arrow_length * math.cos(angle - arrow_angle)
-        left_y = y2 - arrow_length * math.sin(angle - arrow_angle)
+        current_hour = self.shared.sim_hour
         
-        right_x = x2 - arrow_length * math.cos(angle + arrow_angle)
-        right_y = y2 - arrow_length * math.sin(angle + arrow_angle)
-        
-        pygame.draw.polygon(screen, color, [(x2, y2), (left_x, left_y), (right_x, right_y)])
+        if start_hour <= end_hour:
+            return start_hour <= current_hour <= end_hour
+        else:
+            return current_hour >= start_hour or current_hour <= end_hour
 
     def draw_graph(self, screen, G, default_color, edge_color):
-        for u, v in G.edges():
-            x1, y1 = self.transform_cached(u)
-            x2, y2 = self.transform_cached(v)
 
-            if (x1 < -10 and x2 < -10) or (x1 > self.WIDTH+10 and x2 > self.WIDTH+10):
+        if not hasattr(self, "_coord_cache"):
+            self._coord_cache = {}
+        self._coord_cache.clear()
+        for n in G.nodes():
+            self._coord_cache[n] = self.transform_cached(n)
+
+        scale = max(self.scale, 1e-9)
+
+        ARROW_MIN_SCALE = 3 
+        ARROW_MIN_LEN_PX = 150   
+
+        for u, v in G.edges():
+            x1, y1 = self._coord_cache[u]
+            x2, y2 = self._coord_cache[v]
+
+            if (max(x1, x2) < -15 or min(x1, x2) > self.WIDTH + 15 or
+                max(y1, y2) < -15 or min(y1, y2) > self.HEIGHT + 15):
                 continue
-            if (y1 < -10 and y2 < -10) or (y1 > self.HEIGHT+10 and y2 > self.HEIGHT+10):
-                continue
+
+            dx = x2 - x1
+            dy = y2 - y1
+            onscreen_len = (dx*dx + dy*dy) ** 0.5
 
             edge_id = f"{u}-{v}"
-            edge_data = self.shared.edge_type.get(edge_id, None)
+            edge_data = self.shared.edge_type.get(edge_id)
             
-            if edge_data and edge_data.get("slowdown", 0) > 0:
-                color = (255, 0, 0)
-                width = 5
+            is_slow_now = self._is_edge_slow_now(edge_data)
+            
+            if is_slow_now:
+                color = (255, 0, 0)  # Merah - sedang macet
+            elif edge_data and edge_data.get("slowdown", 0) > 0:
+                color = (255, 165, 0)  # Orange - ada config slowdown tapi tidak aktif
             else:
-                color = edge_color
-                width = 2
+                color = edge_color  # Default
 
-            self.draw_arrow(screen, color, (x1, y1), (x2, y2), width)
+            base_width = 1
+            if is_slow_now:
+                base_width = 2
+            elif edge_data and edge_data.get("slowdown", 0) > 0:
+                base_width = 1.5
+            
+            width = max(1, int(base_width * min(1.0, scale * 1.4)))
+
+            draw_head = (
+                scale >= ARROW_MIN_SCALE and
+                onscreen_len >= ARROW_MIN_LEN_PX
+            )
+
+            self.draw_arrow_fast(screen, color, x1, y1, x2, y2, width, draw_head=draw_head)
 
         for n in G.nodes():
-            x, y = self.transform_cached(n)
-
+            x, y = self._coord_cache[n]
             if not (-10 <= x <= self.WIDTH+10 and -10 <= y <= self.HEIGHT+10):
                 continue
 
-            flags = self.shared.node_type.get(n, None)
+            flags = self.shared.node_type.get(n)
+            if not flags:
+                continue
 
-            if flags:
-                if flags["tps"]:
-                    color = TPS_COL
-                    radius = 3
-                elif flags["tpa"]:
-                    color = TPA_COL
-                    radius = 4
-                elif flags["garage"]:
-                    color = GARAGE_COL
-                    radius = 5
-                else:
-                    color = default_color
-                    radius = self.NODE_SIZE
-            else:
-                color = default_color
-                radius = self.NODE_SIZE
-
-            pygame.draw.circle(screen, color, (x, y), radius)
+            if flags.get("tps"):
+                pygame.draw.circle(screen, TPS_COL, (x, y), 3)
+            elif flags.get("tpa"):
+                pygame.draw.circle(screen, TPA_COL, (x, y), 4)
+            elif flags.get("garage"):
+                pygame.draw.circle(screen, GARAGE_COL, (x, y), 5)
 
     def draw_dynamic_objects(self, screen, vehicles):
         for vehicle in vehicles:
@@ -253,7 +300,11 @@ class GraphViewer:
                     print(f"[DEBUG] Edge diklik: {u}-{v}")
                     edge_id = f"{u}-{v}"
                     if edge_id not in shared.edge_type:
-                        shared.edge_type[edge_id] = {"slowdown": 0}
+                        shared.edge_type[edge_id] = {
+                            "slowdown": 0,
+                            "start_hour": 0,
+                            "end_hour": 23
+                        }
                     if hasattr(shared, "edge_state_window") and shared.edge_state_window:
                         shared.edge_state_window.set_edge(edge_id, shared.edge_type[edge_id])
                     break

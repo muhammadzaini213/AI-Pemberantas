@@ -16,7 +16,7 @@ class NodeStateWindow:
 
         ttk.Label(content, text="ID Node:").grid(row=0, column=0, sticky="w")
         self.id_var = tk.StringVar()
-        entry = ttk.Entry(content, textvariable=self.id_var, width=20, state="readonly")
+        entry = ttk.Entry(content, textvariable=self.id_var, width=20)
         entry.grid(row=1, column=0, pady=(0, 12))
 
         self.tps_var = tk.BooleanVar()

@@ -1,11 +1,11 @@
 import json
 import os
-from ..environment import GRAPH_FILE
+from ..environment import GRAPH_FILE, TIME_OFFSET
 
 class SharedState:
     def __init__(self):
         self.fps = 0
-        self.sim_hour = 8
+        self.sim_hour = 0
         self.sim_min = 0
         self.sim_day = 1
         self.speed = 1.0
@@ -37,6 +37,13 @@ class SharedState:
         self.graph_base_name = self._extract_graph_name(GRAPH_FILE)
         self.node_data_file = os.path.join(self.data_dir, f"{self.graph_base_name}_node_data.json")
         self.edge_data_file = os.path.join(self.data_dir, f"{self.graph_base_name}_edge_data.json")
+
+        self.time_offset = 6  # contoh: +6 jam
+
+
+    def get_effective_hour(self):
+        return (self.sim_hour + TIME_OFFSET) % 24
+
 
     def _extract_graph_name(self, graph_file):
         filename = os.path.basename(graph_file)
@@ -76,7 +83,8 @@ class SharedState:
         time_tuple, day = self.get_simulation_time()
         hour, minute = time_tuple.split(":")
 
-        self.sim_hour = int(hour)
+        raw_hour = int(hour)
+        self.sim_hour = (raw_hour + self.time_offset) % 24
         self.sim_min = int(minute)
         self.sim_day = int(day)
 
@@ -232,10 +240,10 @@ class SharedState:
         edge_success = self.load_edge_data()
         
         if node_success and edge_success:
-            print("[SharedState] ✓ All data loaded successfully!")
+            print("[SharedState] All data loaded successfully!")
             return True
         elif node_success or edge_success:
-            print("[SharedState] ⚠ Partial data loaded")
+            print("[SharedState] Partial data loaded")
             return True
         else:
             print("[SharedState] ℹ No saved data found, using defaults")
