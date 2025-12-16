@@ -111,7 +111,7 @@ class AIModel:
             vehicle.state = "to_tps"
             count += 1
             
-            print(f"[AIModel] ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={my_distance:.0f}m, garbage={garbage_info})")
+            print(f"[AIModel] ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={my_distance:.4f}km, garbage={garbage_info})")
         
         print(f"[AIModel] Dispatched: {count}/{len(idle_vehicles)}")
 
@@ -299,7 +299,7 @@ class AIModel:
                             garbage_info = f"{garbage:.2f}kg (known)"
                         
                         dist = self._path_distance(path, vehicle.G)
-                        print(f"[AIModel] REDIRECTED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                        print(f"[AIModel] REDIRECTED {vehicle.id} -> TPS {next_tps} (dist={dist:.4f}km, garbage={garbage_info})")
                         
                         new_task = {
                             "type": "collect",
@@ -376,7 +376,7 @@ class AIModel:
                         garbage_info = f"{garbage:.2f}kg (known)"
                     
                     dist = self._path_distance(path, vehicle.G)
-                    print(f"[AIModel] ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                    print(f"[AIModel] ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.4f}km, garbage={garbage_info})")
                     
                     task = {
                         "type": "collect",
@@ -437,7 +437,7 @@ class AIModel:
                     garbage_info = f"{garbage:.2f}kg (known)"
                 
                 dist = self._path_distance(path, vehicle.G)
-                print(f"[AIModel] ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                print(f"[AIModel] ASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.4f}km, garbage={garbage_info})")
                 
                 task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"}
                 self._assign_task(vehicle, task)
@@ -512,7 +512,7 @@ class AIModel:
                         distance_advantage >= self.STEAL_MIN_ADVANTAGE):
                         
                         print(f"[AIModel] 🔄 {vehicle.id} will STEAL TPS {tps_id} from {assigned_vid}")
-                        print(f"         my_dist={my_distance:.0f}m vs their_dist={assigned_dist:.0f}m (advantage={distance_advantage:.0f}m)")
+                        print(f"         my_dist={my_distance:.4f}km vs their_dist={assigned_dist:.4f}km (advantage={distance_advantage:.4f}km)")
                         can_take = True
                         self._cancel_assignment(assigned_vehicle, tps_id)
                         break
@@ -546,7 +546,7 @@ class AIModel:
             for i, c in enumerate(candidates[:3]):
                 discovered = self.knowledge.get_discovered_garbage(c['tps_id'])
                 status = "known" if discovered is not None else "estimated"
-                print(f"  {i+1}. TPS {c['tps_id']}: dist={c['distance']:.0f}m, garbage={c['garbage']:.0f}kg ({status}), score={c['score']:.3f}")
+                print(f"  {i+1}. TPS {c['tps_id']}: dist={c['distance']:.4f}km, garbage={c['garbage']:.0f}kg ({status}), score={c['score']:.3f}")
 
         return best_tps
 
