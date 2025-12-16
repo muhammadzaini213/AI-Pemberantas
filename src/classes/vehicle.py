@@ -1,6 +1,6 @@
 import random
 import networkx as nx
-from ..environment import VEHICLE_SPEED, VEHICLE_CAP
+from ..environment import VEHICLE_SPEED, VEHICLE_CAP, TIME_OFFSET
 import uuid
 
 class Vehicle:
@@ -14,6 +14,7 @@ class Vehicle:
         self.shared = shared
         self.garage_node = None
         self.current = None
+        self.TIME_OFFSET = TIME_OFFSET
         
         self.path = []
         self.progress = 0.0
@@ -29,8 +30,14 @@ class Vehicle:
         
         self.nodes_traversed = [] 
         self._slowdown_reported = set()
-    
 
+    def _effective_hour(self):
+        return (self.shared.get_effective_hour()) % 24
+    
+    def get_time(self, sim_time = None):
+        current_time = f"Day {self.shared.sim_day} {self._effective_hour():02d}:{self.shared.sim_min:02d}" if sim_time is None else sim_time
+        return current_time
+    
     # ============ GARAGE STATS ============
     def _update_garage_stats(self):
         if not self.garage_node or not self.shared:
@@ -180,11 +187,18 @@ class Vehicle:
     def actuator_load_garbage(self, amount):
         can_load = min(amount, self.max_load - self.load)
         self.load += can_load
+        # if self.current in self.TPS_nodes and self.shared:
+            # self.nodes_traversed.append({"Loaded TPS": self.current, "hour": self.get_time()})
         return can_load
     
     def actuator_unload_garbage(self):
         old_load = self.load
         self.load = 0
+        # if isinstance(self.TPA_node, (set, list)):
+        #     if self.current in self.TPA_node and self.shared:
+        #         self.nodes_traversed.append({"Unload On TPA": self.current, "hour": self.get_time()})
+        # elif self.current == self.TPA_node and self.shared:
+        #     self.nodes_traversed.append({"Unload On TPA": self.current, "hour": self.get_time()})
         return old_load
     
     def actuator_get_load_percentage(self):
@@ -218,6 +232,8 @@ class Vehicle:
         self.state = "idle"
         if old_state != "idle":
             self._update_state_stats(old_state)
+        if self.garage_node and self.shared:
+            self.nodes_traversed.append({"Idle On Garage": self.garage_node, "hour": self.get_time()})
         return True
 
     # ============ LOCATION ACTUATORS ============
@@ -294,7 +310,7 @@ class Vehicle:
     def actuator_arrive_at_garage(self):
         if self.current == self.garage_node:
             self.state = "idle"
-            print(f"[Vehicle {self.id}] At garage {self.garage_node}")
+            # print(f"[Vehicle {self.id}] At garage {self.garage_node}")
             return True
         return False
     
@@ -348,6 +364,8 @@ class Vehicle:
         old_state = self.state
         self.state = "idle"
         self._update_state_stats(old_state)
+        if self.garage_node and self.shared:
+            self.nodes_traversed.append({"Idle on Garage": self.garage_node, "hour": self.get_time()})
         print(f"[Vehicle {self.id}] Idle at garage {self.garage_node}")
 
     # ================== UPDATE LOOP ==================
@@ -360,13 +378,9 @@ class Vehicle:
         if not self.path or self.target_node is None:
             if self.state in ["idle", "at_tps", "at_tpa"]:
                 return
-            
             neighbors = list(self.G.neighbors(self.current))
             if neighbors:
-                try:
-                    self.state = "random"
-                except:
-                    pass
+                self.state = "random"
             return
         
         if self.target_node not in self.path:
@@ -388,16 +402,12 @@ class Vehicle:
         
         if shared and hasattr(shared, 'edge_type') and edge_id in shared.edge_type:
             edge_config = shared.edge_type[edge_id]
-            
             if self._is_edge_slow(edge_config):
                 slowdown_value = edge_config.get("slowdown", 0)
                 actual_speed = slowdown_value * shared.speed
-                
-                if hasattr(shared, 'knowledge_model'):
-                    if edge_id not in self._slowdown_reported:
-                        shared.knowledge_model.discover_slowdown(edge_id, slowdown_value)
-                        self._slowdown_reported.add(edge_id)
-                
+                if hasattr(shared, 'knowledge_model') and edge_id not in self._slowdown_reported:
+                    shared.knowledge_model.discover_slowdown(edge_id, slowdown_value)
+                    self._slowdown_reported.add(edge_id)
                 if not hasattr(self, '_last_slow') or self._last_slow != edge_id:
                     print(f"[Vehicle {self.id}] Slowdown on {edge_id}: {slowdown_value}km/h (Hour {shared.sim_hour})")
                     self._last_slow = edge_id
@@ -420,14 +430,10 @@ class Vehicle:
                 self.progress = 0.0
                 return
             
-            if self.current not in self.nodes_traversed:
-                self.nodes_traversed.append(self.current)
-                
             if idx + 1 < len(self.path):
                 self.current = self.target_node
                 self.target_node = self.path[idx + 1]
                 self.progress = 0.0
-                
                 if hasattr(self, '_slowdown_reported'):
                     old_edge = f"{self.path[idx]}-{self.target_node}" if idx > 0 else None
                     if old_edge and old_edge in self._slowdown_reported:
@@ -440,33 +446,26 @@ class Vehicle:
                 
                 if self.state == "to_garage" and self.current == self.garage_node:
                     self.return_to_idle()
-                
                 elif self.state == "to_tps" and self.current in self.TPS_nodes:
                     old_state = self.state
                     self.state = "at_tps"
                     if old_state != "at_tps":
                         self._update_state_stats(old_state)
-                    
-                    if hasattr(shared, 'knowledge_model'):
-                        tps_data = shared.node_type[self.current].get("tps_data", {})
-                        current_garbage = tps_data.get("sampah_kg", 0)
-                        shared.knowledge_model.discover_garbage(self.current, current_garbage)
-                    
+                    if self.shared:
+                        self.nodes_traversed.append({"Load from TPS": self.current, "hour": self.get_time()})
                     print(f"[Vehicle {self.id}] At TPS {self.current}")
-                
                 elif self.state == "to_tpa":
-                    if isinstance(self.TPA_node, (set, list)):
-                        is_at_tpa = self.current in self.TPA_node
-                    else:
-                        is_at_tpa = self.current == self.TPA_node
-                    
+                    is_at_tpa = (self.current in self.TPA_node if isinstance(self.TPA_node, (set, list)) 
+                                 else self.current == self.TPA_node)
                     if is_at_tpa:
                         old_state = self.state
                         self.state = "at_tpa"
                         if old_state != "at_tpa":
                             self._update_state_stats(old_state)
+                        if self.shared:
+                            self.nodes_traversed.append({"Unload At TPA": self.current, "hour": self.get_time()})
                         print(f"[Vehicle {self.id}] At TPA {self.current}")
-    
+
     def get_pos(self, pos_dict):
         if self.target_node is None:
             return pos_dict[self.current]

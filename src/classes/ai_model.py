@@ -11,7 +11,7 @@ class AIModel:
         self.SHIFT_END = SHIFT_END
         self.OVERTIME_BUFFER = 1
         
-        self.decision_interval = 0.2
+        self.decision_interval = 0.1
         self.last_decision_time = 0
         
         self.current_phase = "IDLE"
@@ -268,10 +268,15 @@ class AIModel:
                 continue
             
             if all_exhausted:
-                print(f"[AIModel] All TPS exhausted, forcing {vehicle.id} to TPA (was heading to TPS {tps_id})")
-                self._cancel_assignment(vehicle, tps_id)
-                self._route_to_tpa(vehicle)
+                if vehicle.load > 0:
+                    print(f"[AIModel] All TPS exhausted, forcing {vehicle.id} to TPA (was heading to TPS {tps_id})")
+                    self._cancel_assignment(vehicle, tps_id)
+                    self._route_to_tpa(vehicle)
+                else:
+                    print(f"[AIModel] All TPS exhausted, {vehicle.id} is empty -> route to garage")
+                    self._route_to_garage(vehicle)
                 continue
+
             
             discovered = self.knowledge.get_discovered_garbage(tps_id)
             
@@ -621,6 +626,9 @@ class AIModel:
 
     # ================== ROUTING ==================
     def _route_to_tpa(self, vehicle):
+        if vehicle.state == "idle" and vehicle.current == vehicle.garage_node:
+            return False
+        
         tpa = vehicle.TPA_node
         if isinstance(tpa, (set, list)):
             tpa = list(tpa)[0]
@@ -636,11 +644,15 @@ class AIModel:
         vehicle.set_path(path)
         vehicle.state = "to_tpa"
         return True
+
+
     
     def _force_to_tpa(self):
         for vehicle in self.shared.vehicles:
+            if vehicle.state in ["idle", "to_garage"] and vehicle.current == vehicle.garage_node:
+                continue
             self._route_to_tpa(vehicle)
-        print("[AIModel] Forcing all vehicle to TPA")
+
 
     def _route_to_garage(self, vehicle):
         if vehicle.current == vehicle.garage_node:
@@ -654,6 +666,7 @@ class AIModel:
         vehicle.set_path(path)
         vehicle.state = "to_garage"
         return True
+
 
     # ================== ASSIGN TASK ==================
     def _assign_task(self, vehicle, task):

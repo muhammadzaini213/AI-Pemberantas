@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Report</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="/usr/share/javascript/mathjax/MathJax.js"
+  type="text/javascript"></script>
+</head>
+<body>
+<h1
+id="simulasi-agen-koordinator-truk-sampah-menggunakan-matheuristic-rollout-dalam-kondisi-uncertain-stochastic-kota-balikpapan">Simulasi
+Agen Koordinator Truk Sampah Menggunakan Matheuristic Rollout dalam
+Kondisi Uncertain (Stochastic) Kota Balikpapan</h1>
+<hr />
+<img width="1565" height="1013" alt="image" src="https://github.com/user-attachments/assets/65c38663-bd58-43cf-a700-5cd2230cbd2e" />
+
+<h2 id="kelompok-11">Kelompok 11</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Nama</th>
+<th>NIM</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Muhammad Zaini</td>
+<td>11241064</td>
+</tr>
+<tr class="even">
+<td>Ahmad Rafif Rafi</td>
+<td>11241006</td>
+</tr>
+<tr class="odd">
+<td>Mayoga Finanda</td>
+<td>11241044</td>
+</tr>
+<tr class="even">
+<td>Ferdianta Tarigan</td>
+<td>11241030</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<br> 
+
+<h1 id="a-abstract">A. Abstract</h1>
+<p>Pengangkutan sampah di Kota Balikpapan menghadapi berbagai banyak
+tantangan karena kondisi yang dinamis dan sulit diprediksi, jumlah
+sampah di setiap Tempat Penampungan Sementara (TPS), kondisi lalu
+lintas, serta keterbatasan jumlah armada truk. Permasalahan tersebut
+sering mengakibatkan jarak tempuh yang tidak efisien, waktu kerja yang
+melebihi jam operasional, ketimpangan beban kerja antar truk, dan masih
+adanya TPS yang belum terlayani. Oleh karena itu, diperlukan sistem
+pengelolaan yang mampu mendukung pengambilan keputusan secara
+efektif.</p>
+<p>Tugas ini mengembangkan sebuah agen AI yang berperan sebagai
+koordinator pengangkutan sampah dalam sebuah simulasi yang
+merepresentasikan kondisi nyata di lapangan. Agen AI tersebut
+menggunakan pendekatan matheuristic rollout untuk mengevaluasi berbagai
+alternatif keputusan secara bertahap dan memilih keputusan terbaik
+berdasarkan fungsi tujuan. Fungsi tujuan dirancang dengan
+mempertimbangkan empat aspek utama, yaitu meminimalkan jarak tempuh
+truk, mengurangi waktu lembur, memastikan seluruh TPS terlayani, serta
+menjaga keseimbangan beban kerja antar truk, dengan prioritas utama pada
+pelayanan TPS.</p>
+<p>Hasil simulasi menunjukkan bahwa pendekatan ini mampu meningkatkan
+kinerja dan efisiensi proses pengangkutan sampah. Jarak tempuh dan waktu
+kerja truk dapat dikendalikan dengan lebih baik, beban kerja antar truk
+menjadi lebih seimbang, serta jumlah TPS yang tidak terlayani dapat
+dikurangi. Dengan demikian, agen AI yang dikembangkan diharapkan dapat
+menjadi solusi pendukung dalam pengelolaan pengangkutan sampah di Kota
+Balikpapan agar lebih efisien dan mudah diterapkan di lapangan.</p>
+<hr />
+<br> 
+
+<h1 id="b-data-used">B. Data Used</h1>
+<h2 id="1-total-tps-sebaran-dan-jumlah-sampah-per-hari">1. Total TPS,
+sebaran, dan jumlah sampah per hari</h2>
+<p>Data diambil dari KAJIAN POOL KENDARAAN PENGANGKUTAN SAMPAH DI KOTA
+BALIKPAPAN TAHUN 2022
+<img width="356" height="339" alt="image" src="https://github.com/user-attachments/assets/c7a2211f-970c-46d1-80cf-3a46c234951c" />
+<img width="757" height="922" alt="image" src="https://github.com/user-attachments/assets/5cac2fc1-c741-4c3c-a53c-f5077c973d3c" /></p>
+<p>NOTE: Dikarenakan terdapat 73 TPS, kami menghomogenkan seluruh data
+dengan mengambil rata-rata dari seluruh TPS dan memberikannya interval
+±30% randomisasi agar dapat lebih fokus ke proses pengembangan AI.</p>
+<br>
+
+<h2 id="2-jadwal-pengambilan-sampah">2. Jadwal pengambilan sampah</h2>
+<p><a href="https://rri.co.id/lain-lain/537534/dlh-balikpapan-atur-ulang-jadwal-angkut-sampah">Jadwal
+Angkut Sampah Balikpapan</a> <br>
+<img width="517" height="115" alt="image" src="https://github.com/user-attachments/assets/7054b0d8-2f7e-4643-9320-ea5a8adad782" /></p>
+<br>
+
+<h2 id="3-lokasi-tpa">3. Lokasi TPA</h2>
+<p><a href="https://pu.go.id/berita/diresmikan-presiden-pembangunan-tpa-sampah-manggar-di-balikpapan-terbaik-di-indonesia">Peresmian
+TPA Manggar</a> <br>
+<img width="667" height="519" alt="image" src="https://github.com/user-attachments/assets/f9892404-0a4d-471c-a436-ab89a1f076ac" /></p>
+<br>
+
+<h2 id="4-jumlah-truk">4. Jumlah Truk</h2>
+<img width="1128" height="436" alt="image" src="https://github.com/user-attachments/assets/62b321ab-cef8-4661-8636-3bbed4d93e4e" />
+
+<br>
+
+<hr />
+<h1 id="c-methods">C. Methods</h1>
+<h2 id="1-matheuristic-rollout">1. Matheuristic Rollout</h2>
+<p>Metode rollout dengan teknik matheuristic yang bertujuan untuk
+meningkatkan kualitas keputusan dalam masalah sequential decision-making
+di lingkungan yang stochastic. Rollout ini bekerja dengan memanfaatkan
+base policy atau keputusan cepat dan sederhana sebagai kebijakan awal,
+lalu melakukan evaluasi ke depan (look-ahead) untuk memilih tindakan
+yang lebih baik daripada keputusan dasar sebelumnya. Setiap aksi yang
+dihitung nilai minimum berdasarkan objective function yang ada kemudian
+aksi dengan nilai minimum tersebut akan di eksekusi langsung.</p>
+<p>Peningkatan keputusan terjadi karena Rollout tidak hanya berusaha
+melihat kondisi saat ini, tetapi juga memprediksi dampak tindakan pada
+beberapa langkah ke depan terutama pada kondisi yang berubah-ubah dari
+fluktuasi volume sampah yang tidak selalu diketahui</p>
+<p>Kemudian di tahap eksekusi rute, sistem menggunakan
+<code>shortest path</code> dari <code>OSMnx</code> untuk menentukan
+jalur perjalanan truk pada jaringan jalan yang dapat diberikan
+pengecualian. Namun, aspek ini tidak menjadi fokus utama penelitian
+karena pathfinding hanya berfungsi sebagai komponen teknis pendukung.
+Fokus utama simulasi adalah pada multi-target, multi-instance
+decision-making, yaitu bagaimana agen truk mengambil keputusan rute dan
+prioritas TPS secara adaptif melalui mekanisme Rollout dan tidak
+melakukan tabrakan tugas kecuali dibutuhkan.</p>
+<br> 
+
+<h2 id="2-objective-function">2. Objective Function</h2>
+<p>Untuk setiap TPS ( t ), skor dihitung sebagai:</p>
+<p><span class="math display">\[
+\text{Skor}(t) = W_d \cdot \frac{1}{d(t) + 100} + W_g \cdot
+\frac{g(t)}{1000}
+\]</span></p>
+<ul>
+<li><p><span class="math inline">\(d(t)\)</span>: jarak kendaraan ke
+TPS</p></li>
+<li><p><span class="math inline">\(g(t)\)</span>: jumlah sampah di
+TPS</p></li>
+<li><p><span class="math inline">\(W_d\)</span>: bobot jarak
+(<code>DISTANCE_WEIGHT</code>)</p></li>
+<li><p><span class="math inline">\(W_g\)</span>: bobot sampah
+(<code>GARBAGE_WEIGHT</code>)</p></li>
+<li><p>TPS dengan skor terbesar akan dipilih</p></li>
+<li><p>TPS dengan sampah ≤ 10 kg tidak dipertimbangkan</p></li>
+<li><p>TPS yang terlalu jauh atau tidak memiliki jalur aman
+diabaikan</p></li>
+</ul>
+<p>Hal ini bertujuan untuk memaksimalkan jumlah pengambilan sampah
+dengan jarak tempuh sekecil mungkin</p>
+<br> 
+
+<h2 id="3-knowledge-model">3. Knowledge model</h2>
+<br> 
+
+<h4 id="a-peta-dan-lokasi-tpstpa-diketahui">a) Peta dan Lokasi TPS/TPA
+Diketahui</h4>
+<p>Representasi peta kota:</p>
+<pre><code>G = (V, E)</code></pre>
+<p><strong>Makna variabel:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Variabel</th>
+<th>Penjelasan</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>G</code></td>
+<td>Graph atau peta kota</td>
+</tr>
+<tr class="even">
+<td><code>V</code></td>
+<td>Himpunan semua node (simpul jalan, TPS, TPA, garasi)</td>
+</tr>
+<tr class="odd">
+<td><code>E</code></td>
+<td>Himpunan semua edge (ruas jalan)</td>
+</tr>
+<tr class="even">
+<td><code>(x_v, y_v)</code></td>
+<td>Koordinat geografis dari node <code>v</code></td>
+</tr>
+<tr class="odd">
+<td><code>V_TPS</code></td>
+<td>Subset node yang merupakan TPS</td>
+</tr>
+<tr class="even">
+<td><code>V_TPA</code></td>
+<td>Subset node yang merupakan TPA</td>
+</tr>
+<tr class="odd">
+<td><code>V_GARAGE</code></td>
+<td>Subset node yang merupakan GARAGE</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Formulasi:</strong></p>
+<pre><code>∀ v ∈ V : lokasi (x_v, y_v) diketahui
+v ∈ V_TPS (lokasi TPS diketahui)
+v ∈ V_TPA (lokasi TPA diketahui)
+v ∈ V_GARAGE (lokasi Garasi diketahui)
+</code></pre>
+<p>Artinya model sudah mengetahui semua rute serta lokasi TPS, TPA, dan
+Garasi secara lengkap.</p>
+<br> 
+
+<h4 id="b-volume-sampah-tps-tidak-diketahui-sebelum-truk-tiba">b) Volume
+Sampah TPS Tidak Diketahui Sebelum Truk Tiba</h4>
+<p>Model volume sampah:</p>
+<pre><code>W_i ~ g_i(t)</code></pre>
+<p><strong>Makna variabel:</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th>Variabel</th>
+<th>Penjelasan Ŵ_i(t)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>W_i</code></td>
+<td>Volume sampah aktual di TPS <code>i</code></td>
+</tr>
+<tr class="even">
+<td><code>g_i(t)</code></td>
+<td>Distribusi probabilitas volume sampah TPS <code>i</code></td>
+</tr>
+<tr class="odd">
+<td><code>A_i(t)</code></td>
+<td>Indikator apakah sudah ada truk yang tiba di TPS <code>i</code></td>
+</tr>
+<tr class="even">
+<td><code>Ŵ_i(t)</code></td>
+<td>Informasi volume sampah yang diketahui sistem</td>
+</tr>
+</tbody>
+</table>
+<p>Indikator kunjungan:</p>
+<pre><code>A_i(t) = 0 (belum ada truk yang tiba)
+A_i(t) = 1 (sudah ada truk yang tiba)</code></pre>
+<p>Pengetahuan sistem:</p>
+<pre><code>Ŵ_i(t) = W_i(t)     jika A_i(t) = 1
+Ŵ_i(t) = unknown    jika A_i(t) = 0</code></pre>
+<p>Artinya model tidak mengetahui berapa volume sampah sebelum
+setidaknya satu truk benar-benar tiba di TPS tersebut.</p>
+<hr />
+<br> 
+
+<h1 id="d-implementation">D. Implementation</h1>
+<h3 id="1-environment-setup">1. Environment Setup</h3>
+<p>Pada sistem yang telah kami buat, kami menggunakan library pygame
+untuk melakukan visualisasi dan simulasi untuk environment. Dengan data
+<code>.graphml</code> yang diambil langsung dari
+<code>openstreetmap.org</code> melalui library osmnx yang tersedia di
+python.</p>
+<p>Untuk menambahkan data TPA, TPS, Garasi, Mobil, dan Kemacetan, kami
+menyediakan map editor sehingga pengeditan dapat dilakukan dengan lebih
+leluasa dan mudah yang datanya akan disimpan dalam file
+<code>.json</code>. Meskipun begitu, data yang cukup jarang diubah
+seperti kecepatan kendaraan, waktu shift, serta warna warna node dan
+edges, kami letakkan di <code>src/environment.py</code>.</p>
+<br> 
+
+<h3 id="2-data-modeling">2. Data Modeling</h3>
+<h5 id="a-nodes-data-model">a) Nodes data model</h5>
+<pre class="text"><code>node_id: {
+    &quot;tps&quot;: boolean,
+    &quot;tpa&quot;: boolean,
+    &quot;garage&quot;: boolean,
+
+    &quot;tps_data&quot;: {
+        &quot;nama&quot;: String, 
+        &quot;sampah_kg&quot;: float, 
+        &quot;sampah_per_hari&quot;: float, # Interval ±30%
+    },
+
+    &quot;tpa_data&quot;: {
+        &quot;nama&quot;: String, 
+        &quot;total_sampah&quot;: float
+    },
+
+    &quot;garage_data&quot;: {
+        &quot;nama&quot;: &quot;Garage&quot;, 
+        &quot;total_armada&quot;: int, 
+        &quot;armada_bertugas&quot;: int, 
+        &quot;armada_standby&quot;: int
+    }
+}</code></pre>
+<br> 
+
+<h5 id="b-truck-data-model">b) Truck data model</h5>
+<pre class="text"><code>    truck_id: {
+        &quot;garage_node&quot;: node_id,
+        &quot;state&quot;: enum CarState, # Idle, Moving, Loading, Unloading, Stuck, Standby
+        &quot;speed&quot;: float,
+        &quot;daily_dist&quot;: float,
+        &quot;total_dist&quot;: float,
+        &quot;load&quot;: float,
+        &quot;max_load&quot;: float,
+        &quot;route&quot;: list[node_id]
+    }</code></pre>
+<h5 id="c-environment">c) Environment</h5>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ================== WINDOW ==================</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>APP_NAME <span class="op">=</span> <span class="st">&quot;Simulasi Truk Sampah Balikpapan&quot;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>WIDTH <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>HEIGHT <span class="op">=</span> <span class="dv">600</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>CAM_SPEED <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>MAX_FPS <span class="op">=</span> <span class="dv">60</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># ================== </span><span class="al">TEST</span><span class="co"> SETUP ==================</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>GRAPH_FILE <span class="op">=</span> <span class="st">&quot;./data/simpl_balikpapan_timur_drive.graphml&quot;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># ================== VEHICLE ==================</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>VEHICLE_SPEED <span class="op">=</span> <span class="dv">60</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>VEHICLE_CAP <span class="op">=</span> <span class="dv">30000</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># ================== SHIFT SETTINGS (00:00 WITH INTEGER 0) ==================</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>SIM_START <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>SHIFT_START <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>SHIFT_END <span class="op">=</span> <span class="dv">13</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>TIME_OFFSET <span class="op">=</span> <span class="dv">17</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co"># ================== SPRITES ==================</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>NODE_COL <span class="op">=</span> (<span class="dv">255</span>,<span class="dv">120</span>,<span class="dv">120</span>) <span class="co"># Node kuning</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>LINE_COL <span class="op">=</span> (<span class="dv">150</span>,<span class="dv">150</span>,<span class="dv">150</span>) <span class="co"># Jalanan putih</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>AGENT_COL <span class="op">=</span> (<span class="dv">0</span>,<span class="dv">255</span>,<span class="dv">0</span>) <span class="co"># Mobil Hijau</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>TPS_COL <span class="op">=</span> (<span class="dv">255</span>,<span class="dv">220</span>,<span class="dv">0</span>) <span class="co"># TPS kuning</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>TPA_COL <span class="op">=</span> (<span class="dv">0</span>,<span class="dv">150</span>,<span class="dv">255</span>) <span class="co"># TPA biru</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>GARAGE_COL <span class="op">=</span> (<span class="dv">139</span>, <span class="dv">69</span>, <span class="dv">19</span>) <span class="co"># Garasi coklat</span></span></code></pre></div>
+<br> 
+
+<h3 id="3-rollout-algorithm-integration">3. Rollout Algorithm
+Integration</h3>
+<h4 id="a-dispatch">a) Dispatch</h4>
+<p>Pada awal jam kerja, truk yang tersedia akan dikeluarkan dari garasi
+dan pergi menuju TPS yang tersedia, pada proses ini dilakukan base
+policy untuk menentukan rute tercepat secara deterministik, kemudian
+dilakukan proses look ahead berdasarkan pengalaman dari truk sebelumnya
+(jumlah sampah terakhir).</p>
+<h4 id="b-gathering">b) Gathering</h4>
+<p>Setelah truk mencapai TPS, sampah akan diambil berdasarkan kapasitas
+maksimal truk, kemudian diantarkan ke TPA, proses ini akan dilakukan
+selama jam kerja dan akan diakhiri jika jam kerja selesai ataupun semua
+sampah harian di TPS telah dikosongkan.</p>
+<h4 id="c-reschedulererouting">c) Reschedule/Rerouting</h4>
+<p>Jika truk mendapat pengetahuan tentang jumlah sampah di TPS, modal
+akan melakukan reschedule ulang maupun stealing untuk memastikan apakah
+rute sekarang masih efektif atau tidak dan menyesuaikan dengan
+meminimalkan perubahan rute pada truk lain yang tidak relevan dengan
+kondisi yang terjadi.</p>
+<h4 id="d-ending">d) Ending</h4>
+<p>Jika sampah sudah habis atau jam kerja sudah selesai, semua truk akan
+kembali dan model akan melakukan evaluasi untuk menentukan mekanisme
+saat dispatch di jam kerja selanjutnya agar lebih efektif.</p>
+<br> 
+
+<h3 id="4-simulation-engine">4. Simulation Engine</h3>
+<h5 id="a-folder-structure">a). Folder Structure</h5>
+<pre><code>root/
+├── data/             # Dataset AI
+├── scrapper/         # Script untuk mengambil dataset graphml
+├── src/              # Program utama untuk simulasi (pygame)
+    ├── classes/
+        ├── ai_model.py           # AIModel dimana semua keputusan diambil
+        ├── knowledge.py          # KnowledgeModel tempat menyimpan informasi yang dimiliki
+        └── vehicle.py            # Actuator dan Sensor dari truk sampah
+    ├── testing/
+        └── benchmark.py          # Mengetes benchmark
+    ├── utils/
+        ├── controls.py           # Controller kamera di simulation
+        ├── nodes.py              # Node Generator berdasarkan data yang ada
+        ├── shared.py             # Tempat menyimpan data runtime
+        ├── timesync.py           # Time accelerator dan jam simulasi
+        └── viewer.py             # Renderer simulation
+    ├── environment.py        # Data data environment dasar seperti ukuran window, truk, jam aktif, dan warna node
+    ├── simulation.py         # Simulation runner
+    └── start.py              # Full Runner
+  
+├── window/               # Window Tkinter untuk map editor
+├── Report.md             # Laporan ini
+└── README.md             # Dokumentasi utama proyek</code></pre>
+<br>
+
+<h5 id="b-aimodel-implementation-flow">b). AIModel Implementation
+Flow</h5>
+<h6 id="1-main-loop">1) Main Loop</h6>
+<p>Bagian ini akan dipanggil tiap frame atau iterasi dari simulasi yang
+akan mengambil keputusan tiap decision interval, ini juga menyebabkan
+hasil simulasi tidak efektif di kecepatan tinggi karena perongram tidak
+sempat "berpikir" untuk rencana selanjutnya</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update(<span class="va">self</span>, dt, vehicles):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">self</span>.shared.paused:</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.last_decision_time <span class="op">+=</span> dt</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">self</span>.last_decision_time <span class="op">&gt;=</span> <span class="va">self</span>.decision_interval:</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.last_decision_time <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.make_decisions(vehicles)</span></code></pre></div>
+<br>
+
+<h6 id="2-decision-making">2) Decision Making</h6>
+<p>Fase AI akan dikontrol berdasarkan jam simulasi dan dipisah dalam 3
+tahap, yaitu <code>DISPATCH</code>, <code>GATHERING</code>, dan
+<code>ENDING</code></p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_decisions(<span class="va">self</span>, vehicles):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    current_hour <span class="op">=</span> <span class="va">self</span>.shared.sim_hour</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> current_hour <span class="op">&gt;=</span> <span class="va">self</span>.SHIFT_START <span class="kw">and</span> <span class="kw">not</span> <span class="va">self</span>.dispatch_done:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.phase_dispatch(vehicles)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.current_phase <span class="op">=</span> <span class="st">&quot;GATHERING&quot;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dispatch_done <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> current_hour <span class="op">&gt;=</span> (<span class="va">self</span>.SHIFT_END <span class="op">-</span> <span class="va">self</span>.OVERTIME_BUFFER):</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.current_phase <span class="op">!=</span> <span class="st">&quot;ENDING&quot;</span>:</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.phase_ending(vehicles)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.current_phase <span class="op">=</span> <span class="st">&quot;ENDING&quot;</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="va">self</span>.current_phase <span class="op">==</span> <span class="st">&quot;GATHERING&quot;</span>:</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.phase_gathering(vehicles)</span></code></pre></div>
+<br>
+
+<h6 id="3-dispatch-phase">3) Dispatch Phase</h6>
+<p>Pada fase ini AI akan dikeluarkan dari Garasi saat
+<code>SHIFT_START``, disini juga digunakan fungsi </code>_find_next_tps```
+untuk melakukan scoring dan lookahead beberapa langkah kedepan</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> phase_dispatch(<span class="va">self</span>, vehicles):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    idle_vehicles <span class="op">=</span> [v <span class="cf">for</span> v <span class="kw">in</span> vehicles <span class="cf">if</span> v.state.lower() <span class="op">==</span> <span class="st">&quot;idle&quot;</span>]</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> vehicle <span class="kw">in</span> idle_vehicles:</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        next_tps <span class="op">=</span> <span class="va">self</span>._find_next_tps(vehicle)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> next_tps:</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> <span class="va">self</span>._safe_path(vehicle.current, next_tps, vehicle.G)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>        task <span class="op">=</span> {<span class="st">&quot;type&quot;</span>: <span class="st">&quot;collect&quot;</span>, <span class="st">&quot;tps_id&quot;</span>: next_tps, <span class="st">&quot;assigned_at&quot;</span>: current_time}</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._assign_task(vehicle, task)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>        vehicle.set_path(path)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        vehicle.state <span class="op">=</span> <span class="st">&quot;to_tps&quot;</span></span></code></pre></div>
+<p>Scoring dilakukan berdasarkan jarak dan jumlah sampah (jika sudah
+diketahui)</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>distance_score <span class="op">=</span> <span class="fl">10000.0</span> <span class="op">/</span> (my_distance <span class="op">+</span> <span class="dv">100</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>garbage_score <span class="op">=</span> garbage <span class="op">/</span> <span class="fl">1000.0</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>score <span class="op">=</span> (</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.DISTANCE_WEIGHT <span class="op">*</span> distance_score <span class="op">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.GARBAGE_WEIGHT <span class="op">*</span> garbage_score</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<br>
+
+<h6 id="4-gathering-phase">4) Gathering Phase</h6>
+<p>Pada tahap ini, kendaraan akan mengambil sampah di TPS sembari
+melihat kapasitas truk yang tersisa, jika truk sudah benar benar penuh,
+maka kendaraan akan dipaksa pergi ke TPA untuk unload muatan, pada
+bagian ini juga digunakan look ahead untuk menentukan pilihan
+selanjutnya.</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _handle_at_tps(<span class="va">self</span>, vehicle):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> vehicle.actuator_is_full():</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._route_to_tpa(vehicle)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    loaded <span class="op">=</span> vehicle.actuator_load_from_tps()</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> vehicle.actuator_is_full():</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._route_to_tpa(vehicle)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    next_tps <span class="op">=</span> <span class="va">self</span>._find_next_tps(vehicle)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> next_tps:</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> <span class="va">self</span>._safe_path(vehicle.current, next_tps, vehicle.G)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        task <span class="op">=</span> {<span class="st">&quot;type&quot;</span>: <span class="st">&quot;collect&quot;</span>, <span class="st">&quot;tps_id&quot;</span>: next_tps, <span class="st">&quot;assigned_at&quot;</span>: current_time}</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._assign_task(vehicle, task)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>        vehicle.set_path(path)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>        vehicle.state <span class="op">=</span> <span class="st">&quot;to_tps&quot;</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>._route_to_tpa(vehicle)</span></code></pre></div>
+<br>
+
+<p>Untuk mencegah truk idle mengambil tugas yang sangat jauh, maka
+diterapkan mekanisme <code>STEAL</code>, atau AI akan mengarahkan truk
+terdekat yang tersedia untuk "Mencuri" target dari truk yang jauh
+tersebut selama jaraknya masih masuk akal.</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (my_distance <span class="op">&lt;</span> assigned_dist <span class="op">*</span> <span class="va">self</span>.STEAL_DISTANCE_RATIO <span class="kw">and</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    distance_advantage <span class="op">&gt;=</span> <span class="va">self</span>.STEAL_MIN_ADVANTAGE):</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>._cancel_assignment(assigned_vehicle, tps_id)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    can_take <span class="op">=</span> <span class="va">True</span></span></code></pre></div>
+<br>
+
+<p>Untuk masalah routing disederhanakan menggunakan
+<code>nx.shortest_path</code></p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _safe_path(<span class="va">self</span>, start, end, G):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> nx.shortest_path(G, start, end, weight<span class="op">=</span><span class="st">&quot;length&quot;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">Exception</span>:</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">None</span></span></code></pre></div>
+<br>
+
+<h6 id="5-ending-phase">5) Ending Phase</h6>
+<p>Kendaraan yang sudah menyelesaikan shift akan diarahkan kembali ke
+garasi selama mereka tidak membawa sampah lagi, jika tidak, mereka harus
+membuang sampah tersebut ke TPA sebelum kembali.</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> phase_ending(<span class="va">self</span>, vehicles):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> vehicle <span class="kw">in</span> vehicles:</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> vehicle.load <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>._force_to_tpa()</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>._route_to_garage(vehicle)</span></code></pre></div>
+<hr />
+<br> 
+
+<h1 id="e-demo">E. Demo</h1>
+<h2 id="1-cara-menjalankan-simulasi">1. Cara Menjalankan Simulasi</h2>
+<p>a) Cek apakah pip sudah terpasang:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> pip <span class="at">--version</span></span></code></pre></div>
+<br> 
+
+<p>b) Masuk ke virtual environment:</p>
+<h3 id="windows-powershell">Windows (PowerShell)</h3>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> venv venv</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">venv\Scripts\activate</span></span></code></pre></div>
+<h3 id="linux-bash">Linux (bash)</h3>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-m</span> venv venv</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> venv/bin/activate</span></code></pre></div>
+<br> 
+
+<p>c) Setelah environment aktif, jalankan kode berikut untuk menginstall
+library yang dibutuhkan:</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install numpy pandas scikit-learn matplotlib pygame osmnx</span></code></pre></div>
+<p>NOTE: Untuk Linux ubuntu, gunakan pygame-ce</p>
+<br> 
+
+<p>d) Kemudian ketik ini di terminal untuk menjalankan simulasi:</p>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> src.start</span></code></pre></div>
+<br>
+
+<h2 id="2-ilustration">2. Ilustration</h2>
+<p><a
+href="https://github.com/user-attachments/assets/b3aa68ec-3a79-4587-9721-16b73aa5100a">https://github.com/user-attachments/assets/b3aa68ec-3a79-4587-9721-16b73aa5100a</a></p>
+<br>
+
+<h2 id="3-result">3. Result</h2>
+<pre class="text"><code>======================================================================
+SIMULATION SUMMARY
+======================================================================
+Days Simulated:           1
+Simulation Time:          71.85s
+
+Total Distance:           320.13 km
+Total Garbage Collected:  67,941 kg
+Collection Rate:          100.0%
+Efficiency:               212.2 kg/km
+Vehicle Utilization:      100.0%
+TPS Coverage:             100.0%
+======================================================================
+
+Quick test complete!
+  Garbage: 67940.54 kg
+  Trips: 0
+  Time: 71.85s</code></pre>
+<hr />
+<br> 
+
+<h1 id="f-summary">F. Summary</h1>
+<p>Pada simulasi dan benchmark yang kami buat, meskipun lokasi serta
+data hanya mendekati dan tidak 100% sama dengan kondisi nyata. Program
+ini dapat mempermudah menentukan apakah sebuah rute pengambilan sampah
+sudah efisien atau tidak dengan cepat dan mudah jikalau ada perubahan
+kondisi seperti penempatan TPS atau TPA baru serta peningkatan jumlah
+kendaraan karena simulasi menyiapkan cara yang mudah untuk mengedit
+environment jika dibutuhkan. Selain itu, simulasi ini juga dapat
+dilakukan tidak hanya di balikpapan, namun juga dapat menggunakan rute
+kota lain jika dibutuhkan dikarenakan adanya scrapper map yang dapat
+dengan mudah digunakan.</p>
+<hr />
+<br> 
+
+<h1 id="g-references">G. References</h1>
+<ul>
+<li>Anuar, W. K., Lee, L. S., Seow, H.-V., &amp; Pickl, S. (2021). A
+Multi-Depot Vehicle Routing Problem with Stochastic Road Capacity and
+Reduced Two-Stage Stochastic Integer Linear Programming Models for
+Rollout Algorithm. Mathematics, 9(13), 1572. <a
+href="https://doi.org/10.3390/math9131572">https://doi.org/10.3390/math9131572</a>.</li>
+<li>Pemerintah Kota Balikpapan Dinas Lingkungan Hidup. (2022). Kajian
+pool kendaraan pengangkutan sampah di Kota Balikpapan, Tahun 2022
+(Laporan Akhir). Pemerintah Kota Balikpapan Dinas Lingkungan
+Hidup.,</li>
+<li>RRI. (2024, Januari 31). DLH Balikpapan atur ulang jadwal angkut
+sampah. rri.co.id. Diakses 13 Desember 2025, dari <a
+href="https://rri.co.id/lain-lain/537534/dlh-balikpapan-atur-ulang-jadwal-angkut-sampah">https://rri.co.id/lain-lain/537534/dlh-balikpapan-atur-ulang-jadwal-angkut-sampah</a></li>
+<li>Kementerian Pekerjaan Umum dan Perumahan Rakyat. (2019, Desember
+19). Diresmikan Presiden, pembangunan TPA Sampah Manggar di Balikpapan
+terbaik di Indonesia. pu.go.id. Diakses 13 Desember 2025, dari <a
+href="https://pu.go.id/berita/diresmikan-presiden-pembangunan-tpa-sampah-manggar-di-balikpapan-terbaik-di-indonesia">https://pu.go.id/berita/diresmikan-presiden-pembangunan-tpa-sampah-manggar-di-balikpapan-terbaik-di-indonesia</a></li>
+<li>Hidayat, R.. Kajian Pengangkutan Sampah di Kota Balikpapan.
+Diperoleh dari <a
+href="https://repository.itk.ac.id/17715/16/13171008_presentation.pdf">https://repository.itk.ac.id/17715/16/13171008_presentation.pdf</a></li>
+<li>GITHUB: <a
+href="https://github.com/muhammadzaini213/AI-Pemberantas">https://github.com/muhammadzaini213/AI-Pemberantas</a></li>
+<li>REPORT: <a
+href="https://github.com/muhammadzaini213/AI-Pemberantas/blob/main/Report.md">https://github.com/muhammadzaini213/AI-Pemberantas/blob/main/Report.md</a></li>
+<li>GOOGLE COLAB: <a
+href="https://colab.research.google.com/drive/1eFsy2d_rU2F5ibHSfCYxPmlWD4sY0hNm?usp=sharing">https://colab.research.google.com/drive/1eFsy2d_rU2F5ibHSfCYxPmlWD4sY0hNm?usp=sharing</a></li>
+</ul>
+<hr />
+</body>
+</html>

@@ -101,7 +101,18 @@ class PerformanceMeasure:
         }
 
 
+def scale_graph_lengths(graph, factor=0.001):
+    G_scaled = graph.copy()
+    
+    for u, v, key, data in G_scaled.edges(keys=True, data=True):
+        if "length" in data:
+            data["length"] *= factor
+            
+    return G_scaled
+
+
 def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
+    GRAPH = scale_graph_lengths(GRAPH, 0.001)
 
     shared.vehicles.clear()
     shared.total_vehicles = 0
@@ -187,7 +198,7 @@ def run_benchmark(GRAPH, shared, num_days=7, speed_multiplier=10, verbose=True):
                     "total_dist": v.total_dist,
                     "state": v.state,
                     "load": v.load,
-                    "nodes_traversed": v.nodes_traversed.copy()  # salin path
+                    "nodes_traversed": v.nodes_traversed.copy()
                 }
 
                 v.daily_dist = 0
