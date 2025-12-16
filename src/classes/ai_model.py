@@ -607,22 +607,31 @@ class AIModel:
     # ================== ENDING ==================
     def phase_ending(self, vehicles):
         print(f"\n[AIModel] ENDING - Hour {self.shared.get_effective_hour():02d}:00")
+
         for vehicle in vehicles:
             if vehicle.state in ["to_garage", "idle"]:
                 continue
             
-            if vehicle.load > 0 and vehicle.state not in ["to_tpa", "at_tpa"]:
-                self._force_to_tpa()
+            
+            if vehicle.load > 0 and vehicle.state not in ["to_tpa"]:
+                self._route_to_tpa(vehicle)
                 continue
             
             if vehicle.state == "at_tpa":
-                vehicle.actuator_unload_to_tpa()
-            
+                unloaded = vehicle.actuator_unload_to_tpa()
+                if unloaded > 0:
+                    self.total_trips += 1
+                    print(f"[AIModel] {vehicle.id} unloaded {unloaded:.2f}kg at TPA")
+                
             if vehicle.load == 0:
+                self._route_to_garage(vehicle)
+            
+            if vehicle.load == 0 and vehicle.state not in ["to_garage", "idle"]:
                 self._route_to_garage(vehicle)
             
             if vehicle.id in self.assigned_tasks:
                 del self.assigned_tasks[vehicle.id]
+
 
     # ================== ROUTING ==================
     def _route_to_tpa(self, vehicle):
@@ -652,6 +661,13 @@ class AIModel:
             if vehicle.state in ["idle", "to_garage"] and vehicle.current == vehicle.garage_node:
                 continue
             self._route_to_tpa(vehicle)
+
+
+    def _force_to_garage(self):
+        for vehicle in self.shared.vehicles:
+            if vehicle.current == vehicle.garage_node and vehicle.state in ["idle", "to_garage"]:
+                continue
+            self._route_to_garage(vehicle)
 
 
     def _route_to_garage(self, vehicle):

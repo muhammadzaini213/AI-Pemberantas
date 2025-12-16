@@ -456,7 +456,7 @@ class Vehicle:
                     print(f"[Vehicle {self.id}] At TPS {self.current}")
                 elif self.state == "to_tpa":
                     is_at_tpa = (self.current in self.TPA_node if isinstance(self.TPA_node, (set, list)) 
-                                 else self.current == self.TPA_node)
+                                else self.current == self.TPA_node)
                     if is_at_tpa:
                         old_state = self.state
                         self.state = "at_tpa"
@@ -465,6 +465,15 @@ class Vehicle:
                         if self.shared:
                             self.nodes_traversed.append({"Unload At TPA": self.current, "hour": self.get_time()})
                         print(f"[Vehicle {self.id}] At TPA {self.current}")
+                        
+                        # Langsung unload dan route ke garage jika load = 0
+                        if self.load > 0:
+                            unloaded = self.actuator_unload_to_tpa()
+                            if unloaded > 0:
+                                print(f"[Vehicle {self.id}] Unloaded {unloaded:.2f}kg at TPA")
+                        if self.load == 0:
+                            self.actuator_go_to_garage()
+
 
     def get_pos(self, pos_dict):
         if self.target_node is None:
