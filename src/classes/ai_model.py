@@ -593,7 +593,7 @@ class AIModel:
                     garbage_info = f"{garbage:.2f}kg (known)"
                 
                 dist = self._path_distance(path, vehicle.G)
-                print(f"[AIModel] REASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.0f}m, garbage={garbage_info})")
+                print(f"[AIModel] REASSIGNED {vehicle.id} -> TPS {next_tps} (dist={dist:.3f}km, garbage={garbage_info})")
                 
                 task = {"type":"collect","tps_id":next_tps,"assigned_at":f"Day {self.shared.sim_day} {self.shared.get_effective_hour():02d}:{self.shared.sim_min:02d}"}
                 self._assign_task(vehicle, task)
